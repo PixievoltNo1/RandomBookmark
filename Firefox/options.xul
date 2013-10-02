@@ -4,7 +4,7 @@
 		<radiogroup>
 			<radio l10n="folderAndSubfolders" value="folderAndSubfolders"/>
 			<radio l10n="folderOnly" value="folder"/>
-			<radio l10n="decideEveryTime" value="any">
+			<radio l10n="decideEveryTime" value="any"/>
 		</radiogroup>
 	</setting>
 </vbox>
