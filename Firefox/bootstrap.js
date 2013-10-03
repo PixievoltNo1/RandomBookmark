@@ -1,8 +1,18 @@
 "use strict";
 Components.utils.import("resource://gre/modules/Services.jsm");
+Components.utils.import("chrome://RandomBookmarkFromFolder/content/StringBundle.js");
 var windowWatcher = Services.ww;
-var observer = {observe: function(window, eventType) {
+var onWindowEvent = {observe: function(window, eventType) {
 	if (eventType == "domwindowopened") { foundWindow(window); }
+} };
+var onOptionsDisplayed = {observe: function(subject, topic, data) {
+	if (data == "randombookmark@pikadudeno1.com") {
+		let l10n = new StringBundle("chrome://RandomBookmarkFromFolder/locale/messages.properties");
+		for (let element of subject.querySelectorAll("[l10n]")) {
+			let l10nAttr = element.tagName == "radio" ? "label" : "title";
+			element.setAttribute( l10nAttr, l10n.get(element.getAttribute("l10n")) );
+		}
+	}
 } };
 function windows() {
 	var winEnum = windowWatcher.getWindowEnumerator();
@@ -11,10 +21,11 @@ function windows() {
 	}
 }
 function startup() {
-	windowWatcher.registerNotification(observer);
+	windowWatcher.registerNotification(onWindowEvent);
 	for (let window of windows()) {
 		foundWindow(window);
 	}
+	Services.obs.addObserver(onOptionsDisplayed, "addon-options-displayed", false);
 }
 function foundWindow(window) {
 	window = window.QueryInterface(Components.interfaces.nsIDOMWindow);
@@ -29,7 +40,8 @@ function loadedWindow() {
 	foundWindow(this);
 }
 function shutdown() {
-	windowWatcher.unregisterNotification(observer);
+	windowWatcher.unregisterNotification(onWindowEvent);
+	Services.obs.removeObserver(onOptionsDisplayed, "addon-options-displayed");
 	Components.utils.unload("chrome://RandomBookmarkFromFolder/content/StringBundle.js");
 	for (let window of windows()) {
 		window = window.QueryInterface(Components.interfaces.nsIDOMWindow);
