@@ -63,10 +63,14 @@ function getBookmarks(from, searchSpace) {
 	return bookmarks;
 }
 
-extPrefs.addObserver("", { observe: function() {
+var prefsObserver = { observe: function() {
 	cleanUpRandomBookmarkFromFolder();
 	setup();
-} }, false);
+} };
+extPrefs.addObserver("", prefsObserver, false);
+cleanupTasks.push( function() {
+	extPrefs.removeObserver("", prefsObserver);
+} );
 
 window.cleanUpRandomBookmarkFromFolder = function() {
 	cleanupTasks.forEach( function(task) { task(); } );
