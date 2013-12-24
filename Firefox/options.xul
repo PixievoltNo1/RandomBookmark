@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 	<setting l10n="chooseFrom" pref="extensions.RandomBookmarkFromFolder.searchIn" type="radio">
-		<radiogroup style="-moz-box-orient: vertical;">
+		<radiogroup>
 			<radio l10n="folderAndSubfolders" value="folderAndSubfolders"/>
 			<radio l10n="folderOnly" value="folder"/>
 			<radio l10n="decideEveryTime" value="any"/>
