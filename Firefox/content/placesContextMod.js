@@ -10,7 +10,12 @@ var cleanupTasks = [];
 function removalTask(node) {
 	return Element.prototype.removeChild.bind(node.parentNode, node);
 }
+window.RandomBookmarkFromFolder = {};
+cleanupTasks.push( function() {
+	delete window.RandomBookmarkFromFolder;
+} );
 
+// checkForMiddleClick only triggers the event handler set by the oncommand attribute (bug #928664).
 // The label property won't work for freshly-made elements. Some XBL thing.
 var searchIn = extPrefs.getPrefType("searchIn") ? extPrefs.getCharPref("searchIn")
 	: "folderAndSubfolders";
@@ -18,29 +23,30 @@ if (searchIn != "any") {
 	var menuItem = document.createElement("menuitem");
 	menuItem.id = "RandomBookmarkFromFolder";
 	menuItem.setAttribute("label", l10n.get("menuItem"));
-	menuItem.addEventListener("command", fulfillPurpose.bind(searchIn));
+	menuItem.setAttribute("oncommand", "RandomBookmarkFromFolder.go(event, '" + searchIn + "')");
 	finalPreparation(menuItem);
 } else {
 	var menuItem1 = document.createElement("menuitem");
 	menuItem1.id = "RandomBookmarkFromFolder1";
 	menuItem1.setAttribute("label", l10n.get("menuItemFolderOnly"));
-	menuItem1.addEventListener("command", fulfillPurpose.bind(window, "folder"));
+	menuItem1.setAttribute("oncommand", "RandomBookmarkFromFolder.go(event, 'folder')");
 	finalPreparation(menuItem1);
 	var menuItem2 = document.createElement("menuitem");
 	menuItem2.id = "RandomBookmarkFromFolder2";
 	menuItem2.setAttribute("label", l10n.get("menuItemFolderAndSubfolders"));
-	menuItem2.addEventListener("command", fulfillPurpose.bind(window, "folderAndSubfolders"));
+	menuItem2.setAttribute("oncommand", "RandomBookmarkFromFolder.go(event, 'folderAndSubfolders')");
 	finalPreparation(menuItem2);
 }
 function finalPreparation(menuItem) {
 	menuItem.setAttribute("selectiontype", "single");
 	menuItem.setAttribute("selection", "folder");
 	menuItem.setAttribute("forcehideselection", "livemark/feedURI");
+	menuItem.setAttribute("onclick", "checkForMiddleClick(this, event)");
 	document.getElementById("placesContext").appendChild(menuItem);
 	cleanupTasks.push( removalTask(menuItem) );
 }
 
-function fulfillPurpose(searchSpace, event) {
+RandomBookmarkFromFolder.go = function(event, searchSpace) {
 	var folder = PlacesUIUtils.getViewForNode(document.popupNode).selectedNode
 		.QueryInterface(Components.interfaces.nsINavHistoryContainerResultNode);
 	var bookmarks = getBookmarks(folder, searchSpace);
@@ -64,7 +70,7 @@ function getBookmarks(from, searchSpace) {
 }
 
 var prefsObserver = { observe: function() {
-	cleanUpRandomBookmarkFromFolder();
+	RandomBookmarkFromFolder.cleanUp();
 	setup();
 } };
 extPrefs.addObserver("", prefsObserver, false);
@@ -72,7 +78,7 @@ cleanupTasks.push( function() {
 	extPrefs.removeObserver("", prefsObserver);
 } );
 
-window.cleanUpRandomBookmarkFromFolder = function() {
+RandomBookmarkFromFolder.cleanUp = function() {
 	cleanupTasks.forEach( function(task) { task(); } );
 };
 

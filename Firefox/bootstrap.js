@@ -46,8 +46,8 @@ function shutdown() {
 	for (let window of windows()) {
 		window = window.QueryInterface(Components.interfaces.nsIDOMWindow);
 		window.removeEventListener("load", loadedWindow, true);
-		if (window.cleanUpRandomBookmarkFromFolder) {
-			window.cleanUpRandomBookmarkFromFolder();
+		if (window.RandomBookmarkFromFolder) {
+			window.RandomBookmarkFromFolder.cleanUp();
 		}
 	}
 }
