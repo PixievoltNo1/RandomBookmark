@@ -42,6 +42,8 @@ function finalPreparation(menuItem) {
 	menuItem.setAttribute("selection", "folder");
 	menuItem.setAttribute("forcehideselection", "livemark/feedURI");
 	menuItem.setAttribute("onclick", "checkForMiddleClick(this, event)");
+	menuItem.setAttribute("class", "menuitem-iconic");
+	menuItem.setAttribute("image", "chrome://RandomBookmarkFromFolder/content/MenuIcon.png");
 	document.getElementById("placesContext").appendChild(menuItem);
 	cleanupTasks.push( removalTask(menuItem) );
 }
