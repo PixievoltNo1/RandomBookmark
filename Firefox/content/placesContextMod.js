@@ -1,9 +1,10 @@
 "use strict";
 (function setup(){
 
+var ownModules = {};
 Components.utils.import("resource://gre/modules/Services.jsm");
-Components.utils.import("chrome://RandomBookmarkFromFolder/content/StringBundle.js");
-var l10n = new StringBundle("chrome://RandomBookmarkFromFolder/locale/messages.properties");
+Components.utils.import("chrome://RandomBookmarkFromFolder/content/StringBundle.js", ownModules);
+var l10n = new ownModules.StringBundle("chrome://RandomBookmarkFromFolder/locale/messages.properties");
 var extPrefs = Services.prefs.getBranch("extensions.RandomBookmarkFromFolder.");
 
 var cleanupTasks = [];
