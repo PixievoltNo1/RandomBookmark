@@ -12,5 +12,6 @@
 			<em:minVersion>17.0</em:minVersion>
 			<em:maxVersion>29.*</em:maxVersion>
 		</Description></em:targetApplication>
+		<em:iconURL>chrome://RandomBookmarkFromFolder/content/ExtIcon.svg</em:iconURL>
 	</Description>
 </RDF>
