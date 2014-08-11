@@ -3,6 +3,7 @@
 
 var ownModules = {};
 Components.utils.import("resource://gre/modules/Services.jsm");
+Components.utils.import("resource://gre/modules/devtools/Console.jsm");
 Components.utils.import("chrome://RandomBookmarkFromFolder/content/StringBundle.js", ownModules);
 var l10n = new ownModules.StringBundle("chrome://RandomBookmarkFromFolder/locale/messages.properties");
 var extPrefs = Services.prefs.getBranch("extensions.RandomBookmarkFromFolder.");
@@ -50,10 +51,18 @@ function finalPreparation(menuItem) {
 }
 
 RandomBookmarkFromFolder.go = function(event, searchSpace) {
-	var folder = PlacesUIUtils.getViewForNode(document.popupNode).selectedNode;
-	var bookmarks = getBookmarks(folder, searchSpace);
-	var chosen = bookmarks[ Math.floor( Math.random() * bookmarks.length ) ];
-	openUILinkIn(chosen.uri, whereToOpenLink(event))
+	try {
+		var folder = PlacesUIUtils.getViewForNode(document.popupNode).selectedNode;
+		var bookmarks = getBookmarks(folder, searchSpace);
+		if (bookmarks.length == 0) {
+			Services.prompt.alert(window, l10n.get("extName"), l10n.get("errNoBookmarks"));
+		}
+		var chosen = bookmarks[ Math.floor( Math.random() * bookmarks.length ) ];
+		openUILinkIn(chosen.uri, whereToOpenLink(event));
+	} catch(e) {
+		console.error(e);
+		Services.prompt.alert(window, l10n.get("extName"), l10n.get("errGeneric"));
+	}
 }
 function getBookmarks(from, searchSpace) {
 	from = from.QueryInterface(Components.interfaces.nsINavHistoryContainerResultNode);
