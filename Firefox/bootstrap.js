@@ -58,6 +58,6 @@ function uninstall(data, reason) {
 	Services.strings.flushBundles();
 	
 	if (reason == ADDON_UNINSTALL) {
-		Service.prefs.getBranch("extensions.RandomBookmarkFromFolder.").deleteBranch("");
+		Services.prefs.getBranch("extensions.RandomBookmarkFromFolder.").deleteBranch("");
 	}
 }

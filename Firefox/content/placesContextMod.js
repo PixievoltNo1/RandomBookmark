@@ -50,13 +50,13 @@ function finalPreparation(menuItem) {
 }
 
 RandomBookmarkFromFolder.go = function(event, searchSpace) {
-	var folder = PlacesUIUtils.getViewForNode(document.popupNode).selectedNode
-		.QueryInterface(Components.interfaces.nsINavHistoryContainerResultNode);
+	var folder = PlacesUIUtils.getViewForNode(document.popupNode).selectedNode;
 	var bookmarks = getBookmarks(folder, searchSpace);
 	var chosen = bookmarks[ Math.floor( Math.random() * bookmarks.length ) ];
 	openUILinkIn(chosen.uri, whereToOpenLink(event))
 }
 function getBookmarks(from, searchSpace) {
+	from = from.QueryInterface(Components.interfaces.nsINavHistoryContainerResultNode);
 	var bookmarks = [];
 	var oldOpenness = from.containerOpen;
 	from.containerOpen = true;
