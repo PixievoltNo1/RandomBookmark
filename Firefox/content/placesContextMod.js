@@ -56,6 +56,7 @@ RandomBookmarkFromFolder.go = function(event, searchSpace) {
 		var bookmarks = getBookmarks(folder, searchSpace);
 		if (bookmarks.length == 0) {
 			Services.prompt.alert(window, l10n.get("extName"), l10n.get("errNoBookmarks"));
+			return;
 		}
 		var chosen = bookmarks[ Math.floor( Math.random() * bookmarks.length ) ];
 		openUILinkIn(chosen.uri, whereToOpenLink(event));
@@ -65,6 +66,8 @@ RandomBookmarkFromFolder.go = function(event, searchSpace) {
 	}
 }
 function getBookmarks(from, searchSpace) {
+	// TODO: We don't know that from has been configured to show only folders or something silly like that. Get a new node from Places.
+	// https://developer.mozilla.org/en-US/docs/Mozilla/Tech/Places/Retrieving_part_of_the_bookmarks_tree
 	from = from.QueryInterface(Components.interfaces.nsINavHistoryContainerResultNode);
 	var bookmarks = [];
 	var oldOpenness = from.containerOpen;
