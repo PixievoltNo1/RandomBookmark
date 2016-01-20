@@ -1,9 +1,8 @@
 "use strict";
 (function setup(){
 
-Components.utils.import("resource://gre/modules/Services.jsm");
-Components.utils.import("resource://gre/modules/devtools/Console.jsm");
-Components.utils.import("resource://services-common/stringbundle.js");
+var {Services} = Components.utils.import("resource://gre/modules/Services.jsm", {});
+var {StringBundle} = Components.utils.import("resource://services-common/stringbundle.js", {});
 var l10n = new StringBundle("chrome://RandomBookmarkFromFolder/locale/messages.properties");
 var extPrefs = Services.prefs.getBranch("extensions.RandomBookmarkFromFolder.");
 var places = Components.classes["@mozilla.org/browser/nav-history-service;1"]
