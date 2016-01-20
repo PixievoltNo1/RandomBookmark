@@ -6,6 +6,10 @@ Components.utils.import("resource://gre/modules/devtools/Console.jsm");
 Components.utils.import("resource://services-common/stringbundle.js");
 var l10n = new StringBundle("chrome://RandomBookmarkFromFolder/locale/messages.properties");
 var extPrefs = Services.prefs.getBranch("extensions.RandomBookmarkFromFolder.");
+var places = Components.classes["@mozilla.org/browser/nav-history-service;1"]
+	.getService(Components.interfaces.nsINavHistoryService);
+var folderQuery = places.getNewQuery();
+var defaultOptions = places.getNewQueryOptions();
 try {
 	// Works in Fx >=44
 	var {console} = Components.utils.import("resource://gre/modules/Console.jsm", {});
@@ -57,7 +61,9 @@ function finalPreparation(menuItem) {
 
 RandomBookmarkFromFolder.go = function(event, searchSpace) {
 	try {
-		var folder = PlacesUIUtils.getViewForNode(document.popupNode).selectedNode;
+		var folderID = PlacesUIUtils.getViewForNode(document.popupNode).selectedNode.itemId;
+		folderQuery.setFolders([folderID], 1);
+		var folder = places.executeQuery(folderQuery, defaultOptions).root;
 		var bookmarks = getBookmarks(folder, searchSpace);
 		if (bookmarks.length == 0) {
 			Services.prompt.alert(window, l10n.get("extName"), l10n.get("errNoBookmarks"));
@@ -71,21 +77,18 @@ RandomBookmarkFromFolder.go = function(event, searchSpace) {
 	}
 }
 function getBookmarks(from, searchSpace) {
-	// TODO: We don't know that from has been configured to show only folders or something silly like that. Get a new node from Places.
-	// https://developer.mozilla.org/en-US/docs/Mozilla/Tech/Places/Retrieving_part_of_the_bookmarks_tree
-	from = from.QueryInterface(Components.interfaces.nsINavHistoryContainerResultNode);
 	var bookmarks = [];
-	var oldOpenness = from.containerOpen;
 	from.containerOpen = true;
 	for (let i = 0; i < from.childCount; ++i) {
 		let item = from.getChild(i);
 		if (item.type == item.RESULT_TYPE_URI) {
 			bookmarks.push(item);
 		} else if (item.type == item.RESULT_TYPE_FOLDER && searchSpace == "folderAndSubfolders") {
-			bookmarks = bookmarks.concat( getBookmarks(item, searchSpace) );
+			let folder = item.QueryInterface(Components.interfaces.nsINavHistoryContainerResultNode);
+			bookmarks = bookmarks.concat( getBookmarks(folder, searchSpace) );
 		}
 	}
-	from.containerOpen = oldOpenness;
+	from.containerOpen = false;
 	return bookmarks;
 }
 
