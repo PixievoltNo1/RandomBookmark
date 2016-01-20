@@ -1,6 +1,6 @@
 "use strict";
 Components.utils.import("resource://gre/modules/Services.jsm");
-// Avoid importing own modules until startup; chrome://RandomBookmarkFromFolder/ might not exist yet
+Components.utils.import("resource://services-common/stringbundle.js");
 var windowWatcher = Services.ww;
 var onWindowEvent = {observe: function(window, eventType) {
 	if (eventType == "domwindowopened") { foundWindow(window); }
@@ -21,7 +21,6 @@ function windows() {
 	}
 }
 function startup() {
-	Components.utils.import("chrome://RandomBookmarkFromFolder/content/StringBundle.js");
 	windowWatcher.registerNotification(onWindowEvent);
 	for (let window of windows()) {
 		foundWindow(window);
@@ -43,7 +42,6 @@ function loadedWindow() {
 function shutdown() {
 	windowWatcher.unregisterNotification(onWindowEvent);
 	Services.obs.removeObserver(onOptionsDisplayed, "addon-options-displayed");
-	Components.utils.unload("chrome://RandomBookmarkFromFolder/content/StringBundle.js");
 	for (let window of windows()) {
 		window = window.QueryInterface(Components.interfaces.nsIDOMWindow);
 		window.removeEventListener("load", loadedWindow, true);
