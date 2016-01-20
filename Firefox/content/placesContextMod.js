@@ -85,7 +85,7 @@ function getBookmarks(from, searchSpace) {
 			bookmarks.push(item);
 		} else if (item.type == item.RESULT_TYPE_FOLDER && searchSpace == "folderAndSubfolders") {
 			let folder = item.QueryInterface(Components.interfaces.nsINavHistoryContainerResultNode);
-			bookmarks = bookmarks.concat( getBookmarks(folder, searchSpace) );
+			bookmarks.push( ...getBookmarks(folder, searchSpace) );
 		}
 	}
 	from.containerOpen = false;
