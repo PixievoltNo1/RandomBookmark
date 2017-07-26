@@ -2,8 +2,7 @@
 (function setup(){
 
 var {Services} = Components.utils.import("resource://gre/modules/Services.jsm", {});
-var {StringBundle} = Components.utils.import("resource://services-common/stringbundle.js", {});
-var l10n = new StringBundle("chrome://RandomBookmarkFromFolder/locale/messages.properties");
+var l10n = Services.strings.createBundle("chrome://RandomBookmarkFromFolder/locale/messages.properties");
 var extPrefs = Services.prefs.getBranch("extensions.RandomBookmarkFromFolder.");
 var places = Components.classes["@mozilla.org/browser/nav-history-service;1"]
 	.getService(Components.interfaces.nsINavHistoryService);
@@ -32,18 +31,18 @@ var searchIn = extPrefs.getPrefType("searchIn") ? extPrefs.getCharPref("searchIn
 if (searchIn != "any") {
 	var menuItem = document.createElement("menuitem");
 	menuItem.id = "RandomBookmarkFromFolder";
-	menuItem.setAttribute("label", l10n.get("menuItem"));
+	menuItem.setAttribute("label", l10n.GetStringFromName("menuItem"));
 	menuItem.setAttribute("oncommand", "RandomBookmarkFromFolder.go(event, '" + searchIn + "')");
 	finalPreparation(menuItem);
 } else {
 	var menuItem1 = document.createElement("menuitem");
 	menuItem1.id = "RandomBookmarkFromFolder1";
-	menuItem1.setAttribute("label", l10n.get("menuItemFolderOnly"));
+	menuItem1.setAttribute("label", l10n.GetStringFromName("menuItemFolderOnly"));
 	menuItem1.setAttribute("oncommand", "RandomBookmarkFromFolder.go(event, 'folder')");
 	finalPreparation(menuItem1);
 	var menuItem2 = document.createElement("menuitem");
 	menuItem2.id = "RandomBookmarkFromFolder2";
-	menuItem2.setAttribute("label", l10n.get("menuItemFolderAndSubfolders"));
+	menuItem2.setAttribute("label", l10n.GetStringFromName("menuItemFolderAndSubfolders"));
 	menuItem2.setAttribute("oncommand", "RandomBookmarkFromFolder.go(event, 'folderAndSubfolders')");
 	finalPreparation(menuItem2);
 }
@@ -65,14 +64,16 @@ RandomBookmarkFromFolder.go = function(event, searchSpace) {
 		var folder = places.executeQuery(folderQuery, defaultOptions).root;
 		var bookmarks = getBookmarks(folder, searchSpace);
 		if (bookmarks.length == 0) {
-			Services.prompt.alert(window, l10n.get("extName"), l10n.get("errNoBookmarks"));
+			Services.prompt.alert(window, l10n.GetStringFromName("extName"),
+				l10n.GetStringFromName("errNoBookmarks"));
 			return;
 		}
 		var chosen = bookmarks[ Math.floor( Math.random() * bookmarks.length ) ];
 		openUILinkIn(chosen.uri, whereToOpenLink(event));
 	} catch(e) {
 		console.error(e);
-		Services.prompt.alert(window, l10n.get("extName"), l10n.get("errGeneric"));
+		Services.prompt.alert(window, l10n.GetStringFromName("extName"),
+			l10n.GetStringFromName("errGeneric"));
 	}
 }
 function getBookmarks(from, searchSpace) {

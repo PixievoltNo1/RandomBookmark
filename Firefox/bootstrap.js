@@ -1,16 +1,15 @@
 "use strict";
 Components.utils.import("resource://gre/modules/Services.jsm");
-Components.utils.import("resource://services-common/stringbundle.js");
 var windowWatcher = Services.ww;
 var onWindowEvent = {observe: function(window, eventType) {
 	if (eventType == "domwindowopened") { foundWindow(window); }
 } };
 var onOptionsDisplayed = {observe: function(subject, topic, data) {
 	if (data == "randombookmark@pikadudeno1.com") {
-		let l10n = new StringBundle("chrome://RandomBookmarkFromFolder/locale/messages.properties");
+		let l10n = Services.strings.createBundle("chrome://RandomBookmarkFromFolder/locale/messages.properties");
 		for (let element of subject.querySelectorAll("[l10n]")) {
 			let l10nAttr = element.tagName == "radio" ? "label" : "title";
-			element.setAttribute( l10nAttr, l10n.get(element.getAttribute("l10n")) );
+			element.setAttribute( l10nAttr, l10n.GetStringFromName(element.getAttribute("l10n")) );
 		}
 	}
 } };
