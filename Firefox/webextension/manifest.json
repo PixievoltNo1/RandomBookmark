@@ -1,0 +1,10 @@
+{
+	"name": "Random Bookmark From Folder",
+	"version": "1.0.3",
+
+	"background": {
+		"scripts": ["background.js"]
+	},
+
+	"manifest_version": 2
+}

@@ -1,19 +1,13 @@
 "use strict";
-(function setup(){
+(function() {
 
 var {Services} = Components.utils.import("resource://gre/modules/Services.jsm", {});
 var l10n = Services.strings.createBundle("chrome://RandomBookmarkFromFolder/locale/messages.properties");
-var extPrefs = Services.prefs.getBranch("extensions.RandomBookmarkFromFolder.");
 var places = Components.classes["@mozilla.org/browser/nav-history-service;1"]
 	.getService(Components.interfaces.nsINavHistoryService);
 var folderQuery = places.getNewQuery();
 var defaultOptions = places.getNewQueryOptions();
-try {
-	// Works in Fx >=44
-	var {console} = Components.utils.import("resource://gre/modules/Console.jsm", {});
-} catch (e) {
-	var {console} = Components.utils.import("resource://gre/modules/devtools/Console.jsm", {});
-}
+var {console} = Components.utils.import("resource://gre/modules/Console.jsm", {});
 
 var cleanupTasks = [];
 function removalTask(node) {
@@ -24,38 +18,49 @@ cleanupTasks.push( function() {
 	delete window.RandomBookmarkFromFolder;
 } );
 
-// checkForMiddleClick only triggers the event handler set by the oncommand attribute (bug #928664).
-// The label property won't work for freshly-made elements. Some XBL thing.
-var searchIn = extPrefs.getPrefType("searchIn") ? extPrefs.getCharPref("searchIn")
-	: "folderAndSubfolders";
-if (searchIn != "any") {
-	var menuItem = document.createElement("menuitem");
-	menuItem.id = "RandomBookmarkFromFolder";
-	menuItem.setAttribute("label", l10n.GetStringFromName("menuItem"));
-	menuItem.setAttribute("oncommand", "RandomBookmarkFromFolder.go(event, '" + searchIn + "')");
-	finalPreparation(menuItem);
-} else {
-	var menuItem1 = document.createElement("menuitem");
-	menuItem1.id = "RandomBookmarkFromFolder1";
-	menuItem1.setAttribute("label", l10n.GetStringFromName("menuItemFolderOnly"));
-	menuItem1.setAttribute("oncommand", "RandomBookmarkFromFolder.go(event, 'folder')");
-	finalPreparation(menuItem1);
-	var menuItem2 = document.createElement("menuitem");
-	menuItem2.id = "RandomBookmarkFromFolder2";
-	menuItem2.setAttribute("label", l10n.GetStringFromName("menuItemFolderAndSubfolders"));
-	menuItem2.setAttribute("oncommand", "RandomBookmarkFromFolder.go(event, 'folderAndSubfolders')");
-	finalPreparation(menuItem2);
+var uiElems = [];
+RandomBookmarkFromFolder.setup = function(searchIn) {
+	// checkForMiddleClick only triggers the event handler set by the oncommand attribute (bug #928664).
+	// The label property won't work for freshly-made elements. Some XBL thing.
+	if (uiElems.length) {
+		uiCleanup();
+		uiElems = [];
+	}
+	if (searchIn != "any") {
+		var menuItem = document.createElement("menuitem");
+		menuItem.id = "RandomBookmarkFromFolder";
+		menuItem.setAttribute("label", l10n.GetStringFromName("menuItem"));
+		menuItem.setAttribute("oncommand", "RandomBookmarkFromFolder.go(event, '" + searchIn + "')");
+		commonSetup(menuItem);
+	} else {
+		var menuItem1 = document.createElement("menuitem");
+		menuItem1.id = "RandomBookmarkFromFolder1";
+		menuItem1.setAttribute("label", l10n.GetStringFromName("menuItemFolderOnly"));
+		menuItem1.setAttribute("oncommand", "RandomBookmarkFromFolder.go(event, 'folder')");
+		commonSetup(menuItem1);
+		var menuItem2 = document.createElement("menuitem");
+		menuItem2.id = "RandomBookmarkFromFolder2";
+		menuItem2.setAttribute("label", l10n.GetStringFromName("menuItemFolderAndSubfolders"));
+		menuItem2.setAttribute("oncommand", "RandomBookmarkFromFolder.go(event, 'folderAndSubfolders')");
+		commonSetup(menuItem2);
+	}
+	function commonSetup(menuItem) {
+		menuItem.setAttribute("selectiontype", "single");
+		menuItem.setAttribute("selection", "folder");
+		menuItem.setAttribute("forcehideselection", "livemark/feedURI");
+		menuItem.setAttribute("onclick", "checkForMiddleClick(this, event)");
+		menuItem.setAttribute("class", "menuitem-iconic");
+		menuItem.setAttribute("image", "chrome://RandomBookmarkFromFolder/content/MenuIcon.png");
+		document.getElementById("placesContext").appendChild(menuItem);
+		uiElems.push(menuItem);
+	}
 }
-function finalPreparation(menuItem) {
-	menuItem.setAttribute("selectiontype", "single");
-	menuItem.setAttribute("selection", "folder");
-	menuItem.setAttribute("forcehideselection", "livemark/feedURI");
-	menuItem.setAttribute("onclick", "checkForMiddleClick(this, event)");
-	menuItem.setAttribute("class", "menuitem-iconic");
-	menuItem.setAttribute("image", "chrome://RandomBookmarkFromFolder/content/MenuIcon.png");
-	document.getElementById("placesContext").appendChild(menuItem);
-	cleanupTasks.push( removalTask(menuItem) );
+function uiCleanup() {
+	for (let elem of uiElems) {
+		elem.remove();
+	}
 }
+cleanupTasks.push(uiCleanup);
 
 RandomBookmarkFromFolder.go = function(event, searchSpace) {
 	try {
@@ -91,15 +96,6 @@ function getBookmarks(from, searchSpace) {
 	from.containerOpen = false;
 	return bookmarks;
 }
-
-var prefsObserver = { observe: function() {
-	RandomBookmarkFromFolder.cleanUp();
-	setup();
-} };
-extPrefs.addObserver("", prefsObserver, false);
-cleanupTasks.push( function() {
-	extPrefs.removeObserver("", prefsObserver);
-} );
 
 RandomBookmarkFromFolder.cleanUp = function() {
 	cleanupTasks.forEach( function(task) { task(); } );

@@ -4,12 +4,18 @@ var windowWatcher = Services.ww;
 var onWindowEvent = {observe: function(window, eventType) {
 	if (eventType == "domwindowopened") { foundWindow(window); }
 } };
+var searchPref;
 var onOptionsDisplayed = {observe: function(subject, topic, data) {
 	if (data == "randombookmark@pikadudeno1.com") {
 		let l10n = Services.strings.createBundle("chrome://RandomBookmarkFromFolder/locale/messages.properties");
 		for (let element of subject.querySelectorAll("[l10n]")) {
 			let l10nAttr = element.tagName == "radio" ? "label" : "title";
 			element.setAttribute( l10nAttr, l10n.GetStringFromName(element.getAttribute("l10n")) );
+			if (element.hasAttribute("value")) {
+				element.addEventListener("command", () => {
+					prefChange(element.getAttribute("value"));
+				});
+			}
 		}
 	}
 } };
@@ -19,7 +25,12 @@ function windows() {
 		yield winEnum.getNext();
 	}
 }
-function startup() {
+function startup({webExtension}) {
+	var checkBranch = Services.prefs.getBranch("extensions.RandomBookmarkFromFolder.");
+	if (checkBranch.prefHasUserValue("searchIn")) {
+		searchPref = checkBranch.getCharPref("searchIn");
+		// Services.prefs.getBranch("extensions.RandomBookmarkFromFolder.").deleteBranch("");
+	}
 	windowWatcher.registerNotification(onWindowEvent);
 	for (let window of windows()) {
 		foundWindow(window);
@@ -33,10 +44,24 @@ function foundWindow(window) {
 		return;
 	}
 	if (window.document.getElementById("placesContext") == null) { return; }
-	Services.scriptloader.loadSubScript("chrome://RandomBookmarkFromFolder/content/placesContextMod.js", window);
+	Services.scriptloader.loadSubScriptWithOptions("chrome://RandomBookmarkFromFolder/content/placesContextMod.js", {
+		target: window,
+		charset: "UTF-8",
+		ignoreCache: true
+	});
+	window.RandomBookmarkFromFolder.setup(searchPref);
 }
 function loadedWindow() {
 	foundWindow(this);
+}
+function prefChange(newPref) {
+	searchPref = newPref;
+	for (let window of windows()) {
+		if (window.RandomBookmarkFromFolder) {
+			window.RandomBookmarkFromFolder.setup(searchPref);
+		}
+	}
+	// TODO: Save pref in the WebExtension
 }
 function shutdown() {
 	windowWatcher.unregisterNotification(onWindowEvent);
@@ -53,8 +78,4 @@ function uninstall(data, reason) {
 	// Guarantee that if a new version is installed, it has the new strings
 	// https://bugzilla.mozilla.org/show_bug.cgi?id=719376
 	Services.strings.flushBundles();
-	
-	if (reason == ADDON_UNINSTALL) {
-		Services.prefs.getBranch("extensions.RandomBookmarkFromFolder.").deleteBranch("");
-	}
 }

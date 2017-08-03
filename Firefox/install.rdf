@@ -9,10 +9,11 @@
 		<em:creator>Pikadude No. 1</em:creator>
 		<em:targetApplication><Description>
 			<em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id> <!-- Firefox -->
-			<em:minVersion>38.0</em:minVersion>
-			<em:maxVersion>45.*</em:maxVersion>
+			<em:minVersion>52.0</em:minVersion>
+			<em:maxVersion>55.*</em:maxVersion>
 		</Description></em:targetApplication>
 		<em:iconURL>chrome://RandomBookmarkFromFolder/content/ExtIcon.svg</em:iconURL>
 		<em:multiprocessCompatible>true</em:multiprocessCompatible>
+		<em:hasEmbeddedWebExtension>true</em:hasEmbeddedWebExtension>
 	</Description>
 </RDF>
