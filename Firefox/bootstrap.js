@@ -4,7 +4,7 @@ var windowWatcher = Services.ww;
 var onWindowEvent = {observe: function(window, eventType) {
 	if (eventType == "domwindowopened") { foundWindow(window); }
 } };
-var searchPref;
+var searchPref, webExtPort;
 var onOptionsDisplayed = {observe: function(subject, topic, data) {
 	if (data == "randombookmark@pikadudeno1.com") {
 		let l10n = Services.strings.createBundle("chrome://RandomBookmarkFromFolder/locale/messages.properties");
@@ -12,6 +12,9 @@ var onOptionsDisplayed = {observe: function(subject, topic, data) {
 			let l10nAttr = element.tagName == "radio" ? "label" : "title";
 			element.setAttribute( l10nAttr, l10n.GetStringFromName(element.getAttribute("l10n")) );
 			if (element.hasAttribute("value")) {
+				if (element.getAttribute("value") == searchPref) {
+					element.radioGroup.selectedItem = element;
+				}
 				element.addEventListener("command", () => {
 					prefChange(element.getAttribute("value"));
 				});
@@ -26,11 +29,25 @@ function windows() {
 	}
 }
 function startup({webExtension}) {
-	var checkBranch = Services.prefs.getBranch("extensions.RandomBookmarkFromFolder.");
-	if (checkBranch.prefHasUserValue("searchIn")) {
-		searchPref = checkBranch.getCharPref("searchIn");
-		// Services.prefs.getBranch("extensions.RandomBookmarkFromFolder.").deleteBranch("");
-	}
+	webExtension.startup().then(({browser: {runtime}}) => {
+		runtime.onConnect.addListener((port) => {
+			webExtPort = port;
+			var checkBranch = Services.prefs.getBranch("extensions.RandomBookmarkFromFolder.");
+			if (checkBranch.prefHasUserValue("searchIn")) {
+				searchPref = checkBranch.getCharPref("searchIn");
+				webExtPort.postMessage({newSearchPref: searchPref});
+				checkBranch.deleteBranch("");
+				webExtReady();
+			} else {
+				port.onMessage.addListener((prefs) => {
+					searchPref = prefs.searchPref;
+					webExtReady();
+				})
+			}
+		});
+	});
+}
+function webExtReady() {
 	windowWatcher.registerNotification(onWindowEvent);
 	for (let window of windows()) {
 		foundWindow(window);
@@ -61,7 +78,7 @@ function prefChange(newPref) {
 			window.RandomBookmarkFromFolder.setup(searchPref);
 		}
 	}
-	// TODO: Save pref in the WebExtension
+	webExtPort.postMessage({newSearchPref: searchPref});
 }
 function shutdown() {
 	windowWatcher.unregisterNotification(onWindowEvent);
