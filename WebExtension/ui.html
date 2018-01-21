@@ -1,0 +1,26 @@
+<html>
+<head>
+	<title>Random Bookmark From Folder</title> <!-- TODO: Change to setting this in JavaScript -->
+	<link rel="stylesheet" href="stylesheet.css">
+	<meta name="viewport" content="width=device-width">
+	<script src="ui.bundle.js" defer></script>
+</head>
+<body>
+	<ul id="mainList"></ul>
+	<template id="folderNode"><li class="folderNode">
+		<button type="button" class="expander ifHasSubfolders">
+			<span class="">◥</span>
+		</button>
+		<button type="button" class="folderName"></button>
+		<button type="button" class="andSubfolders ifHasSubfolders"></button>
+		<button type="button" class="pin"></button>
+		<menu class="subfolders closed"></menu>
+	</li></template>
+	<template id="pinnedFolder"><li class="pinnedFolder">
+		<div class="placeholder"></div>
+		<button type="button" class="folderName"></button>
+		<button type="button" class="andSubfolders ifHasSubfolders"></button>
+		<button type="button" class="pin removePin"></button>
+	</li></template>
+</body>
+</html>

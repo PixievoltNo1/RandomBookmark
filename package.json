@@ -1,0 +1,12 @@
+{
+  "scripts": {
+    "build": "webpack",
+    "watch": "webpack --watch"
+  },
+  "devDependencies": {
+    "file-url": "^2.0.2",
+    "svelte": "^1.51.1",
+    "svelte-loader": "^2.3.3",
+    "webpack": "^3.10.0"
+  }
+}

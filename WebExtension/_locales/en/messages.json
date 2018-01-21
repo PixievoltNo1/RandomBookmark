@@ -1,0 +1,6 @@
+{
+	"extName": { "message": "Random Bookmark From Folder" },
+	"extDesc": { "message": "Open random bookmarks from a chosen folder" },
+	
+	"andSubfolders": { "message": "and its subfolders" }
+}

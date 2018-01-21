@@ -1,0 +1,39 @@
+{
+	"name": "__MSG_extName__",
+	"version": "2.0",
+	"description": "__MSG_extDesc__",
+	"author": "Pikadude No. 1",
+	"icons": {
+		"48": "icon/48.png",
+		"128": "icon/128.png"
+	},
+	"default_locale": "en",
+
+	"background": {
+		"scripts": ["upgrade.js"],
+		"persistent": false
+	},
+	"browser_action": {
+		"default_title": "__MSG_extName__",
+		"default_popup": "ui.html",
+		"default_icon": {
+			"38": "icon/38Die.png"
+		},
+		"theme_icons": [{
+			"light": "icon/scalableDie.svg",
+			"dark": "icon/scalableDie.svg",
+			"size": 32
+		}]
+	},
+
+	"permissions": ["storage", "bookmarks"],
+	"minimum_chrome_version": "58",
+	"applications": {
+		"gecko": {
+			"id": "randombookmark@pikadudeno1.com",
+			"strict_min_version": "52.0"
+		}
+	},
+	"minimum_edge_version" : "39.14942",
+	"manifest_version": 2
+}

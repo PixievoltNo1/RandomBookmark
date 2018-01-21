@@ -1,0 +1,31 @@
+<li class="folderNode">
+	{{#if list.length}}
+		<button type="button" class="expander {{showSubfolders ? 'expanded' : ''}}"
+			on:click="set({showSubfolders: !showSubfolders})"></button>
+	{{/if}}
+	<button type="button" class="folderName" disabled="{{!enabled}}"
+		on:click="fire('chosen', {node, andSubfolders: searchSubfolders})">{{node.title}}</button>
+	{{#if list.length && $showAndSubfolders}}
+		<button type="button" class="andSubfolders" disabled="{{!hasDescendantBookmarks}}"
+			on:click="fire('chosen', {node, andSubfolders: true})">{{$l10n_andSubfolders}}</button>
+	{{/if}}
+	<button type="button" class="pin"></button>
+	{{#if list.length}}
+		<ul class="subfolders" hidden="{{!showSubfolders}}" ref:subfolders></ul>
+	{{/if}}
+</li>
+<script>
+export default {
+	data() {
+		return {
+			showSubfolders: false	
+		};
+	},
+	computed: {
+		searchSubfolders: ($searchIn) => { return $searchIn == "folderAndSubfolders"; },
+		enabled: (searchSubfolders, hasChildBookmarks, hasDescendantBookmarks) => {
+			return searchSubfolders ? hasDescendantBookmarks : hasChildBookmarks;
+		}
+	}
+};
+</script>
