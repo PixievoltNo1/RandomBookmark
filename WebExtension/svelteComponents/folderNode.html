@@ -10,11 +10,14 @@
 			on:click="fire('chosen', {node, andSubfolders: true})">{{$l10n_andSubfolders}}</button>
 	{{/if}}
 	<button type="button" class="pin"></button>
-	{{#if list.length}}
-		<ul class="subfolders" hidden="{{!showSubfolders}}" ref:subfolders></ul>
+	{{#if showSubfolders}}
+		<ul class="subfolders">
+			<FolderNodeList list="{{list}}"/>
+		</ul>
 	{{/if}}
 </li>
 <script>
+import FolderNodeList from "./FolderNodeList.html";
 export default {
 	data() {
 		return {
@@ -26,6 +29,7 @@ export default {
 		enabled: (searchSubfolders, hasChildBookmarks, hasDescendantBookmarks) => {
 			return searchSubfolders ? hasDescendantBookmarks : hasChildBookmarks;
 		}
-	}
+	},
+	components: { FolderNodeList }
 };
 </script>
