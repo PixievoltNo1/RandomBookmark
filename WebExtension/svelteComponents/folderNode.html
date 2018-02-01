@@ -4,10 +4,10 @@
 			on:click="set({showSubfolders: !showSubfolders})"></button>
 	{{/if}}
 	<button type="button" class="folderName" disabled="{{!enabled}}"
-		on:click="fire('chosen', {node, andSubfolders: searchSubfolders})">{{node.title}}</button>
+		on:click="this.root.fire('chosen', {node, andSubfolders: searchSubfolders})">{{node.title}}</button>
 	{{#if list.length && $showAndSubfolders}}
 		<button type="button" class="andSubfolders" disabled="{{!hasDescendantBookmarks}}"
-			on:click="fire('chosen', {node, andSubfolders: true})">{{$l10n_andSubfolders}}</button>
+			on:click="this.root.fire('chosen', {node, andSubfolders: true})">{{$l10n_andSubfolders}}</button>
 	{{/if}}
 	<button type="button" class="pin"></button>
 	{{#if showSubfolders}}
