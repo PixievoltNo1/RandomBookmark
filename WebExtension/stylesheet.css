@@ -1,0 +1,41 @@
+body {
+	width: 400px;
+	overflow-y: scroll;
+}
+ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+.folderNode {
+	display: grid;
+	grid-template-columns: 24px 1fr 24px;
+}
+.expander::before {
+	display: block;
+	content: ◥;
+	transform: rotate(0.125turn);
+}
+.expander.expanded::before {
+	transform: rotate(0.375turn);
+}
+.folderName {
+	grid-column: 2;
+	grid-row: 1;
+}
+.folderName, .andSubfolders {
+	text-align: left;
+}
+.pin {
+	grid-column: 3;
+	grid-row: 1;
+}
+.andSubfolders {
+	grid-column: 2;
+	grid-row: 2;
+	font-size: 10px;
+}
+.subfolders {
+	grid-column: 2 / 4;
+	grid-row: 3;
+}
