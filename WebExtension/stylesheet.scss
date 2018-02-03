@@ -2,6 +2,11 @@ body {
 	width: 400px;
 	overflow-y: scroll;
 }
+%linklike {
+	text-align: left;
+	color: hsl(240, 100%, 40%);
+	text-decoration: underline;
+}
 ul {
 	list-style: none;
 	margin: 0;
@@ -11,20 +16,20 @@ ul {
 	display: grid;
 	grid-template-columns: 24px 1fr 24px;
 }
-.expander::before {
-	display: block;
-	content: ◥;
-	transform: rotate(0.125turn);
-}
-.expander.expanded::before {
-	transform: rotate(0.375turn);
+.expander {
+	&::before {
+		display: block;
+		content: "◥";
+		transform: rotate((1turn/8));
+	}
+	&.expanded::before {
+		transform: rotate((3turn/8));
+	}
 }
 .folderName {
 	grid-column: 2;
 	grid-row: 1;
-}
-.folderName, .andSubfolders {
-	text-align: left;
+	@extend %linklike;
 }
 .pin {
 	grid-column: 3;
@@ -34,6 +39,7 @@ ul {
 	grid-column: 2;
 	grid-row: 2;
 	font-size: 10px;
+	@extend %linklike;
 }
 .subfolders {
 	grid-column: 2 / 4;
