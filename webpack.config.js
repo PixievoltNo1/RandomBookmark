@@ -29,7 +29,7 @@ module.exports = {
 		// Workaround for above Firefox/Chrome issue
 		new webpack.SourceMapDevToolPlugin({
 			publicPath: fileUrl("WebExtension") + "/",
-			filename: "[file].map"
+			filename: "sourcemaps/[file].map"
 		})
 	],
 	stats: {
