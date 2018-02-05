@@ -1,6 +1,8 @@
 if (!(window.chrome && chrome.runtime)) { window.chrome = browser; }
 import chooseBookmark from './bookmarkSelection.js';
+import FolderNode from './svelteComponents/FolderNode.html';
 import FolderNodeList from './svelteComponents/FolderNodeList.html';
+import PinList from './svelteComponents/PinList.html';
 import { Store } from 'svelte/store';
 
 Promise.all([
@@ -11,11 +13,22 @@ Promise.all([
 		// TODO: Use prefs
 		searchIn: "folderOnly",
 		showAndSubfolders: true,
-		l10n_andSubfolders: chrome.i18n.getMessage("andSubfolders"),
+		l10n: chrome.i18n.getMessage,
+		l10nCached: FolderNode.cacheL10n.map((message) => { chrome.i18n.getMessage(message) }),
 	});
 	var folders = new FolderNodeList({
 		target: document.getElementById("mainList"),
 		data: {list: makeFolderList(tree).list},
+		store
+	});
+	folders.on("chosen", ({node, andSubfolders}) => {
+		var bookmark = chooseBookmark(node, andSubfolders);
+		window.open(bookmark.url);
+	});
+	// It's very likely we're about to abandon directly using FolderNodeList and PinList in favor of a parent component to both, so have some temporary non-DRY code.
+	var pinList = new PinList({
+		target: document.getElementById("pinList"),
+		data: {list: []},
 		store
 	});
 	folders.on("chosen", ({node, andSubfolders}) => {

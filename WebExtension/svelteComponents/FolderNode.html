@@ -7,7 +7,7 @@
 		on:click="this.root.fire('chosen', {node, andSubfolders: searchSubfolders})">{{node.title}}</button>
 	{{#if list.length && $showAndSubfolders}}
 		<button type="button" class="andSubfolders" disabled="{{!hasDescendantBookmarks}}"
-			on:click="this.root.fire('chosen', {node, andSubfolders: true})">{{$l10n_andSubfolders}}</button>
+			on:click="this.root.fire('chosen', {node, andSubfolders: true})">{{$l10nCached.andSubfolders}}</button>
 	{{/if}}
 	<button type="button" class="pin"></button>
 	{{#if showSubfolders}}
@@ -19,6 +19,9 @@
 <script>
 import FolderNodeList from "./FolderNodeList.html";
 export default {
+	setup(FolderNode) {
+		FolderNode.cacheL10n = ["andSubfolders"];
+	},
 	data() {
 		return {
 			showSubfolders: false	

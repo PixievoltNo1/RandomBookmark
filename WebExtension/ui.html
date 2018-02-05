@@ -6,21 +6,10 @@
 	<script src="ui.bundle.js" defer></script>
 </head>
 <body>
+	<h1>Pinned</h1>
+	<div id="pinList"></div>
+	<h1>All Folders</h1>
 	<ul id="mainList"></ul>
-	<template id="folderNode"><li class="folderNode">
-		<button type="button" class="expander ifHasSubfolders">
-			<span class="">◥</span>
-		</button>
-		<button type="button" class="folderName"></button>
-		<button type="button" class="andSubfolders ifHasSubfolders"></button>
-		<button type="button" class="pin"></button>
-		<menu class="subfolders closed"></menu>
-	</li></template>
-	<template id="pinnedFolder"><li class="pinnedFolder">
-		<div class="placeholder"></div>
-		<button type="button" class="folderName"></button>
-		<button type="button" class="andSubfolders ifHasSubfolders"></button>
-		<button type="button" class="pin removePin"></button>
-	</li></template>
+	<div id="optionsPane"></div>
 </body>
 </html>
