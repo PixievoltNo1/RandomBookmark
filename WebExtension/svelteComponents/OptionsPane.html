@@ -1,0 +1,30 @@
+<button type="button" class="optionsExpander {{showOptions ? 'expanded' : ''}}"
+	on:click="set({showOptions: !showOptions})">{{$l10n(showOptions ? "closeOptions" : "showOptions")}}</button>
+{{#if showOptions}}
+	<ul class="multiChoice">
+		<li><label>
+			<input type="radio" name="searchIn" value="folderAndSubfolders" bind:group="$searchIn">
+			{{$l10n("searchInFolderAndSubfolders")}}
+		</label></li>
+		<li><label>
+			<input type="radio" name="searchIn" value="folderOnly" bind:group="$searchIn">
+			{{$l10n("searchInFolderOnly")}}
+			<ul>
+				<li><label>
+					<input type="checkbox" disabled="{{$searchIn == folderOnly}}" bind:checked="$showAndSubfolders">
+					{{$l10n("showAndSubfolders")}}
+				</label></li>
+			</ul>
+		</label></li>
+	</ul>
+{{/if}}
+<script>
+export default {
+	data() {
+		return {
+			showOptions: false	
+		};
+	},
+	// TODO: Set $showAndSubfolders = false when $searchIn != "folderOnly"
+};
+</script>

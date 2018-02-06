@@ -3,18 +3,23 @@ import chooseBookmark from './bookmarkSelection.js';
 import FolderNode from './svelteComponents/FolderNode.html';
 import FolderNodeList from './svelteComponents/FolderNodeList.html';
 import PinList from './svelteComponents/PinList.html';
+import OptionsPane from './svelteComponents/OptionsPane.html';
 import { Store } from 'svelte/store';
 
 Promise.all([
 	new Promise((resolve) => { chrome.bookmarks.getTree(([tree]) => { resolve(tree); }); }),
 	// TODO: Get user prefs
 ]).then(([tree, prefs]) => {
+	var l10nCached = {};
+	for (let message of FolderNode.cacheL10n) {
+		l10nCached[message] = chrome.i18n.getMessage(message);
+	}
 	var store = new Store({
 		// TODO: Use prefs
 		searchIn: "folderOnly",
 		showAndSubfolders: true,
 		l10n: chrome.i18n.getMessage,
-		l10nCached: FolderNode.cacheL10n.map((message) => { chrome.i18n.getMessage(message) }),
+		l10nCached,
 	});
 	var folders = new FolderNodeList({
 		target: document.getElementById("mainList"),
@@ -25,7 +30,7 @@ Promise.all([
 		var bookmark = chooseBookmark(node, andSubfolders);
 		window.open(bookmark.url);
 	});
-	// It's very likely we're about to abandon directly using FolderNodeList and PinList in favor of a parent component to both, so have some temporary non-DRY code.
+	// It's very likely we're about to abandon directly using these components in favor of a parent component to all of them, so have some temporary non-DRY code.
 	var pinList = new PinList({
 		target: document.getElementById("pinList"),
 		data: {list: []},
@@ -34,6 +39,10 @@ Promise.all([
 	folders.on("chosen", ({node, andSubfolders}) => {
 		var bookmark = chooseBookmark(node, andSubfolders);
 		window.open(bookmark.url);
+	});
+	var optionsPane = new OptionsPane({
+		target: document.getElementById("optionsPane"),
+		store
 	});
 });
 function makeFolderList(tree) {
