@@ -2,3 +2,4 @@ node_modules/
 *.bundle.js
 *.css
 WebExtension/sourcemaps/
+npm-debug.log
