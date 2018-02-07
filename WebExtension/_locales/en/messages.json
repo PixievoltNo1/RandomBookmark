@@ -1,12 +1,15 @@
 {
 	"extName": { "message": "Random Bookmark From Folder" },
 	"extDesc": { "message": "Open random bookmarks from a chosen folder" },
-	
+
 	"andSubfolders": { "message": "...and its subfolders" },
+	"loading": { "message": "Loading..." },
+	"pinHeader": { "message": "Pinned" },
 	"pinHelp": { "message": "Use the <pin> next to your preferred folders to make them appear here the next time you open this menu." },
+	"allFoldersHeader": { "message": "All Folders" },
 	"showOptions": { "message": "Show Options" },
 	"closeOptions": { "message": "Close Options" },
-	
+
 	"searchInFolderAndSubfolders": { "message": "Pick from the selected folder & its subfolders" },
 	"searchInFolderOnly": { "message": "Pick from the selected folder only" },
 	"showAndSubfolders": { "message": "Show \"and its subfolders\" button" }

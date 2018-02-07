@@ -1,0 +1,21 @@
+<ul class="multiChoice">
+	<li><label>
+		<input type="radio" name="searchIn" value="folderAndSubfolders" bind:group="$searchIn">
+		{{$l10n("searchInFolderAndSubfolders")}}
+	</label></li>
+	<li><label>
+		<input type="radio" name="searchIn" value="folderOnly" bind:group="$searchIn">
+		{{$l10n("searchInFolderOnly")}}
+		<ul>
+			<li><label>
+				<input type="checkbox" disabled="{{$searchIn == folderOnly}}" bind:checked="$showAndSubfolders">
+				{{$l10n("showAndSubfolders")}}
+			</label></li>
+		</ul>
+	</label></li>
+</ul>
+<script>
+export default {
+	// TODO: Set $showAndSubfolders = false when $searchIn != "folderOnly"
+};
+</script>

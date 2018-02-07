@@ -1,0 +1,36 @@
+<:Head>
+	<title>{{$l10n("extName")}}</title>
+</:Head>
+<h1>{{$l10n("pinHeader")}}</h1>
+{{#if !pinList}}
+	<div class="loading">{{$l10n("loading")}}</div>
+{{elseif !pinList.length}}
+	<div id="noPins">{{$l10n("pinHelp")}}</div>
+{{else}}
+	<ul><FolderNodeList list="{{pinList}}"/></ul>
+{{/if}}
+<h1>{{$l10n("allFoldersHeader")}}</h1>
+{{#if !folderList}}
+	<div class="loading">{{$l10n("loading")}}</div>
+{{else}}
+	<ul><FolderNodeList list="{{folderList}}"/></ul>
+{{/if}}
+<div id="optionsPane">
+<button type="button" class="optionsExpander {{showOptions ? 'expanded' : ''}}"
+	on:click="set({showOptions: !showOptions})" disabled="{{!$prefsReady}}">
+	{{$l10n(showOptions ? "closeOptions" : "showOptions")}}
+</button>
+{{#if showOptions}} <Options/> {{/if}}
+</div>
+<script>
+import FolderNodeList from './FolderNodeList.html';
+import Options from './Options.html';
+export default {
+	data() {
+		return {
+			showOptions: false
+		};
+	},
+	components: { FolderNodeList, Options }
+};
+</script>

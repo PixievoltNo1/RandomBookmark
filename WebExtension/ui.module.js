@@ -1,48 +1,38 @@
 if (!(window.chrome && chrome.runtime)) { window.chrome = browser; }
 import chooseBookmark from './bookmarkSelection.js';
+import UiRoot from './svelteComponents/UiRoot.html';
 import FolderNode from './svelteComponents/FolderNode.html';
-import FolderNodeList from './svelteComponents/FolderNodeList.html';
-import PinList from './svelteComponents/PinList.html';
-import OptionsPane from './svelteComponents/OptionsPane.html';
 import { Store } from 'svelte/store';
 
+var l10nCached = {};
+for (let message of FolderNode.cacheL10n) {
+	l10nCached[message] = chrome.i18n.getMessage(message);
+}
+var store = new Store({
+	l10n: chrome.i18n.getMessage,
+	l10nCached,
+});
+var uiRoot = new UiRoot({
+	target: document.body,
+	store
+});
+uiRoot.on("chosen", ({node, andSubfolders}) => {
+	var bookmark = chooseBookmark(node, andSubfolders);
+	window.open(bookmark.url);
+});
 Promise.all([
 	new Promise((resolve) => { chrome.bookmarks.getTree(([tree]) => { resolve(tree); }); }),
 	// TODO: Get user prefs
 ]).then(([tree, prefs]) => {
-	var l10nCached = {};
-	for (let message of FolderNode.cacheL10n) {
-		l10nCached[message] = chrome.i18n.getMessage(message);
-	}
-	var store = new Store({
+	store.set({
 		// TODO: Use prefs
 		searchIn: "folderOnly",
 		showAndSubfolders: true,
-		l10n: chrome.i18n.getMessage,
-		l10nCached,
+		prefsReady: true,
 	});
-	var folders = new FolderNodeList({
-		target: document.getElementById("mainList"),
-		data: {list: makeFolderList(tree).list},
-		store
-	});
-	folders.on("chosen", ({node, andSubfolders}) => {
-		var bookmark = chooseBookmark(node, andSubfolders);
-		window.open(bookmark.url);
-	});
-	// It's very likely we're about to abandon directly using these components in favor of a parent component to all of them, so have some temporary non-DRY code.
-	var pinList = new PinList({
-		target: document.getElementById("pinList"),
-		data: {list: []},
-		store
-	});
-	folders.on("chosen", ({node, andSubfolders}) => {
-		var bookmark = chooseBookmark(node, andSubfolders);
-		window.open(bookmark.url);
-	});
-	var optionsPane = new OptionsPane({
-		target: document.getElementById("optionsPane"),
-		store
+	uiRoot.set({
+		pinList: [],
+		folderList: makeFolderList(tree).list,
 	});
 });
 function makeFolderList(tree) {
