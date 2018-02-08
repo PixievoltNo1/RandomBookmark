@@ -1,5 +1,5 @@
 if (!(window.chrome && chrome.runtime)) { window.chrome = browser; }
-import chooseBookmark from './bookmarkSelection.js';
+import chooseBookmark from './bookmarkSelection.module.js';
 import UiRoot from './svelteComponents/UiRoot.html';
 import FolderNode from './svelteComponents/FolderNode.html';
 import { Store } from 'svelte/store';
