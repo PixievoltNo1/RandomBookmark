@@ -17,7 +17,7 @@
 {{/if}}
 <div id="optionsPane">
 <button type="button" class="optionsExpander {{showOptions ? 'expanded' : ''}}"
-	on:click="set({showOptions: !showOptions})" disabled="{{!$prefsReady}}">
+	on:click="set({showOptions: !showOptions})" disabled="{{!$searchIn}}">
 	{{$l10n(showOptions ? "closeOptions" : "showOptions")}}
 </button>
 {{#if showOptions}} <Options/> {{/if}}

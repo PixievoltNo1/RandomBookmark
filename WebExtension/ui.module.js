@@ -1,5 +1,6 @@
 if (!(window.chrome && chrome.runtime)) { window.chrome = browser; }
 import chooseBookmark from './bookmarkSelection.module.js';
+import storePersist from './storePersist.module.js';
 import UiRoot from './svelteComponents/UiRoot.html';
 import FolderNode from './svelteComponents/FolderNode.html';
 import { Store } from 'svelte/store';
@@ -22,14 +23,8 @@ uiRoot.on("chosen", ({node, andSubfolders}) => {
 });
 Promise.all([
 	new Promise((resolve) => { chrome.bookmarks.getTree(([tree]) => { resolve(tree); }); }),
-	// TODO: Get user prefs
+	storePersist(store)
 ]).then(([tree, prefs]) => {
-	store.set({
-		// TODO: Use prefs
-		searchIn: "folderOnly",
-		showAndSubfolders: true,
-		prefsReady: true,
-	});
 	uiRoot.set({
 		pinList: [],
 		folderList: makeFolderList(tree).list,

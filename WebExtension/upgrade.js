@@ -1,8 +1,8 @@
-/* TODO: If showAndSubfolders is missing and searchIn is present, translate searchIn to new prefs:
+/* TODO: If searchIn is in storage.local, translate it to new prefs in storage.sync:
 	searchIn == "any":
 		searchIn = "folder"
 		showAndSubfolders = true
-	searchIn == "folder" || searchIn == "folderAndSubfolders":
+	else:
 		searchIn = old value
 		showAndSubfolders = false
 */
