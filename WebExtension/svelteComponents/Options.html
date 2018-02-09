@@ -8,7 +8,7 @@
 		{{$l10n("searchInFolderOnly")}}
 		<ul>
 			<li><label>
-				<input type="checkbox" disabled="{{$searchIn == folderOnly}}" bind:checked="$showAndSubfolders">
+				<input type="checkbox" disabled="{{$searchIn != 'folderOnly'}}" bind:checked="$showAndSubfolders">
 				{{$l10n("showAndSubfolders")}}
 			</label></li>
 		</ul>
@@ -16,6 +16,12 @@
 </ul>
 <script>
 export default {
-	// TODO: Set $showAndSubfolders = false when $searchIn != "folderOnly"
+	oncreate() {
+		this.store.observe("searchIn", (searchIn) => {
+			if (searchIn != "folderOnly") {
+				this.store.set({showAndSubfolders: false});
+			};
+		}, {init: false});
+	}
 };
 </script>
