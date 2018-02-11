@@ -17,10 +17,16 @@ var uiRoot = new UiRoot({
 	target: document.body,
 	store
 });
-uiRoot.on("chosen", ({node, andSubfolders}) => {
+store.onChosen = ({node, andSubfolders}) => {
 	var bookmark = chooseBookmark(node, andSubfolders);
 	window.open(bookmark.url);
-});
+};
+store.onTogglePin = (id, on) => {
+	var pins = store.get("pins");
+	pins[on ? "add" : "delete"](id);
+	store.set({pins});
+	uiRoot.set({pinsDirty: true});
+};
 Promise.all([
 	new Promise((resolve) => { chrome.bookmarks.getTree(([tree]) => { resolve(tree); }); }),
 	storePersist(store)
