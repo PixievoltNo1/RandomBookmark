@@ -1,11 +1,46 @@
 body {
 	width: 400px;
-	overflow-y: scroll;
+	height: 9001px;
+	overflow: hidden;
+	background: white;
+	margin: 0;
+	font-family: sans-serif;
+	/* TODO: Set maxHeight to 100vh for Chrome */
+}
+#flexContainer {
+	display: flex;
+	flex-direction: column;
+	height: 100vh;
+}
+%debuttoned {
+	border: none;
+	background: none;
+	padding: 0;
 }
 %linklike {
 	text-align: left;
 	color: hsl(240, 100%, 40%);
 	text-decoration: underline;
+	cursor: pointer;
+	@extend %debuttoned;
+}
+%expandable {
+	&::before {
+		display: inline-block;
+		content: "";
+		width: 8px;
+		height: 16px;
+		background: url(images/expander.svg);
+		background-size: contain;
+	}
+	&.expanded::before {
+		transform: rotate(.25turn);
+	}
+}
+#menu {
+	flex: 1 1 auto;
+	padding: 6px;
+	overflow-y: auto;
 }
 ul {
 	list-style: none;
@@ -15,15 +50,14 @@ ul {
 .folderNode {
 	display: grid;
 	grid-template-columns: 24px 1fr 24px;
+	grid-template-rows: 24px;
 }
 .expander {
+	cursor: pointer;
+	@extend %debuttoned;
+	@extend %expandable;
 	&::before {
-		display: block;
-		content: "◥";
-		transform: rotate((1turn/8));
-	}
-	&.expanded::before {
-		transform: rotate((3turn/8));
+		margin: auto;
 	}
 }
 .folderName {
@@ -34,6 +68,9 @@ ul {
 .pin {
 	grid-column: 3;
 	grid-row: 1;
+	background: url(images/iconmonstr-pin-1.svg) no-repeat center;
+	background-size: 18px;
+	border: 1px solid;
 }
 .andSubfolders {
 	grid-column: 2;
@@ -44,4 +81,17 @@ ul {
 .subfolders {
 	grid-column: 2 / 4;
 	grid-row: 3;
+}
+.optionsPane {
+	flex: none;
+	/* TODO: Set padding-bottom on Chrome to work around cutoff at the bottom */
+}
+.optionsExpander {
+	display: block;
+	@extend %debuttoned;
+	@extend %expandable;
+	&::before {
+		margin-left: 12px;
+		margin-right: 6px;
+	}
 }

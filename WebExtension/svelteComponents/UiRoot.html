@@ -1,26 +1,30 @@
 <:Head>
 	<title>{{$l10n("extName")}}</title>
 </:Head>
-<h1>{{$l10n("pinHeader")}}</h1>
-{{#if !pinList}}
-	<div class="loading">{{$l10n("loading")}}</div>
-{{elseif !pinList.length}}
-	<div id="noPins">{{$l10n("pinHelp")}}</div>
-{{else}}
-	<ul><FolderNodeList list="{{pinList}}"/></ul>
-{{/if}}
-<h1>{{$l10n("allFoldersHeader")}}</h1>
-{{#if !folderList}}
-	<div class="loading">{{$l10n("loading")}}</div>
-{{else}}
-	<ul><FolderNodeList list="{{folderList}}"/></ul>
-{{/if}}
+<div id="flexContainer">
+<div id="menu">
+	<h1>{{$l10n("pinHeader")}}</h1>
+	{{#if !pinList}}
+		<div class="loading">{{$l10n("loading")}}</div>
+	{{elseif !pinList.length}}
+		<div id="noPins">{{$l10n("pinHelp")}}</div>
+	{{else}}
+		<ul><FolderNodeList list="{{pinList}}"/></ul>
+	{{/if}}
+	<h1>{{$l10n("allFoldersHeader")}}</h1>
+	{{#if !folderList}}
+		<div class="loading">{{$l10n("loading")}}</div>
+	{{else}}
+		<ul><FolderNodeList list="{{folderList}}"/></ul>
+	{{/if}}
+</div>
 <div id="optionsPane">
-<button type="button" class="optionsExpander {{showOptions ? 'expanded' : ''}}"
-	on:click="set({showOptions: !showOptions})" disabled="{{!$searchIn}}">
-	{{$l10n(showOptions ? "closeOptions" : "showOptions")}}
-</button>
-{{#if showOptions}} <Options/> {{/if}}
+	<button type="button" class="optionsExpander {{showOptions ? 'expanded' : ''}}"
+		on:click="set({showOptions: !showOptions})" disabled="{{!$searchIn}}">
+		{{$l10n(showOptions ? "closeOptions" : "showOptions")}}
+	</button>
+	{{#if showOptions}} <Options/> {{/if}}
+</div>
 </div>
 <script>
 import FolderNodeList from './FolderNodeList.html';
