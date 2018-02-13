@@ -9,13 +9,13 @@
 	{{elseif !pinList.length}}
 		<div id="noPins">{{$l10n("pinHelp")}}</div>
 	{{else}}
-		<ul><FolderNodeList list="{{pinList}}"/></ul>
+		<ul role="tree"><FolderNodeList list="{{pinList}}"/></ul>
 	{{/if}}
 	<h1>{{$l10n("allFoldersHeader")}}</h1>
 	{{#if !folderList}}
 		<div class="loading">{{$l10n("loading")}}</div>
 	{{else}}
-		<ul><FolderNodeList list="{{folderList}}"/></ul>
+		<ul role="tree"><FolderNodeList list="{{folderList}}"/></ul>
 	{{/if}}
 </div>
 <div id="optionsPane">

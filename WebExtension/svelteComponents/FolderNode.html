@@ -1,4 +1,5 @@
-<li class="folderNode">
+<li class="folderNode"
+	role="treeitem" aria-expanded="{{list.length ? showSubfolders : 'undefined'}}">
 	{{#if list.length}}
 		<button type="button" class="expander {{showSubfolders ? 'expanded' : ''}}"
 			on:click="set({showSubfolders: !showSubfolders})"></button>
@@ -10,9 +11,10 @@
 			on:click="store.onChosen({node, andSubfolders: true})">{{$l10nCached.andSubfolders}}</button>
 	{{/if}}
 	<button type="button" class="pin {{pinned ? 'pinned' : ''}}"
+		aria-label="{{l10n('pin')}}" aria-pressed="{{pinned}}"
 		on:click="store.onTogglePin(node.id, !pinned)"></button>
 	{{#if showSubfolders}}
-		<ul class="subfolders">
+		<ul class="subfolders" role="group">
 			<FolderNodeList list="{{list}}"/>
 		</ul>
 	{{/if}}
