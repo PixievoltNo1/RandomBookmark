@@ -31,6 +31,7 @@ Promise.all([
 	new Promise((resolve) => { chrome.bookmarks.getTree(([tree]) => { resolve(tree); }); }),
 	storePersist(store)
 ]).then(([tree, prefs]) => {
+	// TODO: Determine what should open automatically
 	uiRoot.set({
 		pinList: [],
 		folderList: makeFolderList(tree).list,
