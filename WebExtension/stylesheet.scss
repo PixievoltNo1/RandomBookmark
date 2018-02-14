@@ -30,6 +30,7 @@ body {
 	@extend %debuttoned;
 }
 %expandable {
+	display: flex;
 	&::before {
 		display: inline-block;
 		content: "";
@@ -95,7 +96,6 @@ ul {
 	/* TODO: Set padding-bottom on Chrome to work around cutoff at the bottom */
 }
 .optionsExpander {
-	display: block;
 	@extend %debuttoned;
 	@extend %expandable;
 	&::before {
