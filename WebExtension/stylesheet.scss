@@ -19,9 +19,14 @@ body {
 }
 %linklike {
 	text-align: left;
-	color: hsl(240, 100%, 40%);
-	text-decoration: underline;
-	cursor: pointer;
+	&:not(:disabled) {
+		color: hsl(240, 100%, 40%);
+		text-decoration: underline;
+		cursor: pointer;
+	}
+	&:disabled {
+		color: hsl(0, 0%, 40%);
+	}
 	@extend %debuttoned;
 }
 %expandable {

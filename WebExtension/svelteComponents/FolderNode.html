@@ -11,7 +11,7 @@
 			on:click="store.onChosen({node, andSubfolders: true})">{{$l10nCached.andSubfolders}}</button>
 	{{/if}}
 	<button type="button" class="pin {{pinned ? 'pinned' : ''}}"
-		aria-label="{{l10n('pin')}}" aria-pressed="{{pinned}}"
+		aria-label="{{$l10nCached.pin}}" aria-pressed="{{pinned}}"
 		on:click="store.onTogglePin(node.id, !pinned)"></button>
 	{{#if showSubfolders}}
 		<ul class="subfolders" role="group">
@@ -23,7 +23,7 @@
 import FolderNodeList from "./FolderNodeList.html";
 export default {
 	setup(FolderNode) {
-		FolderNode.cacheL10n = ["andSubfolders"];
+		FolderNode.cacheL10n = ["andSubfolders", "pin"];
 	},
 	data() {
 		return {
