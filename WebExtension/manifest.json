@@ -10,20 +10,16 @@
 	"default_locale": "en",
 
 	"background": {
-		"scripts": ["upgrade.js"],
+		"scripts": ["background.js"],
 		"persistent": false
 	},
 	"browser_action": {
 		"default_title": "__MSG_extName__",
 		"default_popup": "ui.html",
 		"default_icon": {
-			"38": "icon/38Die.png"
-		},
-		"theme_icons": [{
-			"light": "icon/scalableDie.svg",
-			"dark": "icon/scalableDie.svg",
-			"size": 32
-		}]
+			"38": "icon/scalableDie.svg",
+			"40": "icon/40Die.png"
+		}
 	},
 
 	"permissions": ["storage", "bookmarks"],
