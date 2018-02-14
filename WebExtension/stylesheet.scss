@@ -100,8 +100,10 @@ $folderIconSpace: 18px;
 	grid-column: 2 / 4;
 	grid-row: 3;
 }
-.optionsPane {
+#optionsPane {
 	flex: none;
+    background: hsl(270, 100%, 92%);
+    border-top: 1px solid hsl(280, 100%, 27%);
 	/* TODO: Set padding-bottom on Chrome to work around cutoff at the bottom */
 }
 .optionsExpander {
