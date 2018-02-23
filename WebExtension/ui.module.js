@@ -30,14 +30,13 @@ store.onTogglePin = (id, on) => {
 Promise.all([
 	new Promise((resolve) => { chrome.bookmarks.getTree(([tree]) => { resolve(tree); }); }),
 	storePersist(store)
-]).then(([tree, prefs]) => {
+]).then(([tree]) => {
 	// TODO: Determine what should open automatically
-	uiRoot.set({
-		pinList: [],
-		folderList: makeFolderList(tree).list,
-	});
+	var pinList = [];
+	var folderList = makeFolderList(tree, pinList).list;
+	uiRoot.set({pinList, folderList});
 });
-function makeFolderList(tree) {
+function makeFolderList(tree, pinList) {
 	var list = [], hasChildBookmarks = false, hasDescendantBookmarks = false;
 	for (let bookmarkNode of tree.children) {
 		if (bookmarkNode.title == "") {
@@ -54,8 +53,10 @@ function makeFolderList(tree) {
 			if (bookmarkNode.url) { hasChildBookmarks = hasDescendantBookmarks = true; }
 			continue;
 		}
-		let folderData = Object.assign(makeFolderList(bookmarkNode), {node: bookmarkNode});
-		// TODO: Check for bookmarks menu/toolbar folders and set subfolderOpen: true
+		let folderData = Object.assign(makeFolderList(bookmarkNode, pinList), {node: bookmarkNode});
+		if (store.get("pins").has(bookmarkNode.id)) {
+			pinList.push(folderData);
+		}
 		list.push(folderData);
 		if (folderData.hasDescendantBookmarks) {
 			hasDescendantBookmarks = true;
