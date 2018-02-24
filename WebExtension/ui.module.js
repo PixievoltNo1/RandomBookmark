@@ -33,10 +33,18 @@ Promise.all([
 ]).then(([tree]) => {
 	// TODO: Determine what should open automatically
 	var pinList = [];
-	var folderList = makeFolderList(tree, pinList).list;
-	uiRoot.set({pinList, folderList});
+	var pinsToFind = new Set(store.get("pins"));
+	function pinCheck(folder) {
+		var id = folder.node.id;
+		if (pinsToFind.has(id)) {
+			pinList.push(folder);
+			pinsToFind.delete(id);
+		}
+	}
+	var folderList = makeFolderList(tree, pinCheck).list;
+	uiRoot.set({pinList, missingPins: pinsToFind, folderList});
 });
-function makeFolderList(tree, pinList) {
+function makeFolderList(tree, pinCheck) {
 	var list = [], hasChildBookmarks = false, hasDescendantBookmarks = false;
 	for (let bookmarkNode of tree.children) {
 		if (bookmarkNode.title == "") {
@@ -53,10 +61,8 @@ function makeFolderList(tree, pinList) {
 			if (bookmarkNode.url) { hasChildBookmarks = hasDescendantBookmarks = true; }
 			continue;
 		}
-		let folderData = Object.assign(makeFolderList(bookmarkNode, pinList), {node: bookmarkNode});
-		if (store.get("pins").has(bookmarkNode.id)) {
-			pinList.push(folderData);
-		}
+		let folderData = Object.assign(makeFolderList(bookmarkNode, pinCheck), {node: bookmarkNode});
+		pinCheck(folderData);
 		list.push(folderData);
 		if (folderData.hasDescendantBookmarks) {
 			hasDescendantBookmarks = true;
