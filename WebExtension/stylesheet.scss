@@ -48,6 +48,44 @@ body {
 	padding: 6px;
 	overflow-y: auto;
 }
+#menu h1 {
+	font-size: 16px;
+	font-weight: normal;
+	height: 19px;
+	margin: 4px 0;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	--bar-color: hsl(210, 66%, 75%);
+	@function bgCircle($radius, $center, $color) {
+		@return radial-gradient(circle at $center, $color, $color $radius, transparent $radius);
+	}
+	@function bgRect($pos, $size, $color) {
+		@return linear-gradient($color, $color) $pos / $size no-repeat;
+	}
+	&::before {
+		content: "";
+		width: 20px;
+		height: 11px;
+		margin-right: 8px;
+		background:
+			bgCircle($radius: 2px, $center: 2px 2px, $color: var(--bar-color)),
+			bgCircle($radius: 2px, $center: left 2px bottom 2px, $color: var(--bar-color)),
+			bgRect($pos: 2px 0, $size: calc(100% - 2px) 4px, $color: var(--bar-color)),
+			bgRect($pos: 2px bottom, $size: calc(100% - 2px) 4px, $color: var(--bar-color));
+	}
+	&::after {
+		content: "";
+		flex: 1;
+		height: 11px;
+		margin-left: 8px;
+		background:
+			bgCircle($radius: 2px, $center: right 2px top 2px, $color: var(--bar-color)),
+			bgCircle($radius: 2px, $center: right 2px bottom 2px, $color: var(--bar-color)),
+			bgRect($pos: 0 0, $size: calc(100% - 2px) 4px, $color: var(--bar-color)),
+			bgRect($pos: 0 bottom, $size: calc(100% - 2px) 4px, $color: var(--bar-color));
+	}
+}
 #noPins {
 	font-size: 14px;
 }
