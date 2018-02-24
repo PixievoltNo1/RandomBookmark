@@ -5,12 +5,13 @@ var fileUrl = require('file-url');
 
 var sassSrc = ["./WebExtension/**/*.scss"];
 function compileSass() {
-	return gulp.src(sassSrc)
+	return gulp.src(sassSrc, {base: "./WebExtension/"})
 		.pipe(sourcemaps.init())
 		.pipe(sass().on('error', sass.logError))
 		.pipe(sourcemaps.write('./sourcemaps/', {
 			includeContent: false,
-			sourceMappingURLPrefix: fileUrl("WebExtension")
+			sourceMappingURLPrefix: fileUrl("WebExtension"),
+			destPath: "./WebExtension/"
 		}))
 		.pipe(gulp.dest("./WebExtension/"));
 }
