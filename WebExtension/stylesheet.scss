@@ -113,6 +113,8 @@ $folderIconSpace: 18px;
 	grid-column: 2;
 	grid-row: 1;
 	padding-left: $folderIconSpace;
+	padding-right: 2px;
+	white-space: nowrap;
 	background: url(images/folder.svg) no-repeat left;
 	@extend %linklike;
 }
