@@ -3,6 +3,7 @@ import chooseBookmark from './bookmarkSelection.module.js';
 import storePersist from './storePersist.module.js';
 import UiRoot from './svelteComponents/UiRoot.html';
 import FolderNode from './svelteComponents/FolderNode.html';
+import sniffBrowser from './sniffBrowser.module.js';
 import { Store } from 'svelte/store';
 
 var l10nCached = {};
@@ -29,10 +30,11 @@ store.onTogglePin = (id, on) => {
 };
 Promise.all([
 	new Promise((resolve) => { chrome.bookmarks.getTree(([tree]) => { resolve(tree); }); }),
+	sniffBrowser(),
 	storePersist(store)
-]).then(([tree]) => {
+]).then(([tree, browser]) => {
 	// TODO: Determine what should open automatically
-	var pinList = [];
+	var pinList = [], autoOpen = [];
 	var pinsToFind = new Set(store.get("pins"));
 	function pinCheck(folder) {
 		var id = folder.node.id;
@@ -42,7 +44,23 @@ Promise.all([
 		}
 	}
 	var folderList = makeFolderList(tree, pinCheck).list;
-	uiRoot.set({pinList, missingPins: pinsToFind, folderList});
+	var browserBehavior = {
+		Chrome() {
+			// Workaround for CSS body { overflow: hidden; } not working correctly
+			getComputedStyle(document.body).height;
+			document.body.style.height = "auto";
+
+			document.documentElement.classList.add("chrome");
+		},
+		Firefox() {
+
+		},
+		Edge() {
+
+		}
+	}[browser];
+	if (browserBehavior) { browserBehavior(); }
+	uiRoot.set({pinList, missingPins: pinsToFind, folderList, autoOpen});
 });
 function makeFolderList(tree, pinCheck) {
 	var list = [], hasChildBookmarks = false, hasDescendantBookmarks = false;

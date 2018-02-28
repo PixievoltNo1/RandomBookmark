@@ -5,7 +5,6 @@ body {
 	background: white;
 	margin: 0;
 	font-family: sans-serif;
-	/* TODO: Set maxHeight to 100vh for Chrome */
 }
 #flexContainer {
 	display: flex;
@@ -161,7 +160,9 @@ $folderIconSpace: 18px;
 	flex: none;
     background: hsl(270, 100%, 92%);
     border-top: 1px solid hsl(280, 100%, 27%);
-	/* TODO: Set padding-bottom on Chrome to work around cutoff at the bottom */
+	.chrome & {
+		padding-bottom: 4px;
+	}
 }
 .optionsExpander {
 	@extend %debuttoned;
