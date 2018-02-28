@@ -100,7 +100,14 @@ ul {
 	grid-template-rows: 24px;
 	margin-bottom: 1px;
 }
+.selIndicator {
+	grid-column: 1 / -1;
+	grid-row: 1;
+	pointer-events: none;
+}
 .expander {
+	grid-row: 1;
+	grid-column: 1;
 	cursor: pointer;
 	@extend %debuttoned;
 	@extend %expandable;
