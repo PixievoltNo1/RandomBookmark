@@ -5,11 +5,17 @@ chrome.browserAction.setIcon({path:
 	chrome.runtime.getManifest().browser_action.default_icon
 });
 
-/* TODO: If searchIn is in storage.local, translate it to new prefs in storage.sync:
-	searchIn == "any":
-		searchIn = "folder"
-		showAndSubfolders = true
-	else:
-		searchIn = old value
-		showAndSubfolders = false
-*/
+chrome.runtime.onInstalled.addListener(async function({reason}) {
+	if (reason != "update") { return; }
+	var {searchIn: oldSearchIn = false} = await new Promise(
+		(resolve) => { chrome.storage.local.get("searchIn", resolve) } );
+	if (oldSearchIn) {
+		if (oldSearchIn == "any") {
+			var newPrefs = { searchIn: "folder", showAndSubfolders: true };
+		} else {
+			var newPrefs = { searchIn: oldSearchIn, showAndSubfolders: false };
+		}
+		chrome.storage.sync.set(newPrefs);
+		chrome.storage.local.clear();
+	}
+});
