@@ -139,8 +139,18 @@ $folderIconSpace: 18px;
 	background: url(images/iconmonstr-pin-1.svg) no-repeat center;
 	background-size: 18px;
 	border: 1px solid;
+	&:active {
+		border-color: hsl(0, 0%, 40%);
+		background-color: hsla(0, 0%, 80%, 1);
+	}
 	&.pinned {
 		background-image: url(images/iconmonstr-pin-6.svg);
+		border-color: hsla(210, 100%, 50%, 1);
+		background-color: hsla(210, 100%, 95%, 1);
+	}
+	&.pinned:active {
+		border-color: hsla(210, 100%, 65%, 1);
+		background-color: hsla(210, 100%, 85%, 1);
 	}
 }
 .subfolders {
