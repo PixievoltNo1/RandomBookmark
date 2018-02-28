@@ -17,7 +17,7 @@
 		"default_title": "__MSG_extName__",
 		"default_popup": "ui.html",
 		"default_icon": {
-			"38": "icon/scalableDie.svg",
+			"32": "icon/32Die.png",
 			"40": "icon/40Die.png"
 		}
 	},
