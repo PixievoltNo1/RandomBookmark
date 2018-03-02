@@ -21,6 +21,9 @@
 			"40": "icon/40Die.png"
 		}
 	},
+	"options_ui": {
+		"page": "options.html"
+	},
 
 	"permissions": ["storage", "bookmarks"],
 	"minimum_chrome_version": "58",
