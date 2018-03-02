@@ -16,7 +16,13 @@ export default {
 				oldSel.component.set({selected: false});
 			}
 			newSel.component.set({selected: true});
-		})
+		});
+		if (this.get("autoOpen")) {
+			for (let id of this.get("autoOpen")) {
+				let openMe = this.refs.node.querySelector(`li[data-id='${id}']`);
+				openMe.component.set({showSubfolders: true});
+			}
+		}
 	},
 	methods: {
 		keyboardInput(event) {

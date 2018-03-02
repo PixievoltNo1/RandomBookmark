@@ -16,7 +16,7 @@
 	{{#if !folderList}}
 		<div class="loading">{{$l10n("loading")}}</div>
 	{{else}}
-		<FolderTree ref:allFolders list="{{folderList}}"/>
+		<FolderTree list="{{folderList}}" :autoOpen/>
 	{{/if}}
 </div>
 <div id="optionsPane">
