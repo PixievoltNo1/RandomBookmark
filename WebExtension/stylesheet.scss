@@ -129,7 +129,6 @@ $folderIconSpace: 18px;
 	grid-row: 2;
 	font-size: 10px;
 	padding-left: $folderIconSpace;
-	margin-bottom: 1px;
 	@extend %linklike;
 }
 .pin {
@@ -155,6 +154,8 @@ $folderIconSpace: 18px;
 .subfolders {
 	grid-column: 2 / 4;
 	grid-row: 3;
+	margin-top: 1px;
+	margin-bottom: -1px;
 }
 #optionsPane {
 	flex: none;
