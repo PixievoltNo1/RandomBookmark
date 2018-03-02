@@ -6,7 +6,7 @@ Links to install the stable version will be available soon.
 
 # Writing & testing Random Bookmark From Folder
 
-This project has a build process employing [ES6 modules](https://hacks.mozilla.org/2015/08/es6-in-depth-modules/) (*.module.js), [Svelte](https://svelte.technology/) templates (svelteComponents/*.html), and [Sass](http://sass-lang.com/) files (*.scss) to generate JavaScript and CSS. With [Node](https://nodejs.org/) installed, run this command the first time you obtain this repo's files to fetch everything you need:
+This project has a build process employing [ES6 modules](https://hacks.mozilla.org/2015/08/es6-in-depth-modules/) (\*.module.js), [Svelte](https://svelte.technology/) templates (svelteComponents/\*.html), and [Sass](http://sass-lang.com/) files (\*.scss) to generate JavaScript and CSS. With [Node](https://nodejs.org/) installed, run this command the first time you obtain this repo's files to fetch everything you need:
 
 ```
 npm install
