@@ -28,6 +28,14 @@ store.onTogglePin = (id, on) => {
 	store.set({pins});
 	uiRoot.set({pinsDirty: true});
 };
+store.cleanPins = () => {
+	var pins = store.get("pins");
+	for (let id of uiRoot.get("missingPins")) {
+		pins.delete(id);
+	}
+	store.set({pins});
+	uiRoot.set({missingPins: null});
+}
 Promise.all([
 	new Promise((resolve) => { chrome.bookmarks.getTree(([tree]) => { resolve(tree); }); }),
 	sniffBrowser(),
@@ -72,7 +80,8 @@ Promise.all([
 		}
 	}[browser];
 	if (browserBehavior) { browserBehavior(); }
-	uiRoot.set({pinList, missingPins: pinsToFind, folderList, autoOpen});
+	uiRoot.set({pinList, folderList, autoOpen});
+	if (pinsToFind.size) { uiRoot.set({missingPins: pinsToFind}); }
 });
 function makeFolderList(tree, pinCheck) {
 	var list = [], hasChildBookmarks = false, hasDescendantBookmarks = false;

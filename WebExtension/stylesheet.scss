@@ -88,6 +88,9 @@ body {
 #noPins {
 	font-size: 14px;
 }
+#cleanPins {
+	@extend %linklike;
+}
 ul {
 	list-style: none;
 	margin: 0;

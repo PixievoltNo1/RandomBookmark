@@ -11,6 +11,14 @@
 	{{else}}
 		<FolderTree list="{{pinList}}"/>
 	{{/if}}
+	{{#if missingPins}}
+		<div id="missingPins">
+			{{$l10n("missingPins", [missingPins.size])}}
+			<button type="button" id="cleanPins" on:click="store.cleanPins()">
+				{{$l10n("cleanPins")}}
+			</button>
+		</div>
+	{{/if}}
 	<!-- TODO: Missing pins UI -->
 	<h1>{{$l10n("allFoldersHeader")}}</h1>
 	{{#if !folderList}}

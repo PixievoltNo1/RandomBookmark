@@ -10,6 +10,8 @@
 		"message": "Pin",
 		"description": "Alt-text for users who can't see the pin image"
 	},
+	"missingPins": { "message": "$1 pinned folder(s) missing." },
+	"cleanPins": { "message": "Remove pins?" },
 	"allFoldersHeader": { "message": "All Folders" },
 	"showOptions": { "message": "Show Options" },
 	"closeOptions": { "message": "Close Options" },
@@ -17,7 +19,7 @@
 	"searchInFolderAndSubfolders": { "message": "Pick from the selected folder & its subfolders" },
 	"searchInFolderOnly": { "message": "Pick from the selected folder only" },
 	"showAndSubfolders": { "message": "Show \"and its subfolders\" button" },
-	
+
 	"favoritesBar": {
 		"message": "Favorites Bar",
 		"description": "The name of the Microsoft Edge favorites toolbar"
