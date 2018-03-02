@@ -43,6 +43,9 @@ Promise.all([
 			pinsToFind.delete(id);
 		}
 	}
+	if (browser == "Edge") {
+		tree = {children: [tree]};
+	}
 	var folderList = makeFolderList(tree, pinCheck).list;
 	var browserBehavior = {
 		Chrome() {
@@ -51,12 +54,21 @@ Promise.all([
 			document.body.style.height = "auto";
 
 			document.documentElement.classList.add("chrome");
+			autoOpen = [1, 2];
 		},
 		Firefox() {
-
+			autoOpen = ["menu________", "toolbar_____"]
 		},
 		Edge() {
-
+			var root = folderList[0];
+			var toolbar = root.list.find((folder) => {
+				if (folder.node.title == "_Favorites_Bar_") { return folder; }
+			});
+			toolbar.node = {
+				__proto__: toolbar.node,
+				title: chrome.i18n.getMessage("favoritesBar")
+			};
+			autoOpen = [root.node.id, toolbar.node.id];
 		}
 	}[browser];
 	if (browserBehavior) { browserBehavior(); }
