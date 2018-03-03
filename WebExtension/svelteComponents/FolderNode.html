@@ -1,6 +1,7 @@
 <li class="folderNode" ref:elem data-id="{{node.id}}"
 	role="treeitem" aria-expanded="{{list.length ? showSubfolders : 'undefined'}}">
-	<div class="selIndicator" tabindex="{{selected ? 0 : -1}}" ref:focusMe/>
+	<div class="selIndicator" tabindex="{{selected ? 0 : -1}}" ref:focusMe
+		 on:focus="set({showKeyHelp: true})" on:blur="set({showKeyHelp: false})"/>
 	{{#if list.length}}
 		<button type="button" tabindex="-1" class="expander {{showSubfolders ? 'expanded' : ''}}"
 			on:click="set({showSubfolders: !showSubfolders})"></button>
@@ -9,11 +10,20 @@
 		on:click="store.onChosen({node, andSubfolders: searchSubfolders})">{{node.title}}</button>
 	{{#if list.length && $showAndSubfolders}}
 		<button type="button" tabindex="-1" class="andSubfolders" disabled="{{!hasDescendantBookmarks}}"
-			on:click="store.onChosen({node, andSubfolders: true})">{{$l10nCached.andSubfolders}}</button>
+			on:click="store.onChosen({node, andSubfolders: true})">
+			{{$l10nCached.andSubfolders}}
+			{{#if showKeyHelp}}
+				<span class="keyboardHelp">{{$l10n("altSpace")}}</span>
+			{{/if}}
+		</button>
 	{{/if}}
 	<button type="button" tabindex="-1" class="pin {{pinned ? 'pinned' : ''}}"
 		aria-label="{{$l10nCached.pin}}" aria-pressed="{{pinned}}"
-		on:click="store.onTogglePin(node.id, !pinned)"></button>
+		on:click="store.onTogglePin(node.id, !pinned)">
+		{{#if showKeyHelp}}
+			<span class="keyboardHelp">alt+P</span>
+		{{/if}}
+	</button>
 	{{#if showSubfolders}}
 		<ul class="subfolders" role="group">
 			<FolderNodeList list="{{list}}"/>

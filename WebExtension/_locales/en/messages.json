@@ -3,6 +3,10 @@
 	"extDesc": { "message": "Open random bookmarks from a chosen folder" },
 
 	"andSubfolders": { "message": "...and its subfolders" },
+	"altSpace": {
+		"message": "alt-space",
+		"description": "Appears for keyboard users"
+	},
 	"loading": { "message": "Loading..." },
 	"pinHeader": { "message": "Pinned" },
 	"pinHelp": { "message": "Use the <pin> next to your preferred folders to make them appear here the next time you open this menu." },
