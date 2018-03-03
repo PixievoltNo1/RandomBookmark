@@ -3,7 +3,12 @@
 </:Head>
 <div id="flexContainer">
 <div id="menu">
-	<h1>{{$l10n("pinHeader")}}</h1>
+	<h1>
+		{{$l10n("pinHeader")}}
+		{{#if pinsDirty}}
+			<div id="pinsOutdated">{{$l10n("pinsOutdated")}}</div>
+		{{/if}}
+	</h1>
 	{{#if !pinList}}
 		<div class="loading">{{$l10n("loading")}}</div>
 	{{elseif !pinList.length}}

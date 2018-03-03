@@ -9,6 +9,7 @@
 	},
 	"loading": { "message": "Loading..." },
 	"pinHeader": { "message": "Pinned" },
+	"pinsOutdated": { "message": "Reopen to update" },
 	"pinHelp": {
 		"message": "Use the <pin> next to your preferred folders to make them appear here the next time you open this menu.",
 		"description": "<pin> is replaced with a pin image"
