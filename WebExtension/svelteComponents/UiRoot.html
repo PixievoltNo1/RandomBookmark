@@ -7,7 +7,11 @@
 	{{#if !pinList}}
 		<div class="loading">{{$l10n("loading")}}</div>
 	{{elseif !pinList.length}}
-		<div id="noPins">{{$l10n("pinHelp")}}</div>
+		<div id="noPins">
+			{{pinHelpParts[0]}}
+			<img src="images/iconmonstr-pin-1.svg" width="18" height="18" alt="{{$l10n('pin')}}">
+			{{pinHelpParts[1]}}
+		</div>
 	{{else}}
 		<FolderTree list="{{pinList}}"/>
 	{{/if}}
@@ -42,6 +46,11 @@ export default {
 		return {
 			showOptions: false
 		};
+	},
+	computed: {
+		pinHelpParts: ($l10n) => {
+			return $l10n("pinHelp").split("<pin>").map((str) => { return str.trim(); });
+		}
 	},
 	components: { FolderTree, Options }
 };

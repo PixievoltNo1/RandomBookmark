@@ -9,7 +9,10 @@
 	},
 	"loading": { "message": "Loading..." },
 	"pinHeader": { "message": "Pinned" },
-	"pinHelp": { "message": "Use the <pin> next to your preferred folders to make them appear here the next time you open this menu." },
+	"pinHelp": {
+		"message": "Use the <pin> next to your preferred folders to make them appear here the next time you open this menu.",
+		"description": "<pin> is replaced with a pin image"
+	},
 	"pin": {
 		"message": "Pin",
 		"description": "Alt-text for users who can't see the pin image"
