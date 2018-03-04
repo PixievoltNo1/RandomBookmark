@@ -1,5 +1,4 @@
 node_modules/
-*.bundle.js
-*.css
-WebExtension/sourcemaps/
+WebExtension/build/
+release/
 npm-debug.log
