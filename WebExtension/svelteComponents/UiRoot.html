@@ -37,10 +37,11 @@
 </div>
 <div id="optionsPane">
 	<button type="button" class="optionsExpander {{showOptions ? 'expanded' : ''}}"
-		on:click="set({showOptions: !showOptions})" disabled="{{!$searchIn}}">
+		on:click="set({showOptions: !showOptions})" disabled="{{!$searchIn}}"
+		aria-expanded="{{showOptions}}">
 		{{$l10n(showOptions ? "closeOptions" : "showOptions")}}
 	</button>
-	{{#if showOptions}} <Options/> {{/if}}
+	{{#if showOptions}}<div id="optionsArea"><Options/></div>{{/if}}
 </div>
 </div>
 <script>

@@ -190,17 +190,30 @@ $folderIconSpace: 18px;
 }
 #optionsPane {
 	flex: none;
-    background: hsl(270, 100%, 92%);
-    border-top: 1px solid hsl(280, 100%, 27%);
+    background: hsl(281, 100%, 90%);
+    border-top: 1px solid hsl(299, 100%, 25%);
 	.chrome & {
 		padding-bottom: 4px;
 	}
 }
 .optionsExpander {
+	width: 100%;
+	height: 22px;
+	font-size: 14px;
 	@extend %debuttoned;
 	@extend %expandable;
+	align-items: center;
 	&::before {
 		margin-left: 12px;
 		margin-right: 6px;
+	}
+}
+#optionsArea {
+	font-size: 13px;
+	input[type="radio"], input[type="checkbox"] {
+		vertical-align: -1px;
+	}
+	li li {
+		margin-left: 12px;
 	}
 }
