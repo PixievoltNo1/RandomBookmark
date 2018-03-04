@@ -3,16 +3,18 @@
 		<input type="radio" name="searchIn" value="folderAndSubfolders" bind:group="$searchIn">
 		{{$l10n("searchInFolderAndSubfolders")}}
 	</label></li>
-	<li><label>
-		<input type="radio" name="searchIn" value="folderOnly" bind:group="$searchIn">
-		{{$l10n("searchInFolderOnly")}}
+	<li>
+		<label>
+			<input type="radio" name="searchIn" value="folderOnly" bind:group="$searchIn">
+			{{$l10n("searchInFolderOnly")}}
+		</label>
 		<ul>
 			<li><label>
 				<input type="checkbox" disabled="{{$searchIn != 'folderOnly'}}" bind:checked="$showAndSubfolders">
 				{{$l10n("showAndSubfolders")}}
 			</label></li>
 		</ul>
-	</label></li>
+	</li>
 </ul>
 <script>
 export default {

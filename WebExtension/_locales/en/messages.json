@@ -31,5 +31,9 @@
 	"favoritesBar": {
 		"message": "Favorites Bar",
 		"description": "The name of the Microsoft Edge favorites toolbar"
+	},
+	"standaloneOptionsHeader": {
+		"message": "Random Bookmark From Folder Options",
+		"description": "Used in Edge only"
 	}
 }

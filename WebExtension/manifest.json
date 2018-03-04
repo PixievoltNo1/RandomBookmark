@@ -24,6 +24,7 @@
 	"options_ui": {
 		"page": "options.html"
 	},
+	"options_page": "options.html#standalone",
 
 	"permissions": ["storage", "bookmarks"],
 	"minimum_chrome_version": "58",
