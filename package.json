@@ -2,10 +2,11 @@
   "scripts": {
     "build": "concurrently -n \"webpack,gulp\" -c \"cyan.bold,red.bold\" \"webpack\" \"gulp build\"",
     "watch": "concurrently -n \"webpack,gulp\" -c \"cyan.bold,red.bold\" --kill-others \"webpack --watch\" \"gulp watch\"",
-    "makeRelease": "concurrently -n \"webpack,gulp\" -c \"cyan.bold,red.bold\" \"webpack --env.release\" \"gulp makeRelease\""
+    "makeRelease": "gulp makeRelease"
   },
   "devDependencies": {
     "concurrently": "^3.5.1",
+    "cross-spawn": "^6.0.5",
     "del": "^3.0.0",
     "file-url": "^2.0.2",
     "gulp": "^4.0.0",

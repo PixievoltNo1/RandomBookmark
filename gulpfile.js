@@ -3,6 +3,7 @@ var sass = require("gulp-sass");
 var sourcemaps = require("gulp-sourcemaps");
 var fileUrl = require('file-url');
 var del = require('del');
+var spawn = require('cross-spawn');
 
 var sassSrc = ["./WebExtension/**/*.scss"];
 function compileSass() {
@@ -35,6 +36,9 @@ gulp.task("makeRelease", gulp.series(
 				.map((excludeMe) => { return "!" + excludeMe; });
 			return gulp.src(["./WebExtension/**/*", ...exclusions])
 				.pipe(gulp.dest("./release/"));
+		},
+		function runWebpack() {
+			return spawn("webpack", ["--env.release"], {stdio: "inherit"});
 		},
 		function compileSassForRelease() {
 			return gulp.src(sassSrc)
