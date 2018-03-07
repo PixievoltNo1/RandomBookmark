@@ -36,11 +36,31 @@ store.cleanPins = () => {
 	store.set({pins});
 	uiRoot.set({missingPins: null});
 }
+var browserCheck = sniffBrowser();
+browserCheck.then((browserName) => {
+	var browserDisplayHelper = ({
+		Chrome() {
+			// Workaround for CSS body { overflow: hidden; } not working correctly
+			getComputedStyle(document.body).height; // force layout
+			document.body.style.height = "auto";
+
+			document.getElementById("optionsPane").style.paddingBottom = "4px";
+		},
+		Firefox: async function() {
+			// Workaround for cutoff when ui.html is shown in the overflow menu
+			var curWindow = await browser.windows.getCurrent();
+			document.body.style.height =
+				`${screen.availHeight - Math.max(curWindow.top, 0) - 150}px`;
+			document.getElementById("flexContainer").style.maxHeight = "100%";
+		},
+	})[browserName];
+	if (browserDisplayHelper) { browserDisplayHelper(); }
+});
 Promise.all([
 	new Promise((resolve) => { chrome.bookmarks.getTree(([tree]) => { resolve(tree); }); }),
-	sniffBrowser(),
+	browserCheck,
 	storePersist(store)
-]).then(([tree, browser]) => {
+]).then(([tree, browserName]) => {
 	// TODO: Determine what should open automatically
 	var pinList = [], autoOpen = [];
 	var pinsToFind = new Set(store.get("pins"));
@@ -55,13 +75,8 @@ Promise.all([
 		tree = {children: [tree]};
 	}
 	var folderList = makeFolderList(tree, pinCheck).list;
-	var browserBehavior = {
+	var browserDataHelper = ({
 		Chrome() {
-			// Workaround for CSS body { overflow: hidden; } not working correctly
-			getComputedStyle(document.body).height;
-			document.body.style.height = "auto";
-
-			document.documentElement.classList.add("chrome");
 			autoOpen = [1, 2];
 		},
 		Firefox() {
@@ -78,8 +93,8 @@ Promise.all([
 			};
 			autoOpen = [root.node.id, toolbar.node.id];
 		}
-	}[browser];
-	if (browserBehavior) { browserBehavior(); }
+	})[browserName];
+	if (browserDataHelper) { browserDataHelper(); }
 	uiRoot.set({pinList, folderList, autoOpen});
 	if (pinsToFind.size) { uiRoot.set({missingPins: pinsToFind}); }
 });
