@@ -20,7 +20,8 @@ var uiRoot = new UiRoot({
 });
 store.onChosen = ({node, andSubfolders}) => {
 	var bookmark = chooseBookmark(node, andSubfolders);
-	window.open(bookmark.url);
+	chrome.tabs.create({url: bookmark.url});
+	window.close();
 };
 store.onTogglePin = (id, on) => {
 	var pins = store.get("pins");

@@ -13,7 +13,7 @@
 			on:click="store.onChosen({node, andSubfolders: true})">
 			{{$l10nCached.andSubfolders}}
 			{{#if showKeyHelp}}
-				<span class="keyboardHelp">{{$l10n("altSpace")}}</span>
+				<span class="keyboardHelp">{{$l10n("ctrlEnter")}}</span>
 			{{/if}}
 		</button>
 	{{/if}}
@@ -21,7 +21,7 @@
 		aria-label="{{$l10nCached.pin}}" aria-pressed="{{pinned}}"
 		on:click="store.onTogglePin(node.id, !pinned)">
 		{{#if showKeyHelp}}
-			<span class="keyboardHelp">alt+P</span>
+			<span class="keyboardHelp">ctrl+P</span>
 		{{/if}}
 	</button>
 	{{#if showSubfolders}}

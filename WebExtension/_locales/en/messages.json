@@ -3,8 +3,8 @@
 	"extDesc": { "message": "Open random bookmarks from a chosen folder" },
 
 	"andSubfolders": { "message": "...and its subfolders" },
-	"altSpace": {
-		"message": "alt-space",
+	"ctrlEnter": {
+		"message": "ctrl-enter",
 		"description": "Appears for keyboard users"
 	},
 	"loading": { "message": "Loading..." },

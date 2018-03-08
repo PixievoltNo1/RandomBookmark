@@ -29,7 +29,7 @@ export default {
 			var newFocus = null;
 			var key = event.key;
 			key = edgeKeys[key] || key;
-			var alt = event.altKey;
+			var ctrl = event.ctrlKey;
 			if (key == "ArrowUp") {
 				if (curFocus.matches(":first-child")) {
 					newFocus = curFocus.parentElement.closest("li"); // may be null
@@ -40,7 +40,6 @@ export default {
 						newFocus = allItems[allItems.length - 1];
 					}
 				}
-				event.preventDefault();
 			} else if (key == "ArrowDown") {
 				let childList = curFocus.querySelector("ul");
 				if (childList) {
@@ -51,7 +50,6 @@ export default {
 						newFocus = moveFrom.nextElementSibling;
 					}
 				}
-				event.preventDefault();
 			} else if (key == "ArrowLeft") {
 				if (curFocus.querySelector("ul")) {
 					curFocus.component.set({showSubfolders: false});
@@ -64,21 +62,23 @@ export default {
 				} else {
 					newFocus = curFocus.querySelector("ul").firstElementChild;
 				}
-			} else if (key == "Enter" && !alt) {
-				curFocus.querySelector(".folderName").click();
-			} else if (alt && key == "Enter") {
-				curFocus.querySelector(".andSubfolders").click();
-			} else if (alt && key == "p") {
+			} else if (key == "Enter") {
+				if (ctrl && curFocus.querySelector(".andSubfolders")) {
+					curFocus.querySelector(".andSubfolders").click();
+				} else {
+					curFocus.querySelector(".folderName").click();
+				}
+			} else if (ctrl && key == "p") {
 				curFocus.querySelector(".pin").click();
+				event.preventDefault();
 			} else if (key == "Home") {
 				newFocus = this.refs.node.firstElementChild;
-				event.preventDefault();
 			} else if (key == "End") {
 				let allItems = this.refs.node.querySelectorAll("li");
 				newFocus = allItems[allItems.length - 1];
-				event.preventDefault();
 			}
 			if (newFocus) {
+				event.preventDefault();
 				this.set({selected: newFocus});
 				newFocus.component.refs.focusMe.focus();
 			}
