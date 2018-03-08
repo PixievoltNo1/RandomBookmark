@@ -12,8 +12,8 @@
     "gulp": "^4.0.0",
     "gulp-sass": "^3.1.0",
     "gulp-sourcemaps": "^2.6.4",
-    "svelte": "^1.51.1",
-    "svelte-loader": "^2.3.3",
-    "webpack": "^3.10.0"
+    "svelte": "^1.57.0",
+    "svelte-loader": "^2.5.0",
+    "webpack": "^3.11.0"
   }
 }
