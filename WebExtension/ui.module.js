@@ -71,7 +71,7 @@ Promise.all([
 			pinsToFind.delete(id);
 		}
 	}
-	if (browser == "Edge") {
+	if (browserName == "Edge") {
 		tree = {children: [tree]};
 	}
 	var folderList = makeFolderList(tree, pinCheck).list;
@@ -87,6 +87,10 @@ Promise.all([
 			var toolbar = root.list.find((folder) => {
 				if (folder.node.title == "_Favorites_Bar_") { return folder; }
 			});
+			if (!toolbar) {
+				autoOpen = [root.node.id];
+				return;
+			}
 			toolbar.node = {
 				__proto__: toolbar.node,
 				title: chrome.i18n.getMessage("favoritesBar")
