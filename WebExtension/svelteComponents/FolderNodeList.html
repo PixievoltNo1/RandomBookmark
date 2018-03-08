@@ -1,5 +1,5 @@
 {{#each list as item}}
-	<FolderNode node="{{item.node}}" list="{{item.list}}"
+	<FolderNode node="{{item.node}}" list="{{item.list}}" :autoOpen
 		hasChildBookmarks="{{item.hasChildBookmarks}}"
 		hasDescendantBookmarks="{{item.hasDescendantBookmarks}}"/>
 {{/each}}

@@ -62,7 +62,7 @@ Promise.all([
 	storePersist(store)
 ]).then(([tree, browserName]) => {
 	// TODO: Determine what should open automatically
-	var pinList = [], autoOpen = [];
+	var pinList = [], autoOpen = new Set();
 	var pinsToFind = new Set(store.get("pins"));
 	function pinCheck(folder) {
 		var id = folder.node.id;
@@ -77,25 +77,23 @@ Promise.all([
 	var folderList = makeFolderList(tree, pinCheck).list;
 	var browserDataHelper = ({
 		Chrome() {
-			autoOpen = [1, 2];
+			autoOpen.add(1).add(2);
 		},
 		Firefox() {
-			autoOpen = ["menu________", "toolbar_____"]
+			autoOpen.add("menu________").add("toolbar_____");
 		},
 		Edge() {
 			var root = folderList[0];
+			autoOpen.add(root.node.id);
 			var toolbar = root.list.find((folder) => {
 				if (folder.node.title == "_Favorites_Bar_") { return folder; }
 			});
-			if (!toolbar) {
-				autoOpen = [root.node.id];
-				return;
-			}
+			if (!toolbar) { return; }
+			autoOpen.add(toolbar.node.id);
 			toolbar.node = {
 				__proto__: toolbar.node,
 				title: chrome.i18n.getMessage("favoritesBar")
 			};
-			autoOpen = [root.node.id, toolbar.node.id];
 		}
 	})[browserName];
 	if (browserDataHelper) { browserDataHelper(); }

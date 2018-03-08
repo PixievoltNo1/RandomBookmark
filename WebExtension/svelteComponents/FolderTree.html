@@ -1,4 +1,4 @@
-<ul ref:node on:keydown="keyboardInput(event)" role="tree"><FolderNodeList :list/></ul>
+<ul ref:node on:keydown="keyboardInput(event)" role="tree"><FolderNodeList :list :autoOpen/></ul>
 <script>
 import FolderNodeList from './FolderNodeList.html';
 var edgeKeys = {
@@ -22,11 +22,6 @@ export default {
 			}
 			newSel.component.set({selected: true});
 		});
-		if (this.get("autoOpen")) {
-			for (let id of this.get("autoOpen")) {
-				expandIfExpandable( this.refs.node.querySelector(`li[data-id='${id}']`) );
-			}
-		}
 	},
 	methods: {
 		keyboardInput(event) {
@@ -65,7 +60,7 @@ export default {
 				}
 			} else if (key == "ArrowRight") {
 				if (!curFocus.querySelector("ul")) {
-					expandIfExpandable(curFocus);
+					curFocus.component.expandIfExpandable();
 				} else {
 					newFocus = curFocus.querySelector("ul").firstElementChild;
 				}

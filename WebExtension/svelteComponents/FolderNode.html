@@ -26,7 +26,7 @@
 	</button>
 	{{#if showSubfolders}}
 		<ul class="subfolders" role="group">
-			<FolderNodeList list="{{list}}"/>
+			<FolderNodeList list="{{list}}" :autoOpen/>
 		</ul>
 	{{/if}}
 </li>
@@ -44,6 +44,18 @@ export default {
 	},
 	oncreate() {
 		this.refs.elem.component = this;
+		var autoOpen = this.get("autoOpen");
+		if (autoOpen && autoOpen.has(this.get("node").id)) {
+			this.expandIfExpandable();
+			autoOpen.delete(this.get("node").id);
+		}
+	},
+	methods: {
+		expandIfExpandable() {
+			if (this.get("list").length) {
+				this.set({showSubfolders: true});
+			}
+		}
 	},
 	computed: {
 		searchSubfolders: ($searchIn) => { return $searchIn == "folderAndSubfolders"; },
