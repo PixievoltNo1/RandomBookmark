@@ -78,7 +78,7 @@ Promise.all([
 	var folderList = makeFolderList(tree, pinCheck).list;
 	var browserDataHelper = ({
 		Chrome() {
-			autoOpen.add(1).add(2);
+			autoOpen.add("1").add("2");
 		},
 		Firefox() {
 			autoOpen.add("menu________").add("toolbar_____");
