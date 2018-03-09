@@ -2,7 +2,7 @@
 
 This [WebExtension](https://developer.mozilla.org/en-US/Add-ons/WebExtensions), made for Firefox, Chrome, & Edge, lets you select a bookmark folder and open a bookmark at random from it. It's made with an eye for customizability and good UX.
 
-Links to install the stable version will be available soon.
+Get the stable version for [Firefox](https://addons.mozilla.org/en-US/firefox/addon/random-bookmark-from-folder/) or [Chrome](https://chrome.google.com/webstore/detail/random-bookmark-from-fold/dcijbgljdombbkbmmkabanaopnnapcfd).
 
 # Writing & testing Random Bookmark From Folder
 
