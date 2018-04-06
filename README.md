@@ -4,6 +4,8 @@ This [WebExtension](https://developer.mozilla.org/en-US/Add-ons/WebExtensions), 
 
 Get the stable version for [Firefox](https://addons.mozilla.org/en-US/firefox/addon/random-bookmark-from-folder/) or [Chrome](https://chrome.google.com/webstore/detail/random-bookmark-from-fold/dcijbgljdombbkbmmkabanaopnnapcfd).
 
+This project has a Code of Conduct. By participating in this project, you agree to be as courteous, welcoming, and generally a lovely person as its terms require. ♡
+
 # Writing & testing Random Bookmark From Folder
 
 This project has a build process employing [ES6 modules](https://hacks.mozilla.org/2015/08/es6-in-depth-modules/) (\*.module.js), [Svelte](https://svelte.technology/) templates (svelteComponents/\*.html), and [Sass](http://sass-lang.com/) files (\*.scss) to generate JavaScript and CSS. With [Node](https://nodejs.org/) installed, run this command the first time you obtain this repo's files to fetch everything you need:
