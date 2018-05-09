@@ -1,7 +1,7 @@
-<:Head>
-	<title>{{$l10n("standaloneOptionsHeader")}}</title>
-</:Head>
-<h1>{{$l10n("standaloneOptionsHeader")}}</h1>
+<svelte:head>
+	<title>{$l10n("standaloneOptionsHeader")}</title>
+</svelte:head>
+<h1>{$l10n("standaloneOptionsHeader")}</h1>
 <div id="optionsArea"><Options/></div>
 <script>
 import Options from './Options.html';

@@ -1,34 +1,34 @@
-<li class="folderNode" ref:elem data-id="{{node.id}}"
-	role="treeitem" aria-expanded="{{list.length ? showSubfolders : 'undefined'}}">
-	<div class="selIndicator" tabindex="{{selected ? 0 : -1}}" ref:focusMe
+<li class="folderNode" ref:elem data-id="{node.id}"
+	role="treeitem" aria-expanded="{list.length ? showSubfolders : 'undefined'}">
+	<div class="selIndicator" tabindex="{selected ? 0 : -1}" ref:focusMe
 		 on:focus="set({showKeyHelp: true})" on:blur="set({showKeyHelp: false})"/>
-	{{#if list.length}}
-		<button type="button" tabindex="-1" class="expander {{showSubfolders ? 'expanded' : ''}}"
+	{#if list.length}
+		<button type="button" tabindex="-1" class="expander {showSubfolders ? 'expanded' : ''}"
 			on:click="set({showSubfolders: !showSubfolders})"></button>
-	{{/if}}
-	<button type="button" tabindex="-1" class="folderName" disabled="{{!enabled}}"
-		on:click="store.onChosen({node, andSubfolders: searchSubfolders})">{{node.title}}</button>
-	{{#if list.length && $showAndSubfolders}}
-		<button type="button" tabindex="-1" class="andSubfolders" disabled="{{!hasDescendantBookmarks}}"
-			on:click="store.onChosen({node, andSubfolders: true})">
-			{{$l10nCached.andSubfolders}}
-			{{#if showKeyHelp}}
-				<span class="keyboardHelp">{{$l10n("ctrlEnter")}}</span>
-			{{/if}}
+	{/if}
+	<button type="button" tabindex="-1" class="folderName" disabled="{!enabled}"
+		on:click="$onChosen({node, andSubfolders: searchSubfolders})">{node.title}</button>
+	{#if list.length && $showAndSubfolders}
+		<button type="button" tabindex="-1" class="andSubfolders" disabled="{!hasDescendantBookmarks}"
+			on:click="$onChosen({node, andSubfolders: true})">
+			{$l10nCached.andSubfolders}
+			{#if showKeyHelp}
+				<span class="keyboardHelp">{$l10n("ctrlEnter")}</span>
+			{/if}
 		</button>
-	{{/if}}
-	<button type="button" tabindex="-1" class="pin {{pinned ? 'pinned' : ''}}"
-		aria-label="{{$l10nCached.pin}}" aria-pressed="{{pinned}}"
-		on:click="store.onTogglePin(node.id, !pinned)">
-		{{#if showKeyHelp}}
+	{/if}
+	<button type="button" tabindex="-1" class="pin {pinned ? 'pinned' : ''}"
+		aria-label="{$l10nCached.pin}" aria-pressed="{pinned}"
+		on:click="$onTogglePin(node.id, !pinned)">
+		{#if showKeyHelp}
 			<span class="keyboardHelp">ctrl+P</span>
-		{{/if}}
+		{/if}
 	</button>
-	{{#if showSubfolders}}
+	{#if showSubfolders}
 		<ul class="subfolders" role="group">
-			<FolderNodeList list="{{list}}" :autoOpen/>
+			<FolderNodeList list="{list}" {autoOpen}/>
 		</ul>
-	{{/if}}
+	{/if}
 </li>
 <script>
 import FolderNodeList from "./FolderNodeList.html";
@@ -44,25 +44,25 @@ export default {
 	},
 	oncreate() {
 		this.refs.elem.component = this;
-		var autoOpen = this.get("autoOpen");
-		if (autoOpen && autoOpen.has(this.get("node").id)) {
+		var {autoOpen} = this.get();
+		if (autoOpen && autoOpen.has(this.get().node.id)) {
 			this.expandIfExpandable();
-			autoOpen.delete(this.get("node").id);
+			autoOpen.delete(this.get().node.id);
 		}
 	},
 	methods: {
 		expandIfExpandable() {
-			if (this.get("list").length) {
+			if (this.get().list.length) {
 				this.set({showSubfolders: true});
 			}
 		}
 	},
 	computed: {
-		searchSubfolders: ($searchIn) => { return $searchIn == "folderAndSubfolders"; },
-		enabled: (searchSubfolders, hasChildBookmarks, hasDescendantBookmarks) => {
+		searchSubfolders: ({ $searchIn }) => { return $searchIn == "folderAndSubfolders"; },
+		enabled: ({ searchSubfolders, hasChildBookmarks, hasDescendantBookmarks }) => {
 			return searchSubfolders ? hasDescendantBookmarks : hasChildBookmarks;
 		},
-		pinned: ($pins, node) => { return $pins.has(node.id); },
+		pinned: ({ $pins, node }) => { return $pins.has(node.id); },
 	},
 	components: { FolderNodeList }
 };

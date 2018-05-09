@@ -1,17 +1,17 @@
 <ul class="multiChoice">
 	<li><label>
 		<input type="radio" name="searchIn" value="folderAndSubfolders" bind:group="$searchIn">
-		{{$l10n("searchInFolderAndSubfolders")}}
+		{$l10n("searchInFolderAndSubfolders")}
 	</label></li>
 	<li>
 		<label>
 			<input type="radio" name="searchIn" value="folderOnly" bind:group="$searchIn">
-			{{$l10n("searchInFolderOnly")}}
+			{$l10n("searchInFolderOnly")}
 		</label>
 		<ul>
 			<li><label>
-				<input type="checkbox" disabled="{{$searchIn != 'folderOnly'}}" bind:checked="$showAndSubfolders">
-				{{$l10n("showAndSubfolders")}}
+				<input type="checkbox" disabled="{$searchIn != 'folderOnly'}" bind:checked="$showAndSubfolders">
+				{$l10n("showAndSubfolders")}
 			</label></li>
 		</ul>
 	</li>
@@ -19,11 +19,11 @@
 <script>
 export default {
 	oncreate() {
-		this.store.observe("searchIn", (searchIn) => {
-			if (searchIn != "folderOnly") {
+		this.on("state", ({changed, current}) => {
+			if (changed.$searchIn && current.$searchIn != "folderOnly") {
 				this.store.set({showAndSubfolders: false});
 			};
-		}, {init: false});
+		});
 	}
 };
 </script>

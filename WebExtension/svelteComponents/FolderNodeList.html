@@ -1,8 +1,8 @@
-{{#each list as item}}
-	<FolderNode node="{{item.node}}" list="{{item.list}}" :autoOpen
-		hasChildBookmarks="{{item.hasChildBookmarks}}"
-		hasDescendantBookmarks="{{item.hasDescendantBookmarks}}"/>
-{{/each}}
+{#each list as item}
+	<FolderNode node="{item.node}" list="{item.list}" {autoOpen}
+		hasChildBookmarks="{item.hasChildBookmarks}"
+		hasDescendantBookmarks="{item.hasDescendantBookmarks}"/>
+{/each}
 <script>
 import FolderNode from "./FolderNode.html";
 export default {

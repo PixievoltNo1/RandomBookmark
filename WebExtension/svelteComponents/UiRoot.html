@@ -1,47 +1,47 @@
-<:Head>
-	<title>{{$l10n("extName")}}</title>
-</:Head>
+<svelte:head>
+	<title>{$l10n("extName")}</title>
+</svelte:head>
 <div id="flexContainer">
 <div id="menu">
 	<h1>
-		{{$l10n("pinHeader")}}
-		{{#if pinsDirty}}
-			<div id="pinsOutdated">{{$l10n("pinsOutdated")}}</div>
-		{{/if}}
+		{$l10n("pinHeader")}
+		{#if pinsDirty}
+			<div id="pinsOutdated">{$l10n("pinsOutdated")}</div>
+		{/if}
 	</h1>
-	{{#if !pinList}}
-		<div class="loading">{{$l10n("loading")}}</div>
-	{{elseif !pinList.length}}
+	{#if !pinList}
+		<div class="loading">{$l10n("loading")}</div>
+	{:elseif !pinList.length}
 		<div id="noPins">
-			{{pinHelpParts[0]}}
-			<img src="images/iconmonstr-pin-1.svg" width="18" height="18" alt="{{$l10n('pin')}}">
-			{{pinHelpParts[1]}}
+			{pinHelpParts[0]}
+			<img src="images/iconmonstr-pin-1.svg" width="18" height="18" alt="{$l10n('pin')}">
+			{pinHelpParts[1]}
 		</div>
-	{{else}}
-		<FolderTree list="{{pinList}}"/>
-	{{/if}}
-	{{#if missingPins}}
+	{:else}
+		<FolderTree list="{pinList}"/>
+	{/if}
+	{#if missingPins}
 		<div id="missingPins">
-			{{$l10n("missingPins", [missingPins.size])}}
-			<button type="button" id="cleanPins" on:click="store.cleanPins()">
-				{{$l10n("cleanPins")}}
+			{$l10n("missingPins", [missingPins.size])}
+			<button type="button" id="cleanPins" on:click="$cleanPins()">
+				{$l10n("cleanPins")}
 			</button>
 		</div>
-	{{/if}}
-	<h1>{{$l10n("allFoldersHeader")}}</h1>
-	{{#if !folderList}}
-		<div class="loading">{{$l10n("loading")}}</div>
-	{{else}}
-		<FolderTree list="{{folderList}}" :autoOpen/>
-	{{/if}}
+	{/if}
+	<h1>{$l10n("allFoldersHeader")}</h1>
+	{#if !folderList}
+		<div class="loading">{$l10n("loading")}</div>
+	{:else}
+		<FolderTree list="{folderList}" {autoOpen}/>
+	{/if}
 </div>
 <div id="optionsPane">
-	<button type="button" class="optionsExpander {{showOptions ? 'expanded' : ''}}"
-		on:click="set({showOptions: !showOptions})" disabled="{{!$searchIn}}"
-		aria-expanded="{{showOptions}}">
-		{{$l10n(showOptions ? "closeOptions" : "showOptions")}}
+	<button type="button" class="optionsExpander {showOptions ? 'expanded' : ''}"
+		on:click="set({showOptions: !showOptions})" disabled="{!$searchIn}"
+		aria-expanded="{showOptions}">
+		{$l10n(showOptions ? "closeOptions" : "showOptions")}
 	</button>
-	{{#if showOptions}}<div id="optionsArea"><Options/></div>{{/if}}
+	{#if showOptions}<div id="optionsArea"><Options/></div>{/if}
 </div>
 </div>
 <script>
@@ -54,7 +54,7 @@ export default {
 		};
 	},
 	computed: {
-		pinHelpParts: ($l10n) => {
+		pinHelpParts: ({ $l10n }) => {
 			return $l10n("pinHelp").split("<pin>").map((str) => { return str.trim(); });
 		}
 	},

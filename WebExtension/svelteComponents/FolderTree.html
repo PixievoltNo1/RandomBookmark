@@ -1,4 +1,4 @@
-<ul ref:node on:keydown="keyboardInput(event)" role="tree"><FolderNodeList :list :autoOpen/></ul>
+<ul ref:node on:keydown="keyboardInput(event)" role="tree"><FolderNodeList {list} {autoOpen}/></ul>
 <script>
 import FolderNodeList from './FolderNodeList.html';
 var edgeKeys = {
@@ -9,19 +9,20 @@ var edgeKeys = {
 	Up: "ArrowUp",
 };
 function expandIfExpandable(domNode) {
-	if (domNode.component.get("list").length) {
+	if (domNode.component.get().list.length) {
 		domNode.component.set({showSubfolders: true});
 	}
 }
 export default {
 	oncreate() {
-		this.set({selected: this.refs.node.firstElementChild});
-		this.observe("selected", (newSel, oldSel) => {
-			if (oldSel) {
-				oldSel.component.set({selected: false});
+		this.on("state", ({changed, current, previous}) => {
+			if (!changed.selected) { return; }
+			if (previous.selected) {
+				previous.selected.component.set({selected: false});
 			}
-			newSel.component.set({selected: true});
+			current.selected.component.set({selected: true});
 		});
+		this.set({selected: this.refs.node.firstElementChild});
 	},
 	methods: {
 		keyboardInput(event) {

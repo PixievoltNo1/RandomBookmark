@@ -24,14 +24,14 @@ store.onChosen = ({node, andSubfolders}) => {
 	window.close();
 };
 store.onTogglePin = (id, on) => {
-	var pins = store.get("pins");
+	var {pins} = store.get();
 	pins[on ? "add" : "delete"](id);
 	store.set({pins});
 	uiRoot.set({pinsDirty: true});
 };
 store.cleanPins = () => {
-	var pins = store.get("pins");
-	for (let id of uiRoot.get("missingPins")) {
+	var {pins} = store.get();
+	for (let id of uiRoot.get().missingPins) {
 		pins.delete(id);
 	}
 	store.set({pins});
@@ -64,7 +64,7 @@ Promise.all([
 ]).then(([tree, browserName]) => {
 	// TODO: Determine what should open automatically
 	var pinList = [], autoOpen = new Set();
-	var pinsToFind = new Set(store.get("pins"));
+	var pinsToFind = new Set(store.get().pins);
 	function pinCheck(folder) {
 		var id = folder.node.id;
 		if (pinsToFind.has(id)) {

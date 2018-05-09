@@ -13,11 +13,13 @@ export default async function(store, prefs = Object.keys(prefSpec)) {
 		data[key] = wake(data[key]);
 	}
 	store.set(data);
-	for (let key of prefs) {
-		store.observe(key, (data) => {
+	store.on("state", ({changed, current}) => {
+		for (let key in prefs) {
+			if (!changed[key]) { continue; }
+			let data = store.get()[key];
 			if (sleeps.has(key)) { data = sleeps.get(key)(data); }
 			chrome.storage.sync.set({[key]: data});
-		}, { init: false });
-	}
+		}
+	});
 	return true;
 }
