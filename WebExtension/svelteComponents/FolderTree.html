@@ -8,11 +8,6 @@ var edgeKeys = {
     Right: "ArrowRight",
 	Up: "ArrowUp",
 };
-function expandIfExpandable(domNode) {
-	if (domNode.component.get().list.length) {
-		domNode.component.set({showSubfolders: true});
-	}
-}
 export default {
 	oncreate() {
 		this.on("state", ({changed, current, previous}) => {

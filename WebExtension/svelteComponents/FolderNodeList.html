@@ -1,7 +1,5 @@
 {#each list as item}
-	<FolderNode node="{item.node}" list="{item.list}" {autoOpen}
-		hasChildBookmarks="{item.hasChildBookmarks}"
-		hasDescendantBookmarks="{item.hasDescendantBookmarks}"/>
+	<FolderNode {...item} {autoOpen}/>
 {/each}
 <script>
 import FolderNode from "./FolderNode.html";

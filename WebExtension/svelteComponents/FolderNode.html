@@ -1,4 +1,4 @@
-<li class="folderNode" ref:elem data-id="{node.id}"
+<li class="folderNode" ref:elem
 	role="treeitem" aria-expanded="{list.length ? showSubfolders : 'undefined'}">
 	<div class="selIndicator" tabindex="{selected ? 0 : -1}" ref:focusMe
 		 on:focus="set({showKeyHelp: true})" on:blur="set({showKeyHelp: false})"/>
@@ -26,7 +26,7 @@
 	</button>
 	{#if showSubfolders}
 		<ul class="subfolders" role="group">
-			<FolderNodeList list="{list}" {autoOpen}/>
+			<FolderNodeList {list} {autoOpen}/>
 		</ul>
 	{/if}
 </li>
