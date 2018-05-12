@@ -13,12 +13,14 @@ for (let message of FolderNode.cacheL10n) {
 var store = new Store({
 	l10n: chrome.i18n.getMessage,
 	l10nCached,
+	folderNodes: new Map(),
 });
 var uiRoot = new UiRoot({
 	target: document.body,
 	store
 });
-store.onChosen = ({node, andSubfolders}) => {
+store.onChosen = ({id, andSubfolders}) => {
+	var node = store.get().folderNodes.get(id);
 	var bookmark = chooseBookmark(node, andSubfolders);
 	chrome.tabs.create({url: bookmark.url});
 	window.close();
@@ -62,11 +64,11 @@ Promise.all([
 	browserCheck,
 	storePersist(store)
 ]).then(([tree, browserName]) => {
-	// TODO: Determine what should open automatically
-	var pinList = [], autoOpen = new Set();
+	var pinList = [], autoOpen = new Set(), {folderNodes} = store.get();
 	var pinsToFind = new Set(store.get().pins);
-	function pinCheck(folder) {
-		var id = folder.node.id;
+	function perFolder(folder, node) {
+		var {id} = folder;
+		folderNodes.set(id, node);
 		if (pinsToFind.has(id)) {
 			pinList.push(folder);
 			pinsToFind.delete(id);
@@ -75,7 +77,7 @@ Promise.all([
 	if (browserName == "Edge") {
 		tree = {children: [tree]};
 	}
-	var folderList = makeFolderList(tree, pinCheck).list;
+	var folderList = makeFolderList(tree, perFolder).list;
 	var browserDataHelper = ({
 		Chrome() {
 			autoOpen.add("1").add("2");
@@ -101,7 +103,7 @@ Promise.all([
 	uiRoot.set({pinList, folderList, autoOpen});
 	if (pinsToFind.size) { uiRoot.set({missingPins: pinsToFind}); }
 });
-function makeFolderList(tree, pinCheck) {
+function makeFolderList(tree, perFolder) {
 	var list = [], hasChildBookmarks = false, hasDescendantBookmarks = false;
 	for (let bookmarkNode of tree.children) {
 		if (bookmarkNode.title == "") {
@@ -118,8 +120,10 @@ function makeFolderList(tree, pinCheck) {
 			if (bookmarkNode.url) { hasChildBookmarks = hasDescendantBookmarks = true; }
 			continue;
 		}
-		let folderData = Object.assign(makeFolderList(bookmarkNode, pinCheck), {node: bookmarkNode});
-		pinCheck(folderData);
+		let folderData = makeFolderList(bookmarkNode, perFolder);
+		folderData.id = bookmarkNode.id;
+		folderData.title = bookmarkNode.title;
+		perFolder(folderData, bookmarkNode);
 		list.push(folderData);
 		if (folderData.hasDescendantBookmarks) {
 			hasDescendantBookmarks = true;

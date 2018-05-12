@@ -7,10 +7,10 @@
 			on:click="set({showSubfolders: !showSubfolders})"></button>
 	{/if}
 	<button type="button" tabindex="-1" class="folderName" disabled="{!enabled}"
-		on:click="$onChosen({node, andSubfolders: searchSubfolders})">{node.title}</button>
+		on:click="$onChosen({id, andSubfolders: searchSubfolders})">{title}</button>
 	{#if list.length && $showAndSubfolders}
 		<button type="button" tabindex="-1" class="andSubfolders" disabled="{!hasDescendantBookmarks}"
-			on:click="$onChosen({node, andSubfolders: true})">
+			on:click="$onChosen({id, andSubfolders: true})">
 			{$l10nCached.andSubfolders}
 			{#if showKeyHelp}
 				<span class="keyboardHelp">{$l10n("ctrlEnter")}</span>
@@ -19,7 +19,7 @@
 	{/if}
 	<button type="button" tabindex="-1" class="pin {pinned ? 'pinned' : ''}"
 		aria-label="{$l10nCached.pin}" aria-pressed="{pinned}"
-		on:click="$onTogglePin(node.id, !pinned)">
+		on:click="$onTogglePin(id, !pinned)">
 		{#if showKeyHelp}
 			<span class="keyboardHelp">ctrl+P</span>
 		{/if}
@@ -45,9 +45,9 @@ export default {
 	oncreate() {
 		this.refs.elem.component = this;
 		var {autoOpen} = this.get();
-		if (autoOpen && autoOpen.has(this.get().node.id)) {
+		if (autoOpen && autoOpen.has(this.get().id)) {
 			this.expandIfExpandable();
-			autoOpen.delete(this.get().node.id);
+			autoOpen.delete(this.get().id);
 		}
 	},
 	methods: {
@@ -62,7 +62,7 @@ export default {
 		enabled: ({ searchSubfolders, hasChildBookmarks, hasDescendantBookmarks }) => {
 			return searchSubfolders ? hasDescendantBookmarks : hasChildBookmarks;
 		},
-		pinned: ({ $pins, node }) => { return $pins.has(node.id); },
+		pinned: ({ $pins, id }) => { return $pins.has(id); },
 	},
 	components: { FolderNodeList }
 };
