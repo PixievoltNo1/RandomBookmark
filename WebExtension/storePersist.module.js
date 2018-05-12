@@ -14,7 +14,7 @@ export default async function(store, prefs = Object.keys(prefSpec)) {
 	}
 	store.set(data);
 	store.on("state", ({changed, current}) => {
-		for (let key in prefs) {
+		for (let key of prefs) {
 			if (!changed[key]) { continue; }
 			let data = store.get()[key];
 			if (sleeps.has(key)) { data = sleeps.get(key)(data); }
