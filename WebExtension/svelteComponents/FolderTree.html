@@ -1,4 +1,4 @@
-<ul ref:node on:keydown="keyboardInput(event)" role="tree"><FolderNodeList {list} {autoOpen}/></ul>
+<ul ref:node on:keydown="keyboardInput(event)" role="tree"><FolderNodeList {list} {useAutoOpen}/></ul>
 <script>
 import FolderNodeList from './FolderNodeList.html';
 var edgeKeys = {
@@ -10,6 +10,7 @@ var edgeKeys = {
 };
 export default {
 	oncreate() {
+		// TODO: Make sure selected can't be a node that has disappeared
 		this.on("state", ({changed, current, previous}) => {
 			if (!changed.selected) { return; }
 			if (previous.selected) {

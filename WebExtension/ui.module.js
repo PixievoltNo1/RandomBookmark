@@ -64,8 +64,7 @@ Promise.all([
 	browserCheck,
 	storePersist(store)
 ]).then(([tree, browserName]) => {
-	var pinList = [], autoOpen = new Set(), {folderNodes} = store.get();
-	var pinsToFind = new Set(store.get().pins);
+	var pinList = [], pinsToFind = new Set(store.get().pins), {folderNodes} = store.get();
 	function perFolder(folder, node) {
 		var {id} = folder;
 		folderNodes.set(id, node);
@@ -80,27 +79,34 @@ Promise.all([
 	var folderList = makeFolderList(tree, perFolder).list;
 	var browserDataHelper = ({
 		Chrome() {
-			autoOpen.add("1").add("2");
+			var autoOpenThese = new Set(["1", "2"]);
+			for (let item in folderList) {
+				if (autoOpenThese.has(item.id)) {
+					item.autoOpen = true;
+				}
+			}
 		},
 		Firefox() {
-			autoOpen.add("menu________").add("toolbar_____");
+			var autoOpenThese = new Set(["menu________", "toolbar_____"]);
+			for (let item in folderList) {
+				if (autoOpenThese.has(item.id)) {
+					item.autoOpen = true;
+				}
+			}
 		},
 		Edge() {
 			var root = folderList[0];
-			autoOpen.add(root.node.id);
+			root.autoOpen = true;
 			var toolbar = root.list.find((folder) => {
-				if (folder.node.title == "_Favorites_Bar_") { return folder; }
+				if (folder.title == "_Favorites_Bar_") { return folder; }
 			});
 			if (!toolbar) { return; }
-			autoOpen.add(toolbar.node.id);
-			toolbar.node = {
-				__proto__: toolbar.node,
-				title: chrome.i18n.getMessage("favoritesBar")
-			};
+			toolbar.autoOpen = true;
+			toolbar.title = chrome.i18n.getMessage("favoritesBar");
 		}
 	})[browserName];
 	if (browserDataHelper) { browserDataHelper(); }
-	uiRoot.set({pinList, folderList, autoOpen});
+	uiRoot.set({pinList, folderList});
 	if (pinsToFind.size) { uiRoot.set({missingPins: pinsToFind}); }
 });
 function makeFolderList(tree, perFolder) {

@@ -18,7 +18,7 @@
 			{pinHelpParts[1]}
 		</div>
 	{:else}
-		<FolderTree list="{pinList}"/>
+		<FolderTree list="{pinList}" useAutoOpen={false}/>
 	{/if}
 	{#if missingPins}
 		<div id="missingPins">
@@ -32,7 +32,7 @@
 	{#if !folderList}
 		<div class="loading">{$l10n("loading")}</div>
 	{:else}
-		<FolderTree list="{folderList}" {autoOpen}/>
+		<FolderTree list="{folderList}" useAutoOpen={true}/>
 	{/if}
 </div>
 <div id="optionsPane">

@@ -26,7 +26,7 @@
 	</button>
 	{#if showSubfolders}
 		<ul class="subfolders" role="group">
-			<FolderNodeList {list} {autoOpen}/>
+			<FolderNodeList {list} {useAutoOpen}/>
 		</ul>
 	{/if}
 </li>
@@ -44,10 +44,9 @@ export default {
 	},
 	oncreate() {
 		this.refs.elem.component = this;
-		var {autoOpen} = this.get();
-		if (autoOpen && autoOpen.has(this.get().id)) {
+		var {autoOpen, useAutoOpen} = this.get();
+		if (autoOpen && useAutoOpen) {
 			this.expandIfExpandable();
-			autoOpen.delete(this.get().id);
 		}
 	},
 	methods: {
