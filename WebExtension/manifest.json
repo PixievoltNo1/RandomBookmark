@@ -21,6 +21,13 @@
 			"40": "icon/40Die.png"
 		}
 	},
+	"commands": {
+		"_execute_browser_action": {
+			"suggested_key": {
+				"default": "Ctrl+Shift+F"
+			}
+		}
+	},
 	"options_ui": {
 		"page": "options.html"
 	},
