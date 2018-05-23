@@ -80,7 +80,7 @@ Promise.all([
 	var browserDataHelper = ({
 		Chrome() {
 			var autoOpenThese = new Set(["1", "2"]);
-			for (let item in folderList) {
+			for (let item of folderList) {
 				if (autoOpenThese.has(item.id)) {
 					item.autoOpen = true;
 				}
@@ -88,7 +88,7 @@ Promise.all([
 		},
 		Firefox() {
 			var autoOpenThese = new Set(["menu________", "toolbar_____"]);
-			for (let item in folderList) {
+			for (let item of folderList) {
 				if (autoOpenThese.has(item.id)) {
 					item.autoOpen = true;
 				}
