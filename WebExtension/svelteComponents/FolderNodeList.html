@@ -1,5 +1,9 @@
 {#each list as item}
-	<FolderNode {...item} {useAutoOpen}/>
+	{#if item.separator}
+		<ul class="separator" role="separator"></ul>
+	{:else}
+		<FolderNode {...item} {useAutoOpen}/>
+	{/if}
 {/each}
 <script>
 import FolderNode from "./FolderNode.html";

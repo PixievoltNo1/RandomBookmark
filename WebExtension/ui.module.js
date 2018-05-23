@@ -112,14 +112,14 @@ Promise.all([
 function makeFolderList(tree, perFolder) {
 	var list = [], hasChildBookmarks = false, hasDescendantBookmarks = false;
 	for (let bookmarkNode of tree.children) {
-		if (bookmarkNode.title == "") {
-			// Blank-title folders are present in Firefox and contain uninteresting things like history, downloads, etc.
-			continue;
-		}
 		if (bookmarkNode.type == "separator") {
 			if (list.length && !list[list.length - 1].separator) {
 				list.push({separator: true});
 			}
+			continue;
+		}
+		if (bookmarkNode.title == "") {
+			// Blank-title folders are present in Firefox and contain uninteresting things like history, downloads, etc.
 			continue;
 		}
 		if (!bookmarkNode.children) {
