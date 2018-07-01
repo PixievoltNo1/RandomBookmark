@@ -14,3 +14,23 @@ chrome.runtime.onInstalled.addListener(async function({reason}) {
 		chrome.storage.local.clear();
 	}
 });
+
+// Check for Firefox 52 ESR's webextensions.storage.sync.enabled set to false
+chrome.runtime.onStartup.addListener(function() {
+	chrome.storage.sync.get("test", function() {
+		console.log("sync error", chrome.runtime.lastError);
+		if (false /* check for a specific lastError */) {
+			// TODO: Open tab explaining the problem
+			let browserActionListener = () => {
+				// TODO: Open the same page as above
+			};
+			chrome.browserAction.setPopup("");
+			chrome.browserAction.onClicked.addListener(browserActionListener);
+			// TODO: Listen for an "all-clear" message and undo the above
+		}
+	});
+});
+
+if (browser && browser.menus && Object.values(browser.menus.ContextType).includes("bookmark")) {
+	import("./contextMenu.module.js");
+}

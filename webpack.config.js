@@ -2,7 +2,6 @@ var webpack = require('webpack');
 var path = require('path');
 var fileUrl = require('file-url');
 
-// TODO: Write alternate configuration for extension store releases
 module.exports = function(env = {}) { return {
 	entry: {
 		ui: './WebExtension/ui.module.js',

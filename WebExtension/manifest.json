@@ -41,6 +41,6 @@
 			"strict_min_version": "52.0"
 		}
 	},
-	"minimum_edge_version" : "39.14942",
+	"minimum_edge_version" : "40.15063",
 	"manifest_version": 2
 }
