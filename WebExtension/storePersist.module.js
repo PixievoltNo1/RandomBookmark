@@ -1,4 +1,3 @@
-if (!(window.chrome && chrome.runtime)) { window.chrome = browser; }
 import prefSpec from './prefSpec.module.js';
 export default async function(store, prefs = Object.keys(prefSpec)) {
 	var request = {}, wakes = new Map(), sleeps = new Map();

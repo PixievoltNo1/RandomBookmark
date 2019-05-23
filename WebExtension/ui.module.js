@@ -1,4 +1,3 @@
-if (!(window.chrome && chrome.runtime)) { window.chrome = browser; }
 import chooseBookmark from './bookmarkSelection.module.js';
 import storePersist from './storePersist.module.js';
 import UiRoot from './svelteComponents/UiRoot.html';
@@ -94,16 +93,6 @@ Promise.all([
 				}
 			}
 		},
-		Edge() {
-			var root = folderList[0];
-			root.autoOpen = true;
-			var toolbar = root.list.find((folder) => {
-				if (folder.title == "_Favorites_Bar_") { return folder; }
-			});
-			if (!toolbar) { return; }
-			toolbar.autoOpen = true;
-			toolbar.title = chrome.i18n.getMessage("favoritesBar");
-		}
 	})[browserName];
 	if (browserDataHelper) { browserDataHelper(); }
 	uiRoot.set({pinList, folderList});

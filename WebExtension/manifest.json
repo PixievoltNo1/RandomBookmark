@@ -31,7 +31,6 @@
 	"options_ui": {
 		"page": "options.html"
 	},
-	"options_page": "options.html#standalone",
 
 	"permissions": ["storage", "bookmarks"],
 	"minimum_chrome_version": "58",
@@ -41,6 +40,5 @@
 			"strict_min_version": "52.0"
 		}
 	},
-	"minimum_edge_version" : "40.15063",
 	"manifest_version": 2
 }

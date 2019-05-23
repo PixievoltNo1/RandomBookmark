@@ -27,13 +27,4 @@
 	"searchInFolderAndSubfolders": { "message": "Pick from the selected folder & its subfolders" },
 	"searchInFolderOnly": { "message": "Pick from the selected folder only" },
 	"showAndSubfolders": { "message": "Show \"and its subfolders\" button" },
-
-	"favoritesBar": {
-		"message": "Favorites Bar",
-		"description": "The name of the Microsoft Edge favorites toolbar"
-	},
-	"standaloneOptionsHeader": {
-		"message": "Random Bookmark From Folder Options",
-		"description": "Used in Edge only"
-	}
 }
