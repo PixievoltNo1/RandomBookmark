@@ -61,26 +61,25 @@ Promise.all([
 		}
 	}
 	var folderList = makeFolderList(tree, perFolder).list;
-	var browserDataHelper = ({
-		Chrome() {
+	var folderListAutoNav = ({
+		Chrome(navTree) {
 			var autoOpenThese = new Set(["1", "2"]);
-			for (let item of folderList) {
-				if (autoOpenThese.has(item.id)) {
-					item.autoOpen = true;
+			for (let navNode of navTree) {
+				if (autoOpenThese.has(navNode.id)) {
+					navNode.expand();
 				}
 			}
 		},
-		Firefox() {
+		Firefox(navTree) {
 			var autoOpenThese = new Set(["menu________", "toolbar_____"]);
-			for (let item of folderList) {
-				if (autoOpenThese.has(item.id)) {
-					item.autoOpen = true;
+			for (let navNode of navTree) {
+				if (autoOpenThese.has(navNode.id)) {
+					navNode.expand();
 				}
 			}
 		},
 	})[browserName];
-	if (browserDataHelper) { browserDataHelper(); }
-	uiRoot.$set({pinList, folderList});
+	uiRoot.$set({pinList, folderList, folderListAutoNav});
 	if (pinsToFind.size) { uiRoot.$set({missingPins: pinsToFind}); }
 });
 function makeFolderList(tree, perFolder) {

@@ -52,6 +52,7 @@ let me = {
 	setActive(to) {
 		active = to;
 	},
+	id,
 };
 $: {
 	me.siblings = siblings;
