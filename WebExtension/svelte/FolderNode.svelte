@@ -60,7 +60,7 @@ $: {
 	siblings[pos] = me;
 }
 let navigables;
-$: me.children = navigables;
+$: me.children = showSubfolders ? navigables : null;
 function focused(event) {
 	tree.setActiveNavNode(me);
 	event.stopPropagation();
