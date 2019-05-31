@@ -12,8 +12,10 @@
     "gulp": "^4.0.0",
     "gulp-sass": "^3.2.1",
     "gulp-sourcemaps": "^2.6.4",
-    "svelte": "^2.5.0",
-    "svelte-loader": "2.8.1",
+    "svelte": "^3.4.4",
+    "svelte-loader": "^2.13.4",
+    "svelte-webext-storage-adapter": "github:PikadudeNo1/svelte-webext-storage-adapter",
+    "svelte-writable-derived": "github:PikadudeNo1/svelte-writable-derived",
     "webpack": "^3.11.0"
   }
 }

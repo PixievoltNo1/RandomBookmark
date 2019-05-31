@@ -1,42 +1,30 @@
-import chooseBookmark from './bookmarkSelection.module.js';
-import storePersist from './storePersist.module.js';
-import UiRoot from './svelteComponents/UiRoot.html';
-import FolderNode from './svelteComponents/FolderNode.html';
-import sniffBrowser from './sniffBrowser.module.js';
-import { Store } from 'svelte/store';
+import chooseBookmark from './bookmarkSelection.esm.js';
+import { stores, ready as storageReady } from './storage.esm.js';
+import UiRoot from './svelte/UiRoot.svelte';
+import sniffBrowser from './sniffBrowser.esm.js';
+import { get as readStore } from 'svelte/store';
 
-var l10nCached = {};
-for (let message of FolderNode.cacheL10n) {
-	l10nCached[message] = chrome.i18n.getMessage(message);
-}
-var store = new Store({
-	l10n: chrome.i18n.getMessage,
-	l10nCached,
-	folderNodes: new Map(),
-});
-var uiRoot = new UiRoot({
-	target: document.body,
-	store
-});
-store.onChosen = ({id, andSubfolders}) => {
-	var node = store.get().folderNodes.get(id);
+var folderNodes = new Map();
+var uiRoot = new UiRoot({ target: document.body });
+export function onChosen({id, andSubfolders}) {
+	var node = folderNodes.get(id);
 	var bookmark = chooseBookmark(node, andSubfolders);
 	chrome.tabs.create({url: bookmark.url});
 	window.close();
-};
-store.onTogglePin = (id, on) => {
-	var {pins} = store.get();
+}
+export function onTogglePin(id, on) {
+	var pins = readStore(stores.pins);
 	pins[on ? "add" : "delete"](id);
-	store.set({pins});
-	uiRoot.set({pinsDirty: true});
-};
-store.cleanPins = () => {
-	var {pins} = store.get();
-	for (let id of uiRoot.get().missingPins) {
+	stores.pins.set(pins);
+	uiRoot.$set({pinsDirty: true});
+}
+export function cleanPins(missingPins) {
+	var pins = readStore(stores.pins);
+	for (let id of missingPins) {
 		pins.delete(id);
 	}
-	store.set({pins});
-	uiRoot.set({missingPins: null});
+	stores.pins.set(pins);
+	uiRoot.$set({missingPins: null});
 }
 var browserCheck = sniffBrowser();
 browserCheck.then((browserName) => {
@@ -61,9 +49,9 @@ browserCheck.then((browserName) => {
 Promise.all([
 	new Promise((resolve) => { chrome.bookmarks.getTree(([tree]) => { resolve(tree); }); }),
 	browserCheck,
-	storePersist(store)
+	storageReady
 ]).then(([tree, browserName]) => {
-	var pinList = [], pinsToFind = new Set(store.get().pins), {folderNodes} = store.get();
+	var pinList = [], pinsToFind = new Set( readStore(stores.pins) );
 	function perFolder(folder, node) {
 		var {id} = folder;
 		folderNodes.set(id, node);
@@ -71,9 +59,6 @@ Promise.all([
 			pinList.push(folder);
 			pinsToFind.delete(id);
 		}
-	}
-	if (browserName == "Edge") {
-		tree = {children: [tree]};
 	}
 	var folderList = makeFolderList(tree, perFolder).list;
 	var browserDataHelper = ({
@@ -95,8 +80,8 @@ Promise.all([
 		},
 	})[browserName];
 	if (browserDataHelper) { browserDataHelper(); }
-	uiRoot.set({pinList, folderList});
-	if (pinsToFind.size) { uiRoot.set({missingPins: pinsToFind}); }
+	uiRoot.$set({pinList, folderList});
+	if (pinsToFind.size) { uiRoot.$set({missingPins: pinsToFind}); }
 });
 function makeFolderList(tree, perFolder) {
 	var list = [], hasChildBookmarks = false, hasDescendantBookmarks = false;

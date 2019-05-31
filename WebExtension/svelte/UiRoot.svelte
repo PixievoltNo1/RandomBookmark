@@ -1,3 +1,20 @@
+<script>
+import l10n from "../l10nStore.esm.js";
+import { ready } from "../storage.esm.js";
+import FolderTree from './FolderTree.svelte';
+import Options from './Options.svelte';
+import { cleanPins } from "../ui.esm.js";
+
+export let folderList, pinList;
+export let folderListAutoNav;
+export let pinsDirty = false, missingPins;
+$: pinHelpParts = $l10n("pinHelp").split("<pin>").map( (str) => { return str.trim(); } );
+
+var optionsEnabled = false;
+ready.then( () => { optionsEnabled = true; } );
+var showOptions = false;
+</script>
+
 <svelte:head>
 	<title>{$l10n("extName")}</title>
 </svelte:head>
@@ -11,19 +28,19 @@
 	</h1>
 	{#if !pinList}
 		<div class="loading">{$l10n("loading")}</div>
-	{:elseif !pinList.length}
+	{:else if !pinList.length}
 		<div id="noPins">
 			{pinHelpParts[0]}
 			<img src="images/iconmonstr-pin-1.svg" width="18" height="18" alt="{$l10n('pin')}">
 			{pinHelpParts[1]}
 		</div>
 	{:else}
-		<FolderTree list="{pinList}" useAutoOpen={false}/>
+		<FolderTree list="{pinList}"/>
 	{/if}
 	{#if missingPins}
 		<div id="missingPins">
 			{$l10n("missingPins", [missingPins.size])}
-			<button type="button" id="cleanPins" on:click="$cleanPins()">
+			<button type="button" id="cleanPins" on:click="{ () => cleanPins(missingPins) }">
 				{$l10n("cleanPins")}
 			</button>
 		</div>
@@ -32,32 +49,15 @@
 	{#if !folderList}
 		<div class="loading">{$l10n("loading")}</div>
 	{:else}
-		<FolderTree list="{folderList}" useAutoOpen={true}/>
+		<FolderTree list="{folderList}" autoNav={folderListAutoNav}/>
 	{/if}
 </div>
 <div id="optionsPane">
-	<button type="button" class="optionsExpander {showOptions ? 'expanded' : ''}"
-		on:click="set({showOptions: !showOptions})" disabled="{!$searchIn}"
+	<button type="button" class="optionsExpander" class:expanded={showOptions}
+		on:click="{ () => { showOptions = !showOptions; } }" disabled="{!optionsEnabled}"
 		aria-expanded="{showOptions}">
 		{$l10n(showOptions ? "closeOptions" : "showOptions")}
 	</button>
 	{#if showOptions}<div id="optionsArea"><Options/></div>{/if}
 </div>
 </div>
-<script>
-import FolderTree from './FolderTree.html';
-import Options from './Options.html';
-export default {
-	data() {
-		return {
-			showOptions: false
-		};
-	},
-	computed: {
-		pinHelpParts: ({ $l10n }) => {
-			return $l10n("pinHelp").split("<pin>").map((str) => { return str.trim(); });
-		}
-	},
-	components: { FolderTree, Options }
-};
-</script>
