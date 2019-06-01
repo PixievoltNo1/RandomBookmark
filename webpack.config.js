@@ -3,6 +3,7 @@ var path = require('path');
 var fileUrl = require('file-url');
 
 module.exports = function(env = {}) { return {
+	mode: "none",
 	entry: {
 		ui: './WebExtension/ui.esm.js',
 		options: './WebExtension/options.esm.js'
@@ -23,11 +24,22 @@ module.exports = function(env = {}) { return {
 			},
 		],
 	},
+	optimization: {
+		splitChunks: {
+			minSize: 0,
+			cacheGroups: {
+				common: {
+					name: "common",
+					chunks({name}) {
+						return (name == "ui" || name == "options");
+					},
+					minChunks: 2,
+				}
+			}
+		},
+	},
 	plugins: [
 		new webpack.optimize.ModuleConcatenationPlugin(),
-		new webpack.optimize.CommonsChunkPlugin({
-			name: "common",
-		}),
 		// Workaround for above Firefox/Chrome issue
 		...( env.release ? [] : [
 			new webpack.SourceMapDevToolPlugin({
