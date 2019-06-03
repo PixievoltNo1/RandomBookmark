@@ -14,8 +14,8 @@
     "gulp-sourcemaps": "^2.6.5",
     "svelte": "^3.4.4",
     "svelte-loader": "^2.13.4",
-    "svelte-webext-storage-adapter": "github:PikadudeNo1/svelte-webext-storage-adapter",
-    "svelte-writable-derived": "github:PikadudeNo1/svelte-writable-derived",
+    "svelte-webext-storage-adapter": "^1.0.0",
+    "svelte-writable-derived": "^1.0.0",
     "webpack": "^4.28.4",
     "webpack-cli": "^3.3.2"
   }
