@@ -13,6 +13,12 @@ chrome.runtime.onInstalled.addListener(async function({reason}) {
 	}
 });
 
+chrome.alarms.onAlarm.addListener( ({name}) => {
+	if (name == "clearCache") {
+		indexedDB.deleteDatabase("cache");
+	}
+} );
+
 if (browser && browser.menus && Object.values(browser.menus.ContextType).includes("bookmark")) {
 	import("./contextMenu.module.js");
 }

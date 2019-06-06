@@ -32,7 +32,7 @@
 		"page": "options.html"
 	},
 
-	"permissions": ["storage", "bookmarks"],
+	"permissions": ["storage", "bookmarks", "alarms"],
 	"minimum_chrome_version": "58",
 	"applications": {
 		"gecko": {

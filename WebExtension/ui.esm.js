@@ -3,11 +3,13 @@ import { stores, ready as storageReady } from './storage.esm.js';
 import UiRoot from './svelte/UiRoot.svelte';
 import sniffBrowser from './sniffBrowser.esm.js';
 import { get as readStore } from 'svelte/store';
+import { set as idbSet, get as idbGet, Store as IdbKeyvalStore } from "idb-keyval";
 
-var folderNodes = new Map();
+var folderBookmarkNodes = new Map();
 var uiRoot = new UiRoot({ target: document.body });
+var cacheStore = new IdbKeyvalStore("cache", "keyval");
 export function onChosen({id, andSubfolders}) {
-	var node = folderNodes.get(id);
+	var node = folderBookmarkNodes.get(id);
 	var bookmark = chooseBookmark(node, andSubfolders);
 	chrome.tabs.create({url: bookmark.url});
 	window.close();
@@ -46,21 +48,14 @@ browserCheck.then((browserName) => {
 	})[browserName];
 	if (browserDisplayHelper) { browserDisplayHelper(); }
 });
+var bookmarksFetch = new Promise( (resolve) => {
+	chrome.bookmarks.getTree( ([tree]) => { resolve(tree); } );
+} );
 Promise.all([
-	new Promise((resolve) => { chrome.bookmarks.getTree(([tree]) => { resolve(tree); }); }),
+	bookmarksFetch,
 	browserCheck,
 	storageReady
 ]).then(([tree, browserName]) => {
-	var pinList = [], pinsToFind = new Set( readStore(stores.pins) );
-	function perFolder(folder, node) {
-		var {id} = folder;
-		folderNodes.set(id, node);
-		if (pinsToFind.has(id)) {
-			pinList.push(folder);
-			pinsToFind.delete(id);
-		}
-	}
-	var folderList = makeFolderList(tree, perFolder).list;
 	var folderListAutoNav = ({
 		Chrome(navTree) {
 			var autoOpenThese = new Set(["1", "2"]);
@@ -79,8 +74,21 @@ Promise.all([
 			}
 		},
 	})[browserName];
+
+	var pinList = [], pinsToFind = new Set( readStore(stores.pins) );
+	function perFolder(folder, node) {
+		var {id} = folder;
+		folderBookmarkNodes.set(id, node);
+		if (pinsToFind.has(id)) {
+			pinList.push(folder);
+			pinsToFind.delete(id);
+		}
+	}
+	var folderList = makeFolderList(tree, perFolder).list;
 	uiRoot.$set({pinList, folderList, folderListAutoNav});
 	if (pinsToFind.size) { uiRoot.$set({missingPins: pinsToFind}); }
+	set("folderCache", folderList, cacheStore);
+	chrome.alarms.create("clearCache", {delayInMinutes: 15});
 });
 function makeFolderList(tree, perFolder) {
 	var list = [], hasChildBookmarks = false, hasDescendantBookmarks = false;
