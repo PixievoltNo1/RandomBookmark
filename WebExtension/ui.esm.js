@@ -1,16 +1,43 @@
 import chooseBookmark from './bookmarkSelection.esm.js';
+import l10n from "./l10nStore.esm.js";
 import { stores, ready as storageReady } from './storage.esm.js';
 import UiRoot from './svelte/UiRoot.svelte';
 import sniffBrowser from './sniffBrowser.esm.js';
-import { get as readStore } from 'svelte/store';
+import { writable, get as readStore } from 'svelte/store';
 import { set as idbSet, get as idbGet, Store as IdbKeyvalStore } from "idb-keyval";
+import sweetalert from "SweetAlert2";
 
 var folderBookmarkNodes = new Map();
 var uiRoot = new UiRoot({ target: document.body });
 var cacheStore = new IdbKeyvalStore("cache", "keyval");
-export function onChosen({id, andSubfolders}) {
+export var bookmarksReady = writable(false);
+export async function onChosen({id, andSubfolders}) {
 	var node = folderBookmarkNodes.get(id);
+	if ( !readStore(bookmarksReady) ) {
+		sweetalert.fire({
+			text: readStore(l10n)("wait"),
+			showConfirmButton: false,
+			allowEscapeKey: false,
+			allowOutsideClick: false,
+		});
+		await new Promise( (resolve) => {
+			var unsubscribe = bookmarksReady.subscribe( (value) => {
+				if (value) {
+					unsubscribe();
+					resolve();
+				};
+			} );
+		} );
+	}
 	var bookmark = chooseBookmark(node, andSubfolders);
+	if (!bookmark) {
+		sweetalert.fire({
+			animation: false,
+			text: readStore(l10n)("noBookmarksFound"),
+			confirmButtonText: readStore(l10n)("ok"),
+		});
+		return;
+	}
 	chrome.tabs.create({url: bookmark.url});
 	window.close();
 }
@@ -47,16 +74,8 @@ browserCheck.then((browserName) => {
 		},
 	})[browserName];
 	if (browserDisplayHelper) { browserDisplayHelper(); }
-});
-var bookmarksFetch = new Promise( (resolve) => {
-	chrome.bookmarks.getTree( ([tree]) => { resolve(tree); } );
-} );
-Promise.all([
-	bookmarksFetch,
-	browserCheck,
-	storageReady
-]).then(([tree, browserName]) => {
-	var folderListAutoNav = ({
+	
+	uiRoot.$set({folderListAutoNav: ({
 		Chrome(navTree) {
 			var autoOpenThese = new Set(["1", "2"]);
 			for (let navNode of navTree) {
@@ -73,8 +92,16 @@ Promise.all([
 				}
 			}
 		},
-	})[browserName];
-
+	})[browserName]})
+});
+var bookmarksFetch = new Promise( (resolve) => {
+	chrome.bookmarks.getTree( ([tree]) => { resolve(tree); } );
+} );
+Promise.all([
+	bookmarksFetch,
+	browserCheck,
+	storageReady
+]).then(([tree]) => {
 	var pinList = [], pinsToFind = new Set( readStore(stores.pins) );
 	function perFolder(folder, node) {
 		var {id} = folder;
@@ -85,9 +112,10 @@ Promise.all([
 		}
 	}
 	var folderList = makeFolderList(tree, perFolder).list;
-	uiRoot.$set({pinList, folderList, folderListAutoNav});
+	uiRoot.$set({pinList, folderList});
+	bookmarksReady.set(true);
 	if (pinsToFind.size) { uiRoot.$set({missingPins: pinsToFind}); }
-	set("folderCache", folderList, cacheStore);
+	idbSet("folderCache", folderList, cacheStore);
 	chrome.alarms.create("clearCache", {delayInMinutes: 15});
 });
 function makeFolderList(tree, perFolder) {
