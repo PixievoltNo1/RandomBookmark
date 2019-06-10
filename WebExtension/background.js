@@ -18,7 +18,3 @@ chrome.alarms.onAlarm.addListener( ({name}) => {
 		indexedDB.deleteDatabase("cache");
 	}
 } );
-
-if (browser && browser.menus && Object.values(browser.menus.ContextType).includes("bookmark")) {
-	import("./contextMenu.module.js");
-}
