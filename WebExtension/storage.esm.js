@@ -9,7 +9,7 @@ var exportedStores = Object.assign({}, stores, {
 	pins: writableDerived(
 		stores.pins,
 		(pinsArray) => { return new Set(pinsArray); },
-		({reflecting}) => { return [...reflecting]; },
+		(pinsSet) => { return [...pinsSet]; },
 	),
 });
 export { exportedStores as default, exportedStores as stores, ready };
