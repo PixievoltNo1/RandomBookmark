@@ -3,7 +3,7 @@ import l10n from "../l10nStore.esm.js";
 import { ready } from "../storage.esm.js";
 import FolderTree from './FolderTree.svelte';
 import Options from './Options.svelte';
-import { cleanPins } from "../ui.esm.js";
+import { bookmarksReady, cleanPins } from "../ui.esm.js";
 
 export let folderList, pinList;
 export let folderListAutoNav;
@@ -23,18 +23,16 @@ var showOptions = false;
 	<h1>
 		{$l10n("pinHeader")}
 		{#if pinsDirty}
-			<div id="pinsOutdated">{$l10n("pinsOutdated")}</div>
+			<div class="headerExtra" id="pinsOutdated">{$l10n("pinsOutdated")}</div>
 		{/if}
 	</h1>
-	{#if !pinList}
-		<div class="loading">{$l10n("loading")}</div>
-	{:else if !pinList.length}
+	{#if pinList && !pinList.length}
 		<div id="noPins">
 			{pinHelpParts[0]}
 			<img src="images/iconmonstr-pin-1.svg" width="18" height="18" alt="{$l10n('pin')}">
 			{pinHelpParts[1]}
 		</div>
-	{:else}
+	{:else if pinList}
 		<FolderTree list="{pinList}"/>
 	{/if}
 	{#if missingPins}
@@ -45,7 +43,12 @@ var showOptions = false;
 			</button>
 		</div>
 	{/if}
-	<h1>{$l10n("allFoldersHeader")}</h1>
+	<h1>
+		{$l10n("allFoldersHeader")}
+		{#if folderList && !$bookmarksReady}
+			<div class="headerExtra">{$l10n("refreshing")}</div>
+		{/if}
+	</h1>
 	{#if !folderList}
 		<div class="loading">{$l10n("loading")}</div>
 	{:else}

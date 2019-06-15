@@ -8,7 +8,6 @@ import { set as idbSet, get as idbGet, Store as IdbKeyvalStore } from "idb-keyva
 import sweetalert from "SweetAlert2";
 
 var folderBookmarkNodes = new Map();
-var uiRoot = new UiRoot({ target: document.body });
 var cacheStore = new IdbKeyvalStore("cache", "keyval");
 export var bookmarksReady = writable(false);
 export async function onChosen({id, andSubfolders}) {
@@ -55,6 +54,7 @@ export function cleanPins(missingPins) {
 	stores.pins.set(pins);
 	uiRoot.$set({missingPins: null});
 }
+var uiRoot = new UiRoot({ target: document.body });
 var adaptToBrowser = (async function(browserName) {
 	var browserName = await sniffBrowser();
 

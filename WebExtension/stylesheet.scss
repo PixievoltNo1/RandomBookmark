@@ -86,7 +86,7 @@ body {
 			bgRect($pos: 0 bottom, $size: calc(100% - 2px) 4px, $color: var(--bar-color));
 	}
 }
-#pinsOutdated {
+.headerExtra {
 	font-size: 14px;
 	background: var(--bar-color);
 	border-radius: 20px;
