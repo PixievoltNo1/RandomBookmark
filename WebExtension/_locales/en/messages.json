@@ -8,6 +8,7 @@
 		"description": "Appears for keyboard users"
 	},
 	"loading": { "message": "Loading..." },
+	"refreshing": { "message": "Refreshing..." },
 	"pinHeader": { "message": "Pinned" },
 	"pinsOutdated": { "message": "Reopen to update" },
 	"pinHelp": {
@@ -23,6 +24,9 @@
 	"allFoldersHeader": { "message": "All Folders" },
 	"showOptions": { "message": "Show Options" },
 	"closeOptions": { "message": "Close Options" },
+	"wait": { "message": "Please wait..." },
+	"noBookmarksFound": { "message": "No bookmarks found." },
+	"ok": { "message": "OK" },
 
 	"searchInFolderAndSubfolders": { "message": "Pick from the selected folder & its subfolders" },
 	"searchInFolderOnly": { "message": "Pick from the selected folder only" },

@@ -12,7 +12,6 @@ var uiRoot = new UiRoot({ target: document.body });
 var cacheStore = new IdbKeyvalStore("cache", "keyval");
 export var bookmarksReady = writable(false);
 export async function onChosen({id, andSubfolders}) {
-	var node = folderBookmarkNodes.get(id);
 	if ( !readStore(bookmarksReady) ) {
 		sweetalert.fire({
 			text: readStore(l10n)("wait"),
@@ -29,6 +28,7 @@ export async function onChosen({id, andSubfolders}) {
 			} );
 		} );
 	}
+	var node = folderBookmarkNodes.get(id);
 	var bookmark = chooseBookmark(node, andSubfolders);
 	if (!bookmark) {
 		sweetalert.fire({
@@ -55,8 +55,9 @@ export function cleanPins(missingPins) {
 	stores.pins.set(pins);
 	uiRoot.$set({missingPins: null});
 }
-var browserCheck = sniffBrowser();
-browserCheck.then((browserName) => {
+var adaptToBrowser = (async function(browserName) {
+	var browserName = await sniffBrowser();
+
 	var browserDisplayHelper = ({
 		Chrome() {
 			// Workaround for CSS body { overflow: hidden; } not working correctly
@@ -74,7 +75,7 @@ browserCheck.then((browserName) => {
 		},
 	})[browserName];
 	if (browserDisplayHelper) { browserDisplayHelper(); }
-	
+
 	uiRoot.$set({folderListAutoNav: ({
 		Chrome(navTree) {
 			var autoOpenThese = new Set(["1", "2"]);
@@ -93,15 +94,18 @@ browserCheck.then((browserName) => {
 			}
 		},
 	})[browserName]})
-});
+})();
 var bookmarksFetch = new Promise( (resolve) => {
 	chrome.bookmarks.getTree( ([tree]) => { resolve(tree); } );
 } );
-Promise.all([
-	bookmarksFetch,
-	browserCheck,
-	storageReady
-]).then(([tree]) => {
+var cacheFetch = idbGet("folderCache", cacheStore);
+(async function() {
+	await Promise.all([adaptToBrowser, storageReady]);
+	var cache = await cacheFetch;
+	if (cache) {
+		uiRoot.$set({folderList: cache});
+	}
+	var tree = await bookmarksFetch;
 	var pinList = [], pinsToFind = new Set( readStore(stores.pins) );
 	function perFolder(folder, node) {
 		var {id} = folder;
@@ -117,7 +121,7 @@ Promise.all([
 	if (pinsToFind.size) { uiRoot.$set({missingPins: pinsToFind}); }
 	idbSet("folderCache", folderList, cacheStore);
 	chrome.alarms.create("clearCache", {delayInMinutes: 15});
-});
+})();
 function makeFolderList(tree, perFolder) {
 	var list = [], hasChildBookmarks = false, hasDescendantBookmarks = false;
 	for (let bookmarkNode of tree.children) {

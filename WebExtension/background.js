@@ -13,6 +13,12 @@ chrome.runtime.onInstalled.addListener(async function({reason}) {
 	}
 });
 
+chrome.runtime.onInstalled.addListener( () => {
+	indexedDB.deleteDatabase("cache");
+} );
+chrome.runtime.onStartup.addListener( () => {
+	indexedDB.deleteDatabase("cache");
+} );
 chrome.alarms.onAlarm.addListener( ({name}) => {
 	if (name == "clearCache") {
 		indexedDB.deleteDatabase("cache");
