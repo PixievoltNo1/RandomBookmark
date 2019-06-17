@@ -2,7 +2,7 @@
 import l10n from "../l10nStore.esm.js";
 import storage from "../storage.esm.js";
 
-var { searchIn, showAndSubfolders } = storage;
+var { searchIn, showAndSubfolders, openInNewTab } = storage;
 $: if ($searchIn != "folderOnly") {
 	$showAndSubfolders = false;
 }
@@ -26,3 +26,7 @@ $: if ($searchIn != "folderOnly") {
 		</ul>
 	</li>
 </ul>
+<label>
+	<input type="checkbox" bind:checked="{$openInNewTab}">
+	{$l10n("openInNewTab")}
+</label>

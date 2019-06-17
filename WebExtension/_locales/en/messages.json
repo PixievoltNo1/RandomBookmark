@@ -30,5 +30,6 @@
 
 	"searchInFolderAndSubfolders": { "message": "Pick from the selected folder & its subfolders" },
 	"searchInFolderOnly": { "message": "Pick from the selected folder only" },
-	"showAndSubfolders": { "message": "Show \"and its subfolders\" button" }
+	"showAndSubfolders": { "message": "Show \"and its subfolders\" button" },
+	"openInNewTab": { "message": "Open bookmark in a new tab" }
 }

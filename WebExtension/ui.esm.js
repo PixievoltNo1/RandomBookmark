@@ -5,14 +5,14 @@ import UiRoot from './svelte/UiRoot.svelte';
 import sniffBrowser from './sniffBrowser.esm.js';
 import { writable, get as readStore } from 'svelte/store';
 import { set as idbSet, get as idbGet, Store as IdbKeyvalStore } from "idb-keyval";
-import sweetalert from "SweetAlert2";
+import sweetAlert from "SweetAlert2";
 
 var folderBookmarkNodes = new Map();
 var cacheStore = new IdbKeyvalStore("cache", "keyval");
 export var bookmarksReady = writable(false);
 export async function onChosen({id, andSubfolders}) {
 	if ( !readStore(bookmarksReady) ) {
-		sweetalert.fire({
+		sweetAlert.fire({
 			text: readStore(l10n)("wait"),
 			showConfirmButton: false,
 			allowEscapeKey: false,
@@ -30,15 +30,29 @@ export async function onChosen({id, andSubfolders}) {
 	var node = folderBookmarkNodes.get(id);
 	var bookmark = chooseBookmark(node, andSubfolders);
 	if (!bookmark) {
-		sweetalert.fire({
+		sweetAlert.fire({
 			animation: false,
 			text: readStore(l10n)("noBookmarksFound"),
 			confirmButtonText: readStore(l10n)("ok"),
 		});
 		return;
 	}
-	chrome.tabs.create({url: bookmark.url});
-	window.close();
+	if ( readStore(stores.openInNewTab) ) {
+		chrome.tabs.create({url: bookmark.url}, checkForError);
+	} else {
+		chrome.tabs.update({url: bookmark.url}, checkForError);
+	}
+	function checkForError() {
+		if ( !chrome.runtime.lastError ) {
+			window.close();
+		} else {
+			sweetAlert.fire({
+				animation: !sweetAlert.isVisible(),
+				text: readStore(l10n)("couldntOpen") + "\n" + bookmark.url,
+				confirmButtonText: readStore(l10n)("ok"),
+			});
+		}
+	}
 }
 export function onTogglePin(id, on) {
 	var pins = readStore(stores.pins);

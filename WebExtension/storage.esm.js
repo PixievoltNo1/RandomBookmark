@@ -4,6 +4,7 @@ var { stores, ready } = webextStorageAdapter({
 	pins: [],
 	searchIn: "folderAndSubfolders",
 	showAndSubfolders: false,
+	openInNewTab: true,
 });
 var exportedStores = Object.assign({}, stores, {
 	pins: writableDerived(
