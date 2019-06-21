@@ -35,7 +35,7 @@ var showOptions = false;
 	{:else if pinList}
 		<FolderTree list="{pinList}"/>
 	{/if}
-	{#if missingPins}
+	{#if missingPins && missingPins.size}
 		<div id="missingPins">
 			{$l10n("missingPins", [missingPins.size])}
 			<button type="button" id="cleanPins" on:click="{ () => cleanPins(missingPins) }">

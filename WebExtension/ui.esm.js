@@ -115,28 +115,22 @@ var bookmarksFetch = new Promise( (resolve) => {
 var cacheFetch = idbGet("folderCache", cacheStore);
 (async function() {
 	await Promise.all([adaptToBrowser, storageReady]);
+
 	var cache = await cacheFetch;
 	if (cache) {
-		uiRoot.$set({folderList: cache});
+		let {pinList} = findPins(cache); // deliberately ignoring missingPins
+		uiRoot.$set({folderList: cache, pinList});
 	}
+
 	var tree = await bookmarksFetch;
-	var pinList = [], pinsToFind = new Set( readStore(stores.pins) );
-	function perFolder(folder, node) {
-		var {id} = folder;
-		folderBookmarkNodes.set(id, node);
-		if (pinsToFind.has(id)) {
-			pinList.push(folder);
-			pinsToFind.delete(id);
-		}
-	}
-	var folderList = makeFolderList(tree, perFolder).list;
-	uiRoot.$set({pinList, folderList});
+	var folderList = makeFolderList(tree).list;
+	var {pinList, missingPins} = findPins(folderList);
+	uiRoot.$set({pinList, folderList, missingPins});
 	bookmarksReady.set(true);
-	if (pinsToFind.size) { uiRoot.$set({missingPins: pinsToFind}); }
 	idbSet("folderCache", folderList, cacheStore);
 	chrome.alarms.create("clearCache", {delayInMinutes: 15});
 })();
-function makeFolderList(tree, perFolder) {
+function makeFolderList(tree) {
 	var list = [], hasChildBookmarks = false, hasDescendantBookmarks = false;
 	for (let bookmarkNode of tree.children) {
 		if (bookmarkNode.type == "separator") {
@@ -153,10 +147,10 @@ function makeFolderList(tree, perFolder) {
 			if (bookmarkNode.url) { hasChildBookmarks = hasDescendantBookmarks = true; }
 			continue;
 		}
-		let folderData = makeFolderList(bookmarkNode, perFolder);
+		let folderData = makeFolderList(bookmarkNode);
 		folderData.id = bookmarkNode.id;
 		folderData.title = bookmarkNode.title;
-		perFolder(folderData, bookmarkNode);
+		folderBookmarkNodes.set(bookmarkNode.id, bookmarkNode);
 		list.push(folderData);
 		if (folderData.hasDescendantBookmarks) {
 			hasDescendantBookmarks = true;
@@ -166,4 +160,24 @@ function makeFolderList(tree, perFolder) {
 		list.pop();
 	}
 	return {list, hasChildBookmarks, hasDescendantBookmarks};
+}
+function findPins(folderList) {
+	var pinList = [], pinsToFind = new Set( readStore(stores.pins) );
+	function* allFolders(list) {
+		for (let folder of list) {
+			if (folder.separator) { continue; }
+			yield folder;
+			yield* allFolders(folder.list);
+		}
+	};
+	for (let folder of allFolders(folderList)) {
+		if (!pinsToFind.size) {
+			break;
+		}
+		if (pinsToFind.has(folder.id)) {
+			pinList.push(folder);
+			pinsToFind.delete(folder.id);
+		}
+	}
+	return {pinList, missingPins: pinsToFind};
 }
