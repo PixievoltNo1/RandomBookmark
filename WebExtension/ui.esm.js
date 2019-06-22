@@ -75,10 +75,11 @@ var adaptToBrowser = (async function(browserName) {
 	var browserDisplayHelper = ({
 		Chrome() {
 			// Workaround for CSS body { overflow: hidden; } not working correctly
-			getComputedStyle(document.body).height; // force layout
-			document.body.style.height = "auto";
-
-			document.getElementById("optionsPane").style.paddingBottom = "4px";
+			var body = document.body, flexContainer = document.getElementById("flexContainer");
+			getComputedStyle(body).height; // force layout
+			var maxWindowSize = window.innerHeight;
+			// Minus-1 needed to ensure the scrollbar is banished
+			body.style.height = flexContainer.style.height = `${maxWindowSize - 1}px`;
 		},
 		Firefox: async function() {
 			// Workaround for cutoff when ui.html is shown in the overflow menu
