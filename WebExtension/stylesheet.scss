@@ -107,7 +107,8 @@ ul {
 .separator {
 	height: 3px;
 	border-radius: 1.5px;
-	background: black;
+	margin: 3px 32px;
+	background: hsl(206, 80%, 70%);
 }
 .folderNode {
 	display: grid;
