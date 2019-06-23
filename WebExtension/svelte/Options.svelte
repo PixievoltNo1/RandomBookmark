@@ -8,7 +8,7 @@ $: if ($searchIn != "folderOnly") {
 }
 </script>
 
-<ul class="multiChoice">
+<ul class="optionsGroup">
 	<li><label>
 		<input type="radio" name="searchIn" value="folderAndSubfolders" bind:group="{$searchIn}">
 		{$l10n("searchInFolderAndSubfolders")}
@@ -26,7 +26,9 @@ $: if ($searchIn != "folderOnly") {
 		</ul>
 	</li>
 </ul>
-<label>
-	<input type="checkbox" bind:checked="{$openInNewTab}">
-	{$l10n("openInNewTab")}
-</label>
+<div class="optionsGroup">
+	<label>
+		<input type="checkbox" bind:checked="{$openInNewTab}">
+		{$l10n("openInNewTab")}
+	</label>
+</div>
