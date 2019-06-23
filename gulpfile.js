@@ -9,7 +9,7 @@ var sassSrc = ["./WebExtension/**/*.scss"];
 function compileSass() {
 	return gulp.src(sassSrc, {base: "./WebExtension/"})
 		.pipe(sourcemaps.init())
-		.pipe(sass().on('error', sass.logError))
+		.pipe(sass({includePaths: ["node_modules"]}).on('error', sass.logError))
 		.pipe(sourcemaps.write('./', {
 			includeContent: false,
 			sourceMappingURLPrefix: fileUrl("WebExtension/build"),

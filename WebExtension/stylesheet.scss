@@ -43,6 +43,7 @@ body {
 		transform: rotate(.25turn);
 	}
 }
+
 #menu {
 	flex: 1 1 auto;
 	padding: 6px;
@@ -195,6 +196,9 @@ $folderIconSpace: 18px;
 	margin-top: 1px;
 	margin-bottom: -1px;
 }
+
+@import "SweetAlert2/src/sweetalert2.scss";
+
 #optionsPane {
 	flex: none;
     background: hsl(281, 100%, 90%);
