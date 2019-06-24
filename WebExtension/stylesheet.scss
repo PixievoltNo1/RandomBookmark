@@ -43,6 +43,25 @@ body {
 		transform: rotate(.25turn);
 	}
 }
+%loading {
+	display: flex;
+	&::before {
+		display: inline-block;
+		align-self: center;
+		content: "";
+		background: url(/images/spinner.svg);
+		background-size: contain;
+		animation: loadingSpin 0.9s infinite linear;
+	}
+}
+@keyframes loadingSpin {
+	0% {
+		transform: rotate(0);
+	}
+	100% {
+		transform: rotate(1turn);
+	}
+}
 
 #menu {
 	flex: 1 1 auto;
@@ -94,11 +113,29 @@ body {
 	padding: 0 9px;
 	margin-left: 8px;
 }
+.refreshing {
+	@extend %loading;
+	&::before {
+		width: 12px;
+		height: 12px;
+		margin-right: 3px;
+	}
+}
 #noPins {
 	font-size: 14px;
 }
 #cleanPins {
 	@extend %linklike;
+}
+.loading {
+	margin: 6px;
+	font-size: 26px;
+	@extend %loading;
+	&::before {
+		width: 26px;
+		height: 26px;
+		margin-right: 6px;
+	}
 }
 ul {
 	list-style: none;

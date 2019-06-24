@@ -46,7 +46,7 @@ var showOptions = false;
 	<h1>
 		{$l10n("allFoldersHeader")}
 		{#if folderList && !$bookmarksReady}
-			<div class="headerExtra">{$l10n("refreshing")}</div>
+			<div class="headerExtra refreshing">{$l10n("refreshing")}</div>
 		{/if}
 	</h1>
 	{#if !folderList}
