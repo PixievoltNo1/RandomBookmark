@@ -33,9 +33,8 @@ gulp.task("makeRelease", gulp.series(
 				"./WebExtension/**/*.esm.js",
 				"./WebExtension/**/*.svelte"
 			];
-			var exclusions = ["./WebExtension/build/**/*", ...sassSrc, ...srcForWebpack]
-				.map((excludeMe) => { return "!" + excludeMe; });
-			return gulp.src(["./WebExtension/**/*", ...exclusions])
+			var exclusions = ["./WebExtension/build/**/*", ...sassSrc, ...srcForWebpack];
+			return gulp.src(["./WebExtension/**/*"], {ignore: exclusions, nodir: true})
 				.pipe(gulp.dest("./release/"));
 		},
 		function runWebpack() {
