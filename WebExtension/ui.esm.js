@@ -14,6 +14,11 @@ export async function onChosen({id, andSubfolders}) {
 	if ( !readStore(bookmarksReady) ) {
 		sweetAlert.fire({
 			text: readStore(l10n)("wait"),
+			customClass: {
+				container: "modalContainer",
+				popup: "modal",
+				content: "modalContent wait",
+			},
 			showConfirmButton: false,
 			allowEscapeKey: false,
 			allowOutsideClick: false,
@@ -34,6 +39,11 @@ export async function onChosen({id, andSubfolders}) {
 			animation: false,
 			text: readStore(l10n)("noBookmarksFound"),
 			confirmButtonText: readStore(l10n)("ok"),
+			customClass: {
+				container: "modalContainer",
+				popup: "modal",
+				content: "modalContent",
+			},
 		});
 		return;
 	}
