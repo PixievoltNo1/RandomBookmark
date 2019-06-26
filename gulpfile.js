@@ -29,8 +29,8 @@ gulp.task("makeRelease", gulp.series(
 	gulp.parallel(
 		function copyNonBuilt() {
 			var srcForWebpack = [
-				"./WebExtension/**/*.module.js",
-				"./WebExtension/**/svelteComponents{,/**/*}"
+				"./WebExtension/**/*.esm.js",
+				"./WebExtension/**/*.svelte"
 			];
 			var exclusions = ["./WebExtension/build/**/*", ...sassSrc, ...srcForWebpack]
 				.map((excludeMe) => { return "!" + excludeMe; });
