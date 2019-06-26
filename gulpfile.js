@@ -6,10 +6,11 @@ var del = require('del');
 var spawn = require('cross-spawn');
 
 var sassSrc = ["./WebExtension/**/*.scss"];
+var sassConfig = { includePaths: ["node_modules"] };
 function compileSass() {
 	return gulp.src(sassSrc, {base: "./WebExtension/"})
 		.pipe(sourcemaps.init())
-		.pipe(sass({includePaths: ["node_modules"]}).on('error', sass.logError))
+		.pipe(sass(sassConfig).on('error', sass.logError))
 		.pipe(sourcemaps.write('./', {
 			includeContent: false,
 			sourceMappingURLPrefix: fileUrl("WebExtension/build"),
@@ -42,7 +43,7 @@ gulp.task("makeRelease", gulp.series(
 		},
 		function compileSassForRelease() {
 			return gulp.src(sassSrc)
-				.pipe(sass())
+				.pipe(sass(sassConfig))
 				.pipe(gulp.dest("./release/build/"));
 		}
 	)
