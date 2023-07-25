@@ -8,19 +8,19 @@ This project has a Code of Conduct. By participating in this project, you agree 
 
 # Writing & testing Random Bookmark From Folder
 
-This project has a build process employing [ES6 modules](https://hacks.mozilla.org/2015/08/es6-in-depth-modules/) (\*.esm.js), [Svelte](https://svelte.technology/) templates (\*.svelte), and [Sass](http://sass-lang.com/) files (\*.scss) to generate JavaScript and CSS. With [Node](https://nodejs.org/) installed, run this command the first time you obtain this repo's files to fetch everything you need:
+This project has a build process that converts [Svelte](https://svelte.technology/) templates (\*.svelte) and [Sass](http://sass-lang.com/) files (\*.scss) to JavaScript and CSS, and optimizes the whole project. With [Node](https://nodejs.org/) installed, run this command the first time you obtain this repo's files to fetch everything you need:
 
 ```
 npm install
 ```
 
-With that done, keep the following command running as you work. It'll generate the extension's *.bundle.js and *.css files, and keep them up-to-date whenever the files they depend on change.
+With that done, keep the following command running as you work. It'll generate a WebExtension-runnable folder.
 
 ```
 npm run watch
 ```
 
-And finally, to load the extension in your browser:
+And finally, to load the WebExtension-runnable folder in your browser:
 
 * Firefox: https://developer.mozilla.org/en-US/Add-ons/WebExtensions/Temporary_Installation_in_Firefox
 * Chrome: https://developer.chrome.com/extensions/getstarted#unpacked
@@ -32,4 +32,4 @@ If you'd like to do a one-off build without watching for file changes:
 npm run build
 ```
 
-And if you'd like to modify the build process, check with [Webpack](https://webpack.js.org/) and [Gulp](https://github.com/gulpjs/gulp/tree/master/docs) for the docs on webpack.config.js and gulpfile.js.
+And if you'd like to modify the build process, see [Parcel's documentation](https://parceljs.org/docs/).

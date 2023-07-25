@@ -1,3 +1,6 @@
+<script context="module">
+const PIN_IMG = String(new URL("../images/iconmonstr-pin-1.svg", import.meta.url));
+</script>
 <script>
 import l10n from "../l10nStore.esm.js";
 import { ready } from "../storage.esm.js";
@@ -29,7 +32,7 @@ var showOptions = false;
 	{#if pinList && !pinList.length}
 		<div id="noPins">
 			{pinHelpParts[0]}
-			<img src="images/iconmonstr-pin-1.svg" width="18" height="18" alt="{$l10n('pin')}">
+			<img src={PIN_IMG} width="18" height="18" alt="{$l10n('pin')}">
 			{pinHelpParts[1]}
 		</div>
 	{:else if pinList}

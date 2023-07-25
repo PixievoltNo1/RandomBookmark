@@ -33,7 +33,7 @@
 	},
 
 	"permissions": ["storage", "bookmarks", "alarms"],
-	"minimum_chrome_version": "58",
+	"minimum_chrome_version": "61",
 	"applications": {
 		"gecko": {
 			"id": "randombookmark@pikadudeno1.com",

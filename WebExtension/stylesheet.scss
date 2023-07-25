@@ -36,7 +36,7 @@ body {
 		content: "";
 		width: 8px;
 		height: 16px;
-		background: url(/images/expander.svg);
+		background: url(images/expander.svg);
 		background-size: contain;
 	}
 	&.expanded::before {
@@ -49,7 +49,7 @@ body {
 		display: inline-block;
 		align-self: center;
 		content: "";
-		background: url(/images/spinner.svg);
+		background: url(images/spinner.svg);
 		background-size: contain;
 		animation: spin 0.9s infinite linear;
 	}
@@ -172,7 +172,7 @@ $folderIconSpace: 18px;
 	padding-left: $folderIconSpace;
 	padding-right: 2px;
 	white-space: nowrap;
-	background: url(/images/folder.svg) no-repeat left;
+	background: url(images/folder.svg) no-repeat left;
 	@extend %linklike;
 }
 .andSubfolders {
@@ -194,7 +194,7 @@ $folderIconSpace: 18px;
 .pin {
 	grid-column: 3;
 	grid-row: 1;
-	background: url(/images/iconmonstr-pin-1.svg) no-repeat center;
+	background: url(images/iconmonstr-pin-1.svg) no-repeat center;
 	background-size: 18px;
 	border: 1px solid;
 	&:active {
@@ -202,7 +202,7 @@ $folderIconSpace: 18px;
 		background-color: hsla(0, 0%, 80%, 1);
 	}
 	&.pinned {
-		background-image: url(/images/iconmonstr-pin-6.svg);
+		background-image: url(images/iconmonstr-pin-6.svg);
 		border-color: hsla(210, 100%, 50%, 1);
 		background-color: hsla(210, 100%, 95%, 1);
 	}

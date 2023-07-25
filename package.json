@@ -1,24 +1,32 @@
 {
   "scripts": {
-    "build": "concurrently -n \"webpack,gulp\" -c \"cyan.bold,red.bold\" \"webpack\" \"gulp build\"",
-    "watch": "concurrently -n \"webpack,gulp\" -c \"cyan.bold,red.bold\" --kill-others \"webpack --watch\" \"gulp watch\"",
-    "makeRelease": "gulp makeRelease"
+    "build": "parcel build --target=development --no-optimize",
+    "watch": "parcel watch --target=development --host localhost",
+    "makeRelease": "parcel build --target=release"
+  },
+  "source": "WebExtension/manifest.json",
+  "browserslist": "Chrome >= 61, Firefox >= 60",
+  "targets": {
+    "development": {
+      "distDir": "WebExtension-runnable"
+    },
+    "release": {
+      "distDir": "release",
+      "sourceMap": false
+    }
   },
   "devDependencies": {
-    "concurrently": "^3.5.1",
-    "cross-spawn": "^6.0.5",
-    "del": "^3.0.0",
-    "file-url": "^2.0.2",
-    "gulp": "^4.0.2",
-    "gulp-sass": "^4.0.2",
-    "gulp-sourcemaps": "^2.6.5",
+    "@parcel/config-webextension": "^2.9.3",
+    "@parcel/transformer-sass": "^2.9.3",
     "idb-keyval": "^3.2.0",
-    "svelte": "^3.4.4",
-    "svelte-loader": "^2.13.4",
+    "parcel": "^2.9.3",
+    "parcel-transformer-svelte3-plus": "^0.2.9",
+    "svelte": "^4.1.1",
     "svelte-webext-storage-adapter": "^1.0.0",
     "svelte-writable-derived": "^2.0.1",
-    "sweetalert2": "^8.12.0",
-    "webpack": "4.28.4",
-    "webpack-cli": "^3.3.2"
+    "sweetalert2": "^8.19.1"
+  },
+  "@parcel/resolver-default": {
+    "packageExports": true
   }
 }

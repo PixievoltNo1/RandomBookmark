@@ -1,4 +1,4 @@
 node_modules/
-WebExtension/build/
+.parcel-cache/
+WebExtension-runnable/
 release/
-npm-debug.log
