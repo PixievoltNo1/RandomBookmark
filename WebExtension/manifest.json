@@ -33,11 +33,11 @@
 	},
 
 	"permissions": ["storage", "bookmarks", "alarms"],
-	"minimum_chrome_version": "61",
+	"minimum_chrome_version": "84",
 	"applications": {
 		"gecko": {
 			"id": "randombookmark@pikadudeno1.com",
-			"strict_min_version": "60.0"
+			"strict_min_version": "101.0"
 		}
 	},
 	"manifest_version": 2

@@ -4,11 +4,11 @@ import { stores, ready as storageReady } from './storage.esm.js';
 import UiRoot from './svelte/UiRoot.svelte';
 import sniffBrowser from './sniffBrowser.esm.js';
 import { writable, get as readStore } from 'svelte/store';
-import { set as idbSet, get as idbGet, Store as IdbKeyvalStore } from "idb-keyval";
+import { set as idbSet, get as idbGet, createStore as idbCreateStore } from "idb-keyval";
 import sweetAlert from "SweetAlert2/dist/sweetalert2.js";
 
 var folderBookmarkNodes = new Map();
-var cacheStore = new IdbKeyvalStore("cache", "keyval");
+var cacheStore = idbCreateStore("cache", "keyval");
 export var bookmarksReady = writable(false);
 export async function onChosen({id, andSubfolders}) {
 	if ( !readStore(bookmarksReady) ) {

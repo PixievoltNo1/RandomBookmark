@@ -5,7 +5,7 @@
     "makeRelease": "parcel build --target=release"
   },
   "source": "WebExtension/manifest.json",
-  "browserslist": "Chrome >= 61, Firefox >= 60",
+  "browserslist": "Chrome >= 84, Firefox >= 101",
   "targets": {
     "development": {
       "distDir": "WebExtension-runnable"
@@ -18,12 +18,12 @@
   "devDependencies": {
     "@parcel/config-webextension": "^2.9.3",
     "@parcel/transformer-sass": "^2.9.3",
-    "idb-keyval": "^3.2.0",
+    "idb-keyval": "^6.2.1",
     "parcel": "^2.9.3",
     "parcel-transformer-svelte3-plus": "^0.2.10",
     "svelte": "^4.1.1",
-    "svelte-webext-storage-adapter": "^1.0.0",
-    "svelte-writable-derived": "^2.0.1",
+    "svelte-webext-storage-adapter": "^3.0.1",
+    "svelte-writable-derived": "^3.1.0",
     "sweetalert2": "^8.19.1"
   },
   "@parcel/resolver-default": {

@@ -1,6 +1,6 @@
 import webextStorageAdapter from "svelte-webext-storage-adapter";
 import writableDerived from "svelte-writable-derived";
-var { stores, ready } = webextStorageAdapter({
+var { stores, ready } = webextStorageAdapter("sync", {
 	pins: [],
 	searchIn: "folderAndSubfolders",
 	showAndSubfolders: false,
