@@ -16,14 +16,14 @@
     }
   },
   "devDependencies": {
-    "@parcel/config-webextension": "^2.9.3",
-    "@parcel/transformer-sass": "^2.9.3",
+    "@parcel/config-webextension": "^2.12.0",
+    "@parcel/transformer-sass": "^2.12.0",
     "idb-keyval": "^6.2.1",
-    "parcel": "^2.9.3",
+    "parcel": "^2.12.0",
     "parcel-transformer-svelte3-plus": "^0.2.10",
-    "svelte": "^4.1.1",
-    "svelte-webext-storage-adapter": "^3.0.1",
-    "svelte-writable-derived": "^3.1.0",
+    "svelte": "^4.2.18",
+    "svelte-webext-storage-adapter": "^3.0.2",
+    "svelte-writable-derived": "^3.1.1",
     "sweetalert2": "^8.19.1"
   },
   "@parcel/resolver-default": {
