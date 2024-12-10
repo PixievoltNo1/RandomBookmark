@@ -1,27 +1,35 @@
 {
   "scripts": {
-    "build": "parcel build --target=development --no-optimize",
-    "watch": "parcel watch --target=development --host localhost",
-    "makeRelease": "parcel build --target=release"
+    "build": "parcel build --no-optimize",
+    "watch": "parcel watch --host localhost",
+    "makeRelease": "parcel build --no-source-maps"
   },
-  "source": "WebExtension/manifest.json",
-  "browserslist": "Chrome >= 84, Firefox >= 101",
   "targets": {
-    "development": {
-      "distDir": "WebExtension-runnable"
+    "chrome": {
+      "source": "WebExtension/manifest.json",
+      "distDir": "build-chrome",
+      "engines": {
+        "browsers": "Chrome >= 88"
+      }
     },
-    "release": {
-      "distDir": "release",
-      "sourceMap": false
+    "firefox": {
+      "source": "WebExtension/manifest.json",
+      "distDir": "build-firefox",
+      "engines": {
+        "browsers": "Firefox >= 109"
+      }
     }
   },
   "devDependencies": {
-    "@parcel/config-webextension": "^2.12.0",
-    "@parcel/transformer-sass": "^2.12.0",
+    "@parcel/config-webextension": "^2.13.2",
+    "@parcel/plugin": "^2.13.2",
+    "@parcel/transformer-sass": "^2.13.2",
     "idb-keyval": "^6.2.1",
-    "parcel": "^2.12.0",
+    "parcel": "^2.13.2",
+    "parcel-reporter-clean-dist": "^1.0.4",
     "parcel-transformer-svelte3-plus": "^0.2.10",
-    "svelte": "^4.2.18",
+    "sass": "^1.82.0",
+    "svelte": "^4.2.19",
     "svelte-webext-storage-adapter": "^3.0.2",
     "svelte-writable-derived": "^3.1.1",
     "sweetalert2": "^8.19.1"

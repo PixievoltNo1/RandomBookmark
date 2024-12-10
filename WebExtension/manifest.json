@@ -2,7 +2,7 @@
 	"name": "__MSG_extName__",
 	"version": "2.1",
 	"description": "__MSG_extDesc__",
-	"author": "Pikadude No. 1",
+	"author": "Pixievolt No. 1",
 	"icons": {
 		"48": "icon/48.png",
 		"128": "icon/128.png"
@@ -33,11 +33,13 @@
 	},
 
 	"permissions": ["storage", "bookmarks", "alarms"],
-	"minimum_chrome_version": "84",
-	"applications": {
-		"gecko": {
-			"id": "randombookmark@pikadudeno1.com",
-			"strict_min_version": "101.0"
+	"~chrome": { "minimum_chrome_version": "88" },
+	"~firefox": {
+		"applications": {
+			"gecko": {
+				"id": "randombookmark@pikadudeno1.com",
+				"strict_min_version": "109.0"
+			}
 		}
 	},
 	"manifest_version": 2

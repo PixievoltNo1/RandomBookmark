@@ -14,17 +14,17 @@ This project has a build process that converts [Svelte](https://svelte.technolog
 npm install
 ```
 
-With that done, keep the following command running as you work. It'll generate a WebExtension-runnable folder.
+With that done, keep the following command running as you work. It'll generate build folders for each browser.
 
 ```
 npm run watch
 ```
 
-And finally, to load the WebExtension-runnable folder in your browser:
+And finally, to load the build folder in your browser:
 
 * Firefox: https://developer.mozilla.org/en-US/Add-ons/WebExtensions/Temporary_Installation_in_Firefox
-* Chrome: https://developer.chrome.com/extensions/getstarted#unpacked
-* Edge: https://docs.microsoft.com/en-us/microsoft-edge/extensions/guides/adding-and-removing-extensions
+* Chrome: https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked
+* Edge (use build-chrome): https://learn.microsoft.com/en-us/microsoft-edge/extensions-chromium/getting-started/extension-sideloading
 
 If you'd like to do a one-off build without watching for file changes:
 

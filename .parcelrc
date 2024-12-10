@@ -1,6 +1,8 @@
 {
 	"extends": "@parcel/config-webextension",
 	"transformers": {
+		"manifest.json": ["./preprocessManifest.mjs", "..."],
 		"*.svelte": ["parcel-transformer-svelte3-plus"]
-	}
+	},
+	"reporters":  ["...", "parcel-reporter-clean-dist"]
 }
