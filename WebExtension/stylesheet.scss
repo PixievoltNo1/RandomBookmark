@@ -230,7 +230,7 @@ $folderIconSpace: 18px;
 	margin-bottom: -1px;
 }
 
-@import "SweetAlert2/src/sweetalert2.scss";
+@import "sweetalert2/src/sweetalert2.scss";
 .modalContainer.modalContainer { /* Doubled specificity to override SweetAlert2 */
 	background: hsla(307, 75%, 80%, 0.6);
 	animation: fadeIn 0.6s ease-out;

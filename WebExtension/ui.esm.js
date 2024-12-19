@@ -5,7 +5,7 @@ import UiRoot from './svelte/UiRoot.svelte';
 import sniffBrowser from './sniffBrowser.esm.js';
 import { writable, get as readStore } from 'svelte/store';
 import { set as idbSet, get as idbGet, createStore as idbCreateStore } from "idb-keyval";
-import sweetAlert from "SweetAlert2/dist/sweetalert2.js";
+import sweetAlert from "sweetalert2/dist/sweetalert2.js";
 
 var folderBookmarkNodes = new Map();
 var cacheStore = idbCreateStore("cache", "keyval");
