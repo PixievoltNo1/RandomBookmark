@@ -5,64 +5,45 @@ import UiRoot from './svelte/UiRoot.svelte';
 import sniffBrowser from './sniffBrowser.esm.js';
 import { writable, get as readStore } from 'svelte/store';
 import { set as idbSet, get as idbGet, createStore as idbCreateStore } from "idb-keyval";
-import sweetAlert from "sweetalert2/dist/sweetalert2.js";
 
 var folderBookmarkNodes = new Map();
 var cacheStore = idbCreateStore("cache", "keyval");
 export var bookmarksReady = writable(false);
 export async function onChosen({id, andSubfolders}) {
 	if ( !readStore(bookmarksReady) ) {
-		sweetAlert.fire({
-			text: readStore(l10n)("wait"),
-			customClass: {
-				container: "modalContainer",
-				popup: "modal",
-				content: "modalContent wait",
-			},
-			showConfirmButton: false,
-			allowEscapeKey: false,
-			allowOutsideClick: false,
+		chrome.runtime.sendMessage({
+			name: "pickBookmark",
+			folderId: id,
+			useSubfolders: andSubfolders,
 		});
-		await new Promise( (resolve) => {
-			var unsubscribe = bookmarksReady.subscribe( (value) => {
-				if (value) {
-					unsubscribe();
-					resolve();
-				};
-			} );
-		} );
+		window.close();
+		return;
 	}
 	var node = folderBookmarkNodes.get(id);
 	var bookmark = chooseBookmark(node, andSubfolders);
 	if (!bookmark) {
-		sweetAlert.fire({
-			animation: false,
-			text: readStore(l10n)("noBookmarksFound"),
-			confirmButtonText: readStore(l10n)("ok"),
-			customClass: {
-				container: "modalContainer",
-				popup: "modal",
-				content: "modalContent",
-			},
-		});
+		alert( readStore(l10n)("noBookmarksFound") );
 		return;
 	}
-	if ( readStore(stores.openInNewTab) ) {
-		chrome.tabs.create({url: bookmark.url}, checkForError);
-	} else {
-		chrome.tabs.update({url: bookmark.url}, checkForError);
-	}
-	function checkForError() {
-		if ( !chrome.runtime.lastError ) {
-			window.close();
+	try {
+		if ( readStore(stores.openInNewTab) ) {
+			await chrome.tabs.create({url: bookmark.url});
 		} else {
-			sweetAlert.fire({
-				animation: !sweetAlert.isVisible(),
-				text: readStore(l10n)("couldntOpen") + "\n" + bookmark.url,
-				confirmButtonText: readStore(l10n)("ok"),
-			});
+			await chrome.tabs.update({url: bookmark.url});
 		}
+	} catch {
+		let tabId = readStore(stores.openInNewTab)
+			? (await chrome.tabs.create({url: "about:blank"})).id
+		    : (await chrome.tabs.query({active: true}))[0].id;
+		chrome.runtime.sendMessage({
+			name: "errorPage",
+			tabId,
+			errorName: "opening not allowed",
+			errorDetails: [bookmark.url],
+		});
+
 	}
+	window.close();
 }
 export function onTogglePin(id, on) {
 	var pins = readStore(stores.pins);
