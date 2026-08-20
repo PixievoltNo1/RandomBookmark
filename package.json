@@ -1,40 +1,25 @@
 {
   "scripts": {
-    "build": "parcel build --no-optimize",
-    "watch": "parcel watch --host localhost",
-    "makeRelease": "parcel build --no-source-maps"
-  },
-  "targets": {
-    "chrome": {
-      "source": "WebExtension/manifest.json",
-      "distDir": "build-chrome",
-      "engines": {
-        "browsers": "Chrome >= 88"
-      }
-    },
-    "firefox": {
-      "source": "WebExtension/manifest.json",
-      "distDir": "build-firefox",
-      "engines": {
-        "browsers": "Firefox >= 109"
-      }
-    }
+    "prebuild": "premove build-firefox build-chrome",
+    "build": "rollup -c",
+    "prewatch": "premove build-firefox build-chrome",
+    "watch": "rollup -c --watch",
+    "makeRelease": "npm run build -- --no-sourcemap"
   },
   "devDependencies": {
-    "@parcel/config-webextension": "^2.16.4",
-    "@parcel/plugin": "^2.13.2",
-    "@parcel/transformer-sass": "^2.16.4",
+    "@guanghechen/rollup-plugin-copy": "^6.1.0",
+    "@rollup/plugin-node-resolve": "^16.0.3",
     "idb-keyval": "^6.3.0",
-    "parcel": "^2.16.4",
-    "parcel-reporter-clean-dist": "^1.0.4",
-    "parcel-transformer-svelte3-plus": "^0.2.10",
+    "premove": "^4.0.0",
+    "rollup": "^4.62.4",
+    "rollup-plugin-styler": "^2.1.0",
+    "rollup-plugin-svelte": "^7.2.3",
     "sass": "^1.102.0",
     "svelte": "^4.2.20",
     "svelte-webext-storage-adapter": "^3.0.2",
-    "svelte-writable-derived": "^3.1.1",
-    "svgo": "^3.3.4"
+    "svelte-writable-derived": "^3.1.1"
   },
-  "@parcel/resolver-default": {
-    "packageExports": true
+  "webExt": {
+    "sourceDir": "build-firefox/"
   }
 }

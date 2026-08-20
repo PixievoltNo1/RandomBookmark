@@ -1,0 +1,38 @@
+{
+	"name": "__MSG_extName__",
+	"version": "2.1.2",
+	"description": "__MSG_extDesc__",
+	"author": "Pixievolt No. 1",
+	"icons": {
+		"48": "icon/48.png",
+		"128": "icon/128.png"
+	},
+	"default_locale": "en",
+
+	"background": {
+		"service_worker": "background.js",
+		"type": "module"
+	},
+	"action": {
+		"default_title": "__MSG_extName__",
+		"default_popup": "ui.html",
+		"default_icon": {
+			"32": "icon/32Die.png",
+			"40": "icon/40Die.png"
+		}
+	},
+	"commands": {
+		"_execute_action": {
+			"suggested_key": {
+				"default": "Ctrl+Shift+F"
+			}
+		}
+	},
+	"options_ui": {
+		"page": "options.html"
+	},
+
+	"permissions": ["storage", "bookmarks", "alarms"],
+	"minimum_chrome_version": "92",
+	"manifest_version": 3
+}

@@ -4,32 +4,29 @@ This [WebExtension](https://developer.mozilla.org/en-US/Add-ons/WebExtensions), 
 
 Get the stable version for [Firefox](https://addons.mozilla.org/en-US/firefox/addon/random-bookmark-from-folder/) or [Chrome](https://chrome.google.com/webstore/detail/random-bookmark-from-fold/dcijbgljdombbkbmmkabanaopnnapcfd).
 
-This project has a Code of Conduct. By participating in this project, you agree to be as courteous, welcoming, and generally a lovely person as its terms require. ♡
+This project has a [Code of Conduct](CODE_OF_CONDUCT.md). By participating in this project, you agree to be as courteous, welcoming, and generally a lovely person as its terms require. ♡
 
-# Writing & testing Random Bookmark From Folder
+No genAI is used or allowed in code or assets original to this project.
 
-This project has a build process that converts [Svelte](https://svelte.technology/) templates (\*.svelte) and [Sass](http://sass-lang.com/) files (\*.scss) to JavaScript and CSS, and optimizes the whole project. With [Node](https://nodejs.org/) installed, run this command the first time you obtain this repo's files to fetch everything you need:
+# First-time / Post-package.json-update setup
 
-```
-npm install
-```
+You will need [Node.js](https://nodejs.org/).
 
-With that done, keep the following command running as you work. It'll generate build folders for each browser.
+After you first obtain this repo's files, or whenever package.json is updated, run the command `npm install` to download all of the project's current dependencies.
 
-```
-npm run watch
-```
+# Building and working on Random Bookmark From Folder
 
-And finally, to load the build folder in your browser:
+For a one-time build, run `npm run build` to get build-firefox and build-chrome folders that each contain a ready-to-run extension.
 
-* Firefox: https://developer.mozilla.org/en-US/Add-ons/WebExtensions/Temporary_Installation_in_Firefox
-* Chrome: https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked
-* Edge (use build-chrome): https://learn.microsoft.com/en-us/microsoft-edge/extensions-chromium/getting-started/extension-sideloading
+If you'd like to make changes to Random Bookmark From Folder, do them on the source files in the WebExtension folder, and use the `npm run watch` command, which will both create the build-* folders and start a watcher process to keep it updated as you work. The .svelte files are [Svelte](https://svelte.technology/), and the .scss files are [Sass](http://sass-lang.com/).
 
-If you'd like to do a one-off build without watching for file changes:
+The build process is handled by [Rollup](https://rollupjs.org/), configured with the rollup.config.mjs file.
 
-```
-npm run build
-```
+# Testing the built extension
 
-And if you'd like to modify the build process, see [Parcel's documentation](https://parceljs.org/docs/).
+Which folder to load and how to load it depends on the browser you're testing with:
+
+* **Firefox**: Load build-firefox as a [temporary extension](https://extensionworkshop.com/documentation/develop/temporary-installation-in-firefox/), or use [web-ext](https://extensionworkshop.com/documentation/develop/getting-started-with-web-ext/).
+* **Waterfox**: Load build-firefox as a [temporary extension](https://extensionworkshop.com/documentation/develop/temporary-installation-in-firefox/). If you'd like to use [web-ext](https://extensionworkshop.com/documentation/develop/getting-started-with-web-ext/) instead, you'll need to add the [--firefox option](https://extensionworkshop.com/documentation/develop/web-ext-command-reference/#:~:text=%2D%2Dfirefox,-%2C%20%2Df).
+* **Vivaldi** and **Chrome**: Load build-chrome as an [unpacked extension](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked).
+* **Edge**: [Sideload](https://learn.microsoft.com/en-us/microsoft-edge/extensions-chromium/getting-started/extension-sideloading) the build-chrome folder.
