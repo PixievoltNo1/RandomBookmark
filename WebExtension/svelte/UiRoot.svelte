@@ -2,11 +2,11 @@
 const PIN_IMG = String(new URL("../images/iconmonstr-pin-1.svg", import.meta.url));
 </script>
 <script>
-import l10n from "../l10nStore.esm.js";
-import { ready } from "../storage.esm.js";
+import l10n from "../l10nStore.mjs";
+import { ready } from "../storage.mjs";
 import FolderTree from './FolderTree.svelte';
 import Options from './Options.svelte';
-import { bookmarksReady, cleanPins } from "../ui.esm.js";
+import { bookmarksReady, cleanPins } from "../ui.mjs";
 
 export let folderList, pinList;
 export let folderListAutoNav;

@@ -1,4 +1,4 @@
-import chooseBookmark from "./bookmarkSelection.esm.js";
+import chooseBookmark from "./bookmarkSelection.mjs";
 
 chrome.runtime.onInstalled.addListener(async function({reason}) {
 	if (reason != "update") { return; }

@@ -1,8 +1,8 @@
-import chooseBookmark from './bookmarkSelection.esm.js';
-import l10n from "./l10nStore.esm.js";
-import { stores, ready as storageReady } from './storage.esm.js';
+import chooseBookmark from './bookmarkSelection.mjs';
+import l10n from "./l10nStore.mjs";
+import { stores, ready as storageReady } from './storage.mjs';
 import UiRoot from './svelte/UiRoot.svelte';
-import { getBrowserType, isVivaldi } from './sniffBrowser.esm.js';
+import { getBrowserType, isVivaldi } from './sniffBrowser.mjs';
 import { writable, get as readStore } from 'svelte/store';
 import { set as idbSet, get as idbGet, createStore as idbCreateStore } from "idb-keyval";
 

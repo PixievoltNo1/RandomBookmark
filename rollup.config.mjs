@@ -8,9 +8,9 @@ export default function({sourcemap = true, configOnlyBuild = false}) {
 	let options = {
 		input: [
 			"WebExtension/background.mjs",
-			"WebExtension/ui.esm.js",
+			"WebExtension/ui.mjs",
 			"WebExtension/stylesheet.scss",
-			"WebExtension/options.esm.js",
+			"WebExtension/options.mjs",
 			"WebExtension/options.scss",
 		],
 		plugins: [

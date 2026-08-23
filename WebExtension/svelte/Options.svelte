@@ -1,6 +1,6 @@
 <script>
-import l10n from "../l10nStore.esm.js";
-import storage from "../storage.esm.js";
+import l10n from "../l10nStore.mjs";
+import storage from "../storage.mjs";
 
 var { searchIn, showAndSubfolders, openInNewTab } = storage;
 $: if ($searchIn != "folderOnly") {
