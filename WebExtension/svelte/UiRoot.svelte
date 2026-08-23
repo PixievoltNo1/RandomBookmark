@@ -1,5 +1,5 @@
 <script context="module">
-const PIN_IMG = String(new URL("../images/iconmonstr-pin-1.svg", import.meta.url));
+const PIN_IMG = "/images/iconmonstr-pin-1.svg";
 </script>
 <script>
 import l10n from "../l10nStore.mjs";
@@ -8,9 +8,17 @@ import FolderTree from './FolderTree.svelte';
 import Options from './Options.svelte';
 import { bookmarksReady, cleanPins } from "../ui.mjs";
 
-export let folderList, pinList;
-export let folderListAutoNav;
-export let pinsDirty = false, missingPins;
+let folderList, pinList;
+export function updateLists({folderList: newFolderList, pinList: newPinList}) {
+	if (newFolderList) { folderList = newFolderList; }
+	if (newPinList) { pinList = newPinList; }
+}
+let folderListAutoNav;
+export function updateAutoNav(newAutoNav) { folderListAutoNav = newAutoNav; }
+let pinsDirty = false;
+export function pinsDirtied() { pinsDirty = true; }
+let missingPins;
+export function updateMissingPins(newMissingPins) { missingPins = newMissingPins; }
 $: pinHelpParts = $l10n("pinHelp").split("<pin>").map( (str) => { return str.trim(); } );
 
 var optionsEnabled = false;

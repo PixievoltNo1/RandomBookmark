@@ -49,7 +49,7 @@ export function onTogglePin(id, on) {
 	var pins = readStore(stores.pins);
 	pins[on ? "add" : "delete"](id);
 	stores.pins.set(pins);
-	uiRoot.$set({pinsDirty: true});
+	uiRoot.pinsDirtied();
 }
 export function cleanPins(missingPins) {
 	var pins = readStore(stores.pins);
@@ -57,7 +57,7 @@ export function cleanPins(missingPins) {
 		pins.delete(id);
 	}
 	stores.pins.set(pins);
-	uiRoot.$set({missingPins: null});
+	uiRoot.updateMissingPins(null);
 }
 var uiRoot = new UiRoot({ target: document.body });
 {
@@ -88,7 +88,7 @@ var uiRoot = new UiRoot({ target: document.body });
 	})[browserType];
 	if (browserDisplayHelper) { browserDisplayHelper(); }
 
-	uiRoot.$set({folderListAutoNav: ({
+	uiRoot.updateAutoNav( ({
 		Chrome(navTree) {
 			// TODO: Use new folderType property
 			var autoOpenThese = new Set(["1", "2"]);
@@ -106,7 +106,7 @@ var uiRoot = new UiRoot({ target: document.body });
 				}
 			}
 		},
-	})[browserType]})
+	})[browserType] );
 }
 var bookmarksFetch = new Promise( (resolve) => {
 	chrome.bookmarks.getTree( ([tree]) => { resolve(tree); } );
@@ -118,13 +118,14 @@ var cacheFetch = idbGet("folderCache", cacheStore);
 	var cache = await cacheFetch;
 	if (cache) {
 		let {pinList} = findPins(cache); // deliberately ignoring missingPins
-		uiRoot.$set({folderList: cache, pinList});
+		uiRoot.updateLists({folderList: cache, pinList});
 	}
 
 	var tree = await bookmarksFetch;
 	var folderList = makeFolderList(tree).list;
 	var {pinList, missingPins} = findPins(folderList);
-	uiRoot.$set({pinList, folderList, missingPins});
+	uiRoot.updateLists({pinList, folderList});
+	uiRoot.updateMissingPins(missingPins);
 	bookmarksReady.set(true);
 	idbSet("folderCache", folderList, cacheStore);
 	chrome.alarms.create("clearCache", {delayInMinutes: 15});
