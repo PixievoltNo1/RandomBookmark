@@ -1,8 +1,12 @@
-export default async function() {
-	if (window.browser && browser.runtime.getBrowserInfo) {
-		var {name} = await browser.runtime.getBrowserInfo();
-		return name;
-	} else {
+export function getBrowserType() {
+	if (location.protocol == "moz-extension:") {
+		return "Firefox";
+	} else if (location.protocol == "chrome-extension:") {
 		return "Chrome";
+	} else {
+		return "unknown";
 	}
+}
+export function isVivaldi() {
+	return "VivaldiInvokedBy" in chrome.tabs;
 }

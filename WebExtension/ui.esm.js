@@ -2,7 +2,7 @@ import chooseBookmark from './bookmarkSelection.esm.js';
 import l10n from "./l10nStore.esm.js";
 import { stores, ready as storageReady } from './storage.esm.js';
 import UiRoot from './svelte/UiRoot.svelte';
-import sniffBrowser from './sniffBrowser.esm.js';
+import { getBrowserType, isVivaldi } from './sniffBrowser.esm.js';
 import { writable, get as readStore } from 'svelte/store';
 import { set as idbSet, get as idbGet, createStore as idbCreateStore } from "idb-keyval";
 
@@ -60,30 +60,37 @@ export function cleanPins(missingPins) {
 	uiRoot.$set({missingPins: null});
 }
 var uiRoot = new UiRoot({ target: document.body });
-var adaptToBrowser = (async function(browserName) {
-	var browserName = await sniffBrowser();
+{
+	var browserType = getBrowserType();
 
 	var browserDisplayHelper = ({
-		Chrome() {
+		async Chrome() {
 			// Workaround for CSS body { overflow: hidden; } not working correctly
-			var body = document.body, flexContainer = document.getElementById("flexContainer");
+			var body = document.body;
 			getComputedStyle(body).height; // force layout
 			var maxWindowSize = window.innerHeight;
 			// Minus-1 needed to ensure the scrollbar is banished
-			body.style.height = flexContainer.style.height = `${maxWindowSize - 1}px`;
+			body.style.height = `${maxWindowSize - 1}px`;
+			if (isVivaldi()) {
+				// Workaround for Vivaldi 8.1 not limiting the height on first open
+				// Unlike other browsers, Vivaldi won't let the popup extend out of the window
+				let curWindow = await browser.windows.getCurrent();
+				body.style.height = `${curWindow.height - 100}px`;
+			}
 		},
-		Firefox: async function() {
+		async Firefox() {
 			// Workaround for cutoff when ui.html is shown in the overflow menu
 			var curWindow = await browser.windows.getCurrent();
 			document.body.style.height =
 				`${screen.availHeight - Math.max(curWindow.top, 0) - 150}px`;
 			document.getElementById("flexContainer").style.maxHeight = "100%";
 		},
-	})[browserName];
+	})[browserType];
 	if (browserDisplayHelper) { browserDisplayHelper(); }
 
 	uiRoot.$set({folderListAutoNav: ({
 		Chrome(navTree) {
+			// TODO: Use new folderType property
 			var autoOpenThese = new Set(["1", "2"]);
 			for (let navNode of navTree) {
 				if (autoOpenThese.has(navNode.id)) {
@@ -99,14 +106,14 @@ var adaptToBrowser = (async function(browserName) {
 				}
 			}
 		},
-	})[browserName]})
-})();
+	})[browserType]})
+}
 var bookmarksFetch = new Promise( (resolve) => {
 	chrome.bookmarks.getTree( ([tree]) => { resolve(tree); } );
 } );
 var cacheFetch = idbGet("folderCache", cacheStore);
 (async function() {
-	await Promise.all([adaptToBrowser, storageReady]);
+	await Promise.all([storageReady]);
 
 	var cache = await cacheFetch;
 	if (cache) {
@@ -123,6 +130,7 @@ var cacheFetch = idbGet("folderCache", cacheStore);
 	chrome.alarms.create("clearCache", {delayInMinutes: 15});
 })();
 function makeFolderList(tree) {
+	// TODO: Detect and disambiguate same-named syncing and non-syncing folders
 	var list = [], hasChildBookmarks = false, hasDescendantBookmarks = false;
 	for (let bookmarkNode of tree.children) {
 		if (bookmarkNode.type == "separator") {
