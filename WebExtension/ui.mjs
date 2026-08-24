@@ -1,6 +1,7 @@
 import chooseBookmark from './bookmarkSelection.mjs';
 import l10n from "./l10nStore.mjs";
 import { stores, ready as storageReady } from './storage.mjs';
+import { mount } from 'svelte';
 import UiRoot from './svelte/UiRoot.svelte';
 import { getBrowserType, isVivaldi } from './sniffBrowser.mjs';
 import { writable, get as readStore } from 'svelte/store';
@@ -59,7 +60,7 @@ export function cleanPins(missingPins) {
 	stores.pins.set(pins);
 	uiRoot.updateMissingPins(null);
 }
-var uiRoot = new UiRoot({ target: document.body });
+var uiRoot = mount(UiRoot, { target: document.body });
 {
 	var browserType = getBrowserType();
 
