@@ -28,23 +28,46 @@ function errorPage(tabId, errorName, ...details) {
 }
 // TODO: Make an extension page to use in place of about:blank
 const PICK_IN_PROGRESS_PAGE = "about:blank";
-async function pickBookmark(folderId, useSubfolders) {
-	let {openInNewTab = true} = await chrome.storage.get("openInNewTab");
+async function pickBookmark(folderId, useSubfolders, updateLastPick = true) {
+	let {openInNewTab = true} = await chrome.storage.sync.get("openInNewTab");
 	let tab, folder, bookmark;
 	if (openInNewTab) {
 		tab = await chrome.tabs.create({url: PICK_IN_PROGRESS_PAGE});
 	} else {
 		tab = (await chrome.tabs.query({active: true}))[0];
-		chrome.tabs.update(tab.id, PICK_IN_PROGRESS_PAGE);
+		chrome.tabs.update(tab.id, {url: PICK_IN_PROGRESS_PAGE});
 	}
 	try {
-		[folder] = await chrome.bookmarks.getSubTree(folderId)
+		[folder] = await chrome.bookmarks[useSubfolders ? "getSubTree" : "get"](folderId)
 			.catch( () => { throw ["folder not found"]; } );
 		bookmark = chooseBookmark(folder, useSubfolders);
 		if (!bookmark) { throw ["no bookmarks"]; }
+		if (updateLastPick) {
+			await chrome.storage.local.set({
+				lastPickFolderId: id,
+				lastPickSubfolders: andSubfolders,
+			}).catch( console.error );
+		}
 		await chrome.tabs.update(tab.id, {url: bookmark.url})
 			.catch( () => { throw ["opening not allowed", bookmark.url]; } );
 	} catch (o_o) {
-		errorPage(tab.id, ...error);
+		if (!Array.isArray(o_o)) { throw o_o; }
+		errorPage(tab.id, ...o_o);
 	}
+}
+
+chrome.commands.onCommand.addListener( async (command) => {
+	if (command == "repeat_pick") { repeatLastPick(); }
+});
+async function repeatLastPick() {
+	let [lastPick, prefs] = await Promise.all([
+		chrome.storage.local.get(["lastPickFolderId", "lastPickSubfolders"]),
+		chrome.storage.sync.get({searchIn: "folderAndSubfolders", showAndSubfolders: false}),
+	]);
+	// If there's no last pick, let pickBookmark show a "folder not found" error
+	let folderId = lastPick.lastPickFolderId ?? "";
+	let useSubfolders = prefs.showAndSubfolders
+		? lastPick.lastPickSubfolders
+		: prefs.searchIn == "folderAndSubfolders";
+	pickBookmark(folderId, useSubfolders, false);
 }

@@ -1,6 +1,10 @@
 {
 	"extName": { "message": "Random Bookmark From Folder" },
 	"extDesc": { "message": "Open random bookmarks from a chosen folder" },
+	"repeatPick": {
+		"message": "Repeat last pick",
+		"description": "Keyboard shortcut description"
+	},
 
 	"andSubfolders": { "message": "...and its subfolders" },
 	"ctrlEnter": {

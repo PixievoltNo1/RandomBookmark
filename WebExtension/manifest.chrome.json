@@ -26,6 +26,12 @@
 			"suggested_key": {
 				"default": "Ctrl+Shift+F"
 			}
+		},
+		"repeat_pick": {
+			"suggested_key": {
+				"default": "Ctrl+Shift+Period"
+			},
+			"description": "__MSG_repeatPick__"
 		}
 	},
 	"options_ui": {

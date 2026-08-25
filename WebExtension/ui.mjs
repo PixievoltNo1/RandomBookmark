@@ -44,6 +44,10 @@ export async function onChosen({id, andSubfolders}) {
 		});
 
 	}
+	await chrome.storage.local.set({
+		lastPickFolderId: id,
+		lastPickSubfolders: andSubfolders,
+	}).catch( console.error );
 	window.close();
 }
 export function onTogglePin(id, on) {
