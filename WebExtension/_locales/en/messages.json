@@ -28,12 +28,16 @@
 	"allFoldersHeader": { "message": "All Folders" },
 	"showOptions": { "message": "Show Options" },
 	"closeOptions": { "message": "Close Options" },
-	"wait": { "message": "Please wait..." },
-	"noBookmarksFound": { "message": "No bookmarks found." },
-	"ok": { "message": "OK" },
 
 	"searchInFolderAndSubfolders": { "message": "Pick from the selected folder & its subfolders" },
 	"searchInFolderOnly": { "message": "Pick from the selected folder only" },
 	"showAndSubfolders": { "message": "Show \"and its subfolders\" button" },
-	"openInNewTab": { "message": "Open bookmark in a new tab" }
+	"openInNewTab": { "message": "Open bookmark in a new tab" },
+
+	"pickingBookmark": { "message": "Picking a bookmark..." },
+
+	"error": { "message": "Error" },
+	"error_folderNotFound": { "message": "Couldn't find that folder." },
+	"error_noBookmarks": { "message": "There were no bookmarks found in that folder." },
+	"error_openingNotAllowed": { "message": "Your browser forbids extensions from automatically opening this page:" }
 }

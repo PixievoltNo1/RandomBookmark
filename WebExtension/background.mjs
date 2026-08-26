@@ -24,10 +24,13 @@ chrome.runtime.onMessage.addListener( async ({name, ...details}) => {
 } );
 
 function errorPage(tabId, errorName, ...details) {
-	// TODO: Show the error
+	let searchParams = new URLSearchParams({errorName});
+	for (let detail of details) {
+		searchParams.append("detail", detail);
+	}
+	chrome.tabs.update(tabId, {url: `/error.html?${searchParams}`});
 }
-// TODO: Make an extension page to use in place of about:blank
-const PICK_IN_PROGRESS_PAGE = "about:blank";
+const PICK_IN_PROGRESS_PAGE = "/picking.html";
 async function pickBookmark(folderId, useSubfolders, updateLastPick = true) {
 	let {openInNewTab = true} = await chrome.storage.sync.get("openInNewTab");
 	let tab, folder, bookmark;
@@ -39,9 +42,9 @@ async function pickBookmark(folderId, useSubfolders, updateLastPick = true) {
 	}
 	try {
 		[folder] = await chrome.bookmarks[useSubfolders ? "getSubTree" : "get"](folderId)
-			.catch( () => { throw ["folder not found"]; } );
+			.catch( () => { throw ["folderNotFound"]; } );
 		bookmark = chooseBookmark(folder, useSubfolders);
-		if (!bookmark) { throw ["no bookmarks"]; }
+		if (!bookmark) { throw ["noBookmarks"]; }
 		if (updateLastPick) {
 			await chrome.storage.local.set({
 				lastPickFolderId: id,
@@ -49,7 +52,7 @@ async function pickBookmark(folderId, useSubfolders, updateLastPick = true) {
 			}).catch( console.error );
 		}
 		await chrome.tabs.update(tab.id, {url: bookmark.url})
-			.catch( () => { throw ["opening not allowed", bookmark.url]; } );
+			.catch( () => { throw ["openingNotAllowed", bookmark.url]; } );
 	} catch (o_o) {
 		if (!Array.isArray(o_o)) { throw o_o; }
 		errorPage(tab.id, ...o_o);

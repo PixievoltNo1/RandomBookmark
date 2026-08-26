@@ -10,6 +10,7 @@ export default function({sourcemap = true, watch, configOnlyBuild = false}) {
 			"WebExtension/background.mjs",
 			"WebExtension/ui.mjs",
 			"WebExtension/options.mjs",
+			"WebExtension/infoPage.mjs",
 		],
 		plugins: [
 			svelte(),

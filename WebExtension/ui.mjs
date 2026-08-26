@@ -23,7 +23,7 @@ export async function onChosen({id, andSubfolders}) {
 	var node = folderBookmarkNodes.get(id);
 	var bookmark = chooseBookmark(node, andSubfolders);
 	if (!bookmark) {
-		alert( readStore(l10n)("noBookmarksFound") );
+		alert( readStore(l10n)("error_noBookmarks") );
 		return;
 	}
 	try {
@@ -39,7 +39,7 @@ export async function onChosen({id, andSubfolders}) {
 		chrome.runtime.sendMessage({
 			name: "errorPage",
 			tabId,
-			errorName: "opening not allowed",
+			errorName: "openingNotAllowed",
 			errorDetails: [bookmark.url],
 		});
 

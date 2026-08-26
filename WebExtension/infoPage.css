@@ -1,0 +1,45 @@
+html {
+    height: 100dvh;
+    background: hsl(280deg 100% 60%);
+    display: flex;
+    align-items: stretch;
+}
+body {
+	flex: 1;
+	background: hsl(270deg 100% 92%);
+	font-family: sans-serif;
+	margin: 5vmin;
+	border: 1px solid #5c008a;
+	padding: 5vmin;
+}
+body.picking {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.picking .extIcon {
+	height: 128px;
+}
+h1 {
+    margin: 5vmin 0;
+    font-size: 40px;
+	flex: none;
+}
+@keyframes spin {
+	0% { transform: rotate(0); }
+	100% { transform: rotate(1turn); }
+}
+.spinner {
+	height: 64px;
+	animation: spin 1.5s infinite linear;
+}
+
+.error .extIcon {
+	height: 40px;
+}
+.error h1 {
+	margin-top: 0;
+}
+p {
+	font-size: 24px;
+}
