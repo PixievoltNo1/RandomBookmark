@@ -4,7 +4,8 @@
     "build": "rollup -c",
     "prewatch": "premove build-firefox build-chrome",
     "watch": "rollup -c --watch",
-    "makeRelease": "npm run build -- --no-sourcemap"
+    "makeRelease": "npm run build -- --no-sourcemap",
+    "build-for-amo": "npm run build -- --no-sourcemap --configOnlyBuild=firefox"
   },
   "devDependencies": {
     "@guanghechen/rollup-plugin-copy": "^6.1.0",
