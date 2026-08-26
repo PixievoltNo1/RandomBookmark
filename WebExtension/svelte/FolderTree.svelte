@@ -2,7 +2,7 @@
 import FolderNodeList from "./FolderNodeList.svelte";
 import { onMount, setContext } from "svelte";
 let activeNavNode, navTree;
-export let list, autoNav;
+export let list, openTopLevel;
 function navigate(event) {
 	var {key} = event;
 	var destination;
@@ -57,7 +57,11 @@ function navigate(event) {
 }
 onMount( () => {
 	setActiveNavNode(navTree[0]);
-	if (autoNav) { autoNav(navTree); }
+	if (openTopLevel) {
+		for (let navNode of navTree) {
+			navNode.expand();
+		}
+	}
 } );
 setContext("tree", {
 	setActiveNavNode,

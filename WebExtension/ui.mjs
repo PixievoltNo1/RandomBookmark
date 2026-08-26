@@ -92,26 +92,6 @@ var uiRoot = mount(UiRoot, { target: document.body });
 		},
 	})[browserType];
 	if (browserDisplayHelper) { browserDisplayHelper(); }
-
-	uiRoot.updateAutoNav( ({
-		Chrome(navTree) {
-			// TODO: Use new folderType property
-			var autoOpenThese = new Set(["1", "2"]);
-			for (let navNode of navTree) {
-				if (autoOpenThese.has(navNode.id)) {
-					navNode.expand();
-				}
-			}
-		},
-		Firefox(navTree) {
-			var autoOpenThese = new Set(["menu________", "toolbar_____"]);
-			for (let navNode of navTree) {
-				if (autoOpenThese.has(navNode.id)) {
-					navNode.expand();
-				}
-			}
-		},
-	})[browserType] );
 }
 var bookmarksFetch = new Promise( (resolve) => {
 	chrome.bookmarks.getTree( ([tree]) => { resolve(tree); } );

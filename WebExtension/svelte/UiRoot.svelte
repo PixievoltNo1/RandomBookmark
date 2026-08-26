@@ -13,8 +13,6 @@ export function updateLists({folderList: newFolderList, pinList: newPinList}) {
 	if (newFolderList) { folderList = newFolderList; }
 	if (newPinList) { pinList = newPinList; }
 }
-let folderListAutoNav;
-export function updateAutoNav(newAutoNav) { folderListAutoNav = newAutoNav; }
 let pinsDirty = false;
 export function pinsDirtied() { pinsDirty = true; }
 let missingPins;
@@ -63,7 +61,7 @@ var showOptions = false;
 	{#if !folderList}
 		<div class="loading">{$l10n("loading")}</div>
 	{:else}
-		<FolderTree list="{folderList}" autoNav={folderListAutoNav}/>
+		<FolderTree list="{folderList}" openTopLevel={true}/>
 	{/if}
 </div>
 <div id="optionsPane">
