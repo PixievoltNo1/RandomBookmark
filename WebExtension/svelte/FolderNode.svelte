@@ -16,6 +16,8 @@ var l10nCached = derived(l10n, ($l10n) => {
 
 <script>
 export let id, title, list, hasChildBookmarks, hasDescendantBookmarks;
+export let disambiguate = undefined;
+$: dispTitle = disambiguate ? $l10n(`disambiguate_${disambiguate}`, title) : title;
 let showSubfolders = false, showKeyHelp = false;
 let focusMe;
 let tree = getContext("tree");
@@ -78,7 +80,7 @@ function focused(event) {
 			on:click="{ () => { showSubfolders = !showSubfolders } }"></button>
 	{/if}
 	<button type="button" tabindex="-1" class="folderName" disabled="{!enabled}"
-		on:click="{ () => { onChosen({id, andSubfolders: searchSubfolders}); } }">{title}</button>
+		on:click="{ () => { onChosen({id, andSubfolders: searchSubfolders}); } }">{dispTitle}</button>
 	{#if list.length && $showAndSubfolders}
 		<button type="button" tabindex="-1" class="andSubfolders" disabled="{!hasDescendantBookmarks}"
 			on:click="{ () => { onChosen({id, andSubfolders: true}); } }">

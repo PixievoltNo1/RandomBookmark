@@ -136,8 +136,8 @@ var cacheFetch = idbGet("folderCache", cacheStore);
 	chrome.alarms.create("clearCache", {delayInMinutes: 15});
 })();
 function makeFolderList(tree) {
-	// TODO: Detect and disambiguate same-named syncing and non-syncing folders
 	var list = [], hasChildBookmarks = false, hasDescendantBookmarks = false;
+	let syncValues = new Set();
 	for (let bookmarkNode of tree.children) {
 		if (bookmarkNode.type == "separator") {
 			if (list.length && !list[list.length - 1].separator) {
@@ -157,6 +157,7 @@ function makeFolderList(tree) {
 		folderData.id = bookmarkNode.id;
 		folderData.title = bookmarkNode.title;
 		folderBookmarkNodes.set(bookmarkNode.id, bookmarkNode);
+		syncValues.add(bookmarkNode.syncing)
 		list.push(folderData);
 		if (folderData.hasDescendantBookmarks) {
 			hasDescendantBookmarks = true;
@@ -164,6 +165,25 @@ function makeFolderList(tree) {
 	}
 	while (list.length && list[list.length - 1].separator) {
 		list.pop();
+	}
+	if (syncValues.size == 2) {
+		// Disambiguate same-named sync / non-sync folders
+		// https://developer.chrome.com/blog/bookmarks-sync-changes
+		let folderNames = new Set(), needsDisambiguation = new Set();
+		for (let folderData of list) {
+			if (folderData.separator) { continue; }
+			if (folderNames.has(folderData.title)) {
+				needsDisambiguation.add(folderData.title);
+			} else {
+				folderNames.add(folderData.title);
+			}
+		}
+		if (needsDisambiguation.size) {
+			for (let folderData of list) {
+				let sync = folderBookmarkNodes.get(folderData.id);
+				folderData.disambiguate = sync ? "sync" : "nonSync";
+			}
+		}
 	}
 	return {list, hasChildBookmarks, hasDescendantBookmarks};
 }

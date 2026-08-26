@@ -29,6 +29,12 @@
 	"showOptions": { "message": "Show Options" },
 	"closeOptions": { "message": "Close Options" },
 
+	"disambiguate_sync": {
+		"message": "$1 (Synced)",
+		"description": "Disambiguation messages are shown in place of a folder name ($1) when there are same-named folders with some characteristic that sets them apart."
+	},
+	"disambiguate_nonSync": { "message": "$1 (Non-synced)" },
+
 	"searchInFolderAndSubfolders": { "message": "Pick from the selected folder & its subfolders" },
 	"searchInFolderOnly": { "message": "Pick from the selected folder only" },
 	"showAndSubfolders": { "message": "Show \"and its subfolders\" button" },
