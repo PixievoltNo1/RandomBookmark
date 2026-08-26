@@ -1,24 +1,17 @@
 import svelte from "rollup-plugin-svelte";
 import resolve from "@rollup/plugin-node-resolve";
 import copy from "@guanghechen/rollup-plugin-copy";
-import styler from "rollup-plugin-styler";
+import command from "rollup-plugin-command";
 import path from "node:path";
-export default function({sourcemap = true, configOnlyBuild = false}) {
+export default function({sourcemap = true, watch, configOnlyBuild = false}) {
 	/** @type import('rollup').RollupOptions */
 	let options = {
 		input: [
 			"WebExtension/background.mjs",
 			"WebExtension/ui.mjs",
-			"WebExtension/stylesheet.scss",
 			"WebExtension/options.mjs",
-			"WebExtension/options.scss",
 		],
 		plugins: [
-			styler({
-				mode: "extract",
-				url: false,
-				sourceMap: sourcemap,
-			}),
 			svelte(),
 			resolve({browser: true}),
 		],
@@ -30,8 +23,8 @@ export default function({sourcemap = true, configOnlyBuild = false}) {
 			assetFileNames: "[name][extname]",
 			sourcemap,
 		});
-		options.plugins.push( copy({
-			targets: [
+		options.plugins.push(
+			copy({ targets: [
 				{
 					src: "WebExtension/{_locales,icon,images,*.html}",
 					dest: `build-${buildName}`,
@@ -42,8 +35,13 @@ export default function({sourcemap = true, configOnlyBuild = false}) {
 					rename: "manifest.json",
 					dest: `build-${buildName}`,
 				},
-			],
-		}) );
+			] }),
+			command(
+				`sass --color WebExtension:build-${buildName}`
+					+ `${watch ? " --watch" : ""}${sourcemap ? "" : " --no-source-map"}`,
+				{ once: true, exitOnFail: true },
+			)
+		);
 	}
 	if (configOnlyBuild) {
 		addBuildOptions(configOnlyBuild);
