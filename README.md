@@ -1,8 +1,8 @@
 # Random Bookmark From Folder
 
-This [WebExtension](https://developer.mozilla.org/en-US/Add-ons/WebExtensions), made for Firefox, Chrome, & Edge, lets you select a bookmark folder and open a bookmark at random from it. It's made with an eye for customizability and good UX.
+This [WebExtension](https://developer.mozilla.org/en-US/Add-ons/WebExtensions), made for Firefox, Vivaldi, Waterfox, Supermium, & Chrome, lets you select a bookmark folder and open a bookmark at random from it. It's made with an eye for customizability and good UX.
 
-Get the stable version for [Firefox](https://addons.mozilla.org/en-US/firefox/addon/random-bookmark-from-folder/) or [Chrome](https://chrome.google.com/webstore/detail/random-bookmark-from-fold/dcijbgljdombbkbmmkabanaopnnapcfd).
+Get the stable version for [Firefox & Waterfox](https://addons.mozilla.org/en-US/firefox/addon/random-bookmark-from-folder/) or [Vivaldi, Supermium, & Chrome](https://chrome.google.com/webstore/detail/random-bookmark-from-fold/dcijbgljdombbkbmmkabanaopnnapcfd).
 
 This project has a [Code of Conduct](CODE_OF_CONDUCT.md). By participating in this project, you agree to be as courteous, welcoming, and generally a lovely person as its terms require. ♡
 
@@ -28,4 +28,4 @@ Which folder to load and how to load it depends on the browser you're testing wi
 
 * **Firefox**: Load build-firefox as a [temporary extension](https://extensionworkshop.com/documentation/develop/temporary-installation-in-firefox/), or use [web-ext](https://extensionworkshop.com/documentation/develop/getting-started-with-web-ext/).
 * **Waterfox**: Load build-firefox as a [temporary extension](https://extensionworkshop.com/documentation/develop/temporary-installation-in-firefox/). If you'd like to use [web-ext](https://extensionworkshop.com/documentation/develop/getting-started-with-web-ext/) instead, you'll need to add the [--firefox option](https://extensionworkshop.com/documentation/develop/web-ext-command-reference/#:~:text=%2D%2Dfirefox,-%2C%20%2Df).
-* **Vivaldi** and **Chrome**: Load build-chrome as an [unpacked extension](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked).
+* **Vivaldi**, **Supermium**, and **Chrome**: Load build-chrome as an [unpacked extension](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked).
