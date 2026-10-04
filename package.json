@@ -1,11 +1,11 @@
 {
   "scripts": {
-    "prebuild": "premove build-firefox build-chrome",
+    "prebuild": "premove build",
     "build": "rollup -c",
-    "prewatch": "premove build-firefox build-chrome",
+    "prewatch": "premove build",
     "watch": "rollup -c --watch",
     "makeRelease": "npm run build -- --no-sourcemap",
-    "build-for-amo": "npm run build -- --no-sourcemap --configOnlyBuild=firefox"
+    "build-for-amo": "npm run build -- --no-sourcemap"
   },
   "devDependencies": {
     "@guanghechen/rollup-plugin-copy": "^6.1.0",
@@ -21,6 +21,6 @@
     "svelte-writable-derived": "^3.1.1"
   },
   "webExt": {
-    "sourceDir": "build-firefox/"
+    "sourceDir": "build/"
   }
 }

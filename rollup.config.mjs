@@ -3,7 +3,7 @@ import resolve from "@rollup/plugin-node-resolve";
 import copy from "@guanghechen/rollup-plugin-copy";
 import command from "rollup-plugin-command";
 import path from "node:path";
-export default function({sourcemap = true, watch, configOnlyBuild = false}) {
+export default function({sourcemap = true, watch}) {
 	/** @type import('rollup').RollupOptions */
 	let options = {
 		input: [
@@ -15,40 +15,24 @@ export default function({sourcemap = true, watch, configOnlyBuild = false}) {
 		plugins: [
 			svelte(),
 			resolve({browser: true}),
-		],
-		output: [],
-	};
-	function addBuildOptions(buildName) {
-		options.output.push({
-			dir: `build-${buildName}`,
-			assetFileNames: "[name][extname]",
-			sourcemap,
-		});
-		options.plugins.push(
 			copy({ targets: [
 				{
-					src: "WebExtension/{_locales,icon,images,*.html}",
-					dest: `build-${buildName}`,
+					src: "WebExtension/{_locales,icon,images,*.html,*.json}",
+					dest: `build`,
 					rename: (name, ext, srcPath) => path.relative("WebExtension", srcPath),
-				},
-				{
-					src: `WebExtension/manifest.${buildName}.json`,
-					rename: "manifest.json",
-					dest: `build-${buildName}`,
 				},
 			] }),
 			command(
-				`sass --color WebExtension:build-${buildName}`
+				`sass --color WebExtension:build`
 					+ `${watch ? " --watch" : ""}${sourcemap ? "" : " --no-source-map"}`,
 				{ once: true, exitOnFail: true },
-			)
-		);
-	}
-	if (configOnlyBuild) {
-		addBuildOptions(configOnlyBuild);
-	} else {
-		addBuildOptions("firefox");
-		addBuildOptions("chrome");
-	}
+			),
+		],
+		output: {
+			dir: `build`,
+			assetFileNames: "[name][extname]",
+			sourcemap,
+		},
+	};
 	return options;
 }
