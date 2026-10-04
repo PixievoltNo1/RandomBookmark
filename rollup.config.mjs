@@ -1,9 +1,8 @@
 import svelte from "rollup-plugin-svelte";
 import resolve from "@rollup/plugin-node-resolve";
 import copy from "@guanghechen/rollup-plugin-copy";
-import command from "rollup-plugin-command";
 import path from "node:path";
-export default function({sourcemap = true, watch}) {
+export default function() {
 	/** @type import('rollup').RollupOptions */
 	let options = {
 		input: [
@@ -22,16 +21,11 @@ export default function({sourcemap = true, watch}) {
 					rename: (name, ext, srcPath) => path.relative("WebExtension", srcPath),
 				},
 			] }),
-			command(
-				`sass --color WebExtension:build`
-					+ `${watch ? " --watch" : ""}${sourcemap ? "" : " --no-source-map"}`,
-				{ once: true, exitOnFail: true },
-			),
 		],
 		output: {
 			dir: `build`,
 			assetFileNames: "[name][extname]",
-			sourcemap,
+			sourcemap: true,
 		},
 	};
 	return options;

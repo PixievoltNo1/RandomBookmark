@@ -1,19 +1,26 @@
 {
   "scripts": {
     "prebuild": "premove build",
-    "build": "rollup -c",
+    "build": "concurrently -c yellow,magenta node:build:*",
+    "build:rollup": "rollup -c",
+    "build:sass": "sass --color WebExtension:build",
     "prewatch": "premove build",
-    "watch": "rollup -c --watch",
-    "makeRelease": "npm run build -- --no-sourcemap",
-    "build-for-amo": "npm run build -- --no-sourcemap"
+    "watch": "concurrently -c yellow,magenta node:watch:*",
+    "watch:rollup": "node --run build:rollup -- --watch",
+    "watch:sass": "node --run build:sass -- --watch",
+    "premake-release": "premove build",
+    "make-release": "concurrently -c yellow,magenta node:make-release:*",
+    "make-release:rollup": "node --run build:rollup -- --no-sourcemap",
+    "make-release:sass": "node --run build:sass -- --no-source-map",
+    "build-for-amo": "npm run make-release"
   },
   "devDependencies": {
     "@guanghechen/rollup-plugin-copy": "^6.1.0",
     "@rollup/plugin-node-resolve": "^16.0.3",
+    "concurrently": "^10.0.5",
     "idb-keyval": "^6.3.0",
     "premove": "^4.0.0",
     "rollup": "^4.64.0",
-    "rollup-plugin-command": "^1.1.3",
     "rollup-plugin-svelte": "^7.2.3",
     "sass": "^1.105.1",
     "svelte": "^5.57.1",

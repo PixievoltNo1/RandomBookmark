@@ -20,7 +20,7 @@ For a one-time build, run `npm run build` to get a build folder containing a rea
 
 If you'd like to make changes to Random Bookmark From Folder, do them on the source files in the WebExtension folder, and use the `npm run watch` command, which will both create the build folder and start a watcher process to keep it updated as you work. The .svelte files are [Svelte](https://svelte.dev/), and the .scss files are [Sass](http://sass-lang.com/).
 
-The build process is handled by [Rollup](https://rollupjs.org/), configured with the rollup.config.mjs file.
+Build commands and parameters are kept in package.json, with additional configuration for [Rollup](https://rollupjs.org/), in rollup.config.mjs.
 
 # Testing the built extension
 
