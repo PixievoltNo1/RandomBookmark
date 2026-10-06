@@ -2,6 +2,7 @@ import svelte from "rollup-plugin-svelte";
 import resolve from "@rollup/plugin-node-resolve";
 import copy from "@guanghechen/rollup-plugin-copy";
 import path from "node:path";
+const NODE_MODULES_PATH = path.resolve("node_modules");
 export default function() {
 	/** @type import('rollup').RollupOptions */
 	let options = {
@@ -22,6 +23,12 @@ export default function() {
 				},
 			] }),
 		],
+		onwarn(log, handler) {
+			if (log.code == "CIRCULAR_DEPENDENCY" && log.ids[0].startsWith(NODE_MODULES_PATH)) {
+				return;
+			}
+			handler(log);
+		},
 		output: {
 			dir: `build`,
 			assetFileNames: "[name][extname]",
