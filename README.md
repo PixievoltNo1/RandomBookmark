@@ -14,6 +14,8 @@ You will need [Node.js](https://nodejs.org/).
 
 After you first obtain this repo's files, or whenever package.json is updated, run the command `npm install` to download all of the project's current dependencies.
 
+(If you're sure neither you nor your editor can use TypeScript definitions, you can instead use the command `npm install --omit=dev` to avoid downloading them.)
+
 # Building and working on Random Bookmark From Folder
 
 For a one-time build, run `npm run build` to get a build folder containing a ready-to-run extension.

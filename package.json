@@ -14,7 +14,7 @@
     "make-release:sass": "node --run build:sass -- --no-source-map",
     "build-for-amo": "npm run make-release"
   },
-  "devDependencies": {
+  "dependencies": {
     "@guanghechen/rollup-plugin-copy": "^6.1.0",
     "@rollup/plugin-node-resolve": "^16.0.3",
     "concurrently": "^10.0.5",
@@ -26,6 +26,9 @@
     "svelte": "^5.57.1",
     "svelte-webext-storage-adapter": "^3.0.2",
     "svelte-writable-derived": "^3.1.1"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.3.4"
   },
   "webExt": {
     "sourceDir": "build/"
