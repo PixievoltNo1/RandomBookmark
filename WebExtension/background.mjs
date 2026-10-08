@@ -33,7 +33,7 @@ function errorPage(tabId, errorName, ...details) {
 const PICK_IN_PROGRESS_PAGE = "/picking.html";
 async function pickBookmark(folderId, useSubfolders, updateLastPick = true) {
 	let {openInNewTab = true} = await chrome.storage.sync.get("openInNewTab");
-	let tab, folder, bookmark;
+	let tab;
 	if (openInNewTab) {
 		tab = await chrome.tabs.create({url: PICK_IN_PROGRESS_PAGE});
 	} else {
@@ -41,14 +41,15 @@ async function pickBookmark(folderId, useSubfolders, updateLastPick = true) {
 		chrome.tabs.update(tab.id, {url: PICK_IN_PROGRESS_PAGE});
 	}
 	try {
-		[folder] = await chrome.bookmarks[useSubfolders ? "getSubTree" : "get"](folderId)
+		let fetch = chrome.bookmarks[useSubfolders ? "getSubTree" : "getChildren"](folderId)
 			.catch( () => { throw ["folderNotFound"]; } );
-		bookmark = chooseBookmark(folder, useSubfolders);
+		let folderChildren = useSubfolders ? (await fetch)[0].children : (await fetch);
+		let bookmark = chooseBookmark(folderChildren, useSubfolders);
 		if (!bookmark) { throw ["noBookmarks"]; }
 		if (updateLastPick) {
 			await chrome.storage.local.set({
-				lastPickFolderId: id,
-				lastPickSubfolders: andSubfolders,
+				lastPickFolderId: folderId,
+				lastPickSubfolders: useSubfolders,
 			}).catch( console.error );
 		}
 		await chrome.tabs.update(tab.id, {url: bookmark.url})

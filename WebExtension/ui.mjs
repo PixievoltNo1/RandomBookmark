@@ -21,7 +21,7 @@ export async function onChosen({id, andSubfolders}) {
 		return;
 	}
 	var node = folderBookmarkNodes.get(id);
-	var bookmark = chooseBookmark(node, andSubfolders);
+	var bookmark = chooseBookmark(node.children, andSubfolders);
 	if (!bookmark) {
 		alert( readStore(l10n)("error_noBookmarks") );
 		return;
