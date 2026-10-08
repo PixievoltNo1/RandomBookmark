@@ -74,7 +74,7 @@ function focused(event) {
 	aria-expanded="{list.length ? showSubfolders : 'undefined'}" aria-selected={active}>
 	<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 	<div class="selIndicator" tabindex="{active ? 0 : -1}" bind:this={focusMe}
-		 on:focus="{ () => { showKeyHelp = true; } }" on:blur="{ () => { showKeyHelp = false; } }"/>
+		 on:focus="{ () => showKeyHelp = true }" on:blur="{ () => showKeyHelp = false }"></div>
 	{#if list.length}
 		<button type="button" tabindex="-1" class="expander" class:expanded={showSubfolders}
 			on:click="{ () => { showSubfolders = !showSubfolders } }"></button>
