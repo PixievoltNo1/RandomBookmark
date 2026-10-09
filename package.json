@@ -17,7 +17,7 @@
   "dependencies": {
     "@guanghechen/rollup-plugin-copy": "^6.1.0",
     "@rollup/plugin-node-resolve": "^16.0.3",
-    "concurrently": "^10.0.5",
+    "concurrently": "^10.0.6",
     "idb-keyval": "^6.3.0",
     "premove": "^4.0.0",
     "rollup": "^4.64.0",
