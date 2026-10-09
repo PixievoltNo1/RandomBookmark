@@ -3,7 +3,7 @@
     "prebuild": "premove build",
     "build": "concurrently -c yellow,magenta node:build:*",
     "build:rollup": "rollup -c",
-    "build:sass": "sass --color WebExtension:build",
+    "build:sass": "sass --color src:build",
     "prewatch": "premove build",
     "watch": "concurrently -c yellow,magenta node:watch:*",
     "watch:rollup": "node --run build:rollup -- --watch",

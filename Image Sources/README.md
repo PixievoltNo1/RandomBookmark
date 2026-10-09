@@ -1,0 +1,1 @@
+.svg files in this folder can be edited in [Inkscape](https://inkscape.org/).

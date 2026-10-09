@@ -7,19 +7,19 @@ export default function() {
 	/** @type import('rollup').RollupOptions */
 	let options = {
 		input: [
-			"WebExtension/background.mjs",
-			"WebExtension/ui.mjs",
-			"WebExtension/options.mjs",
-			"WebExtension/infoPage.mjs",
+			"src/background.mjs",
+			"src/ui.mjs",
+			"src/options.mjs",
+			"src/infoPage.mjs",
 		],
 		plugins: [
 			svelte(),
 			resolve({browser: true}),
 			copy({ targets: [
 				{
-					src: "WebExtension/{_locales,icon,images,*.html,*.json}",
+					src: "src/{_locales,icon,images,*.html,*.json}",
 					dest: `build`,
-					rename: (name, ext, srcPath) => path.relative("WebExtension", srcPath),
+					rename: (name, ext, srcPath) => path.relative("src", srcPath),
 				},
 			] }),
 		],
