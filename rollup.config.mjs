@@ -6,18 +6,18 @@ const NODE_MODULES_PATH = path.resolve("node_modules");
 export default function() {
 	/** @type import('rollup').RollupOptions */
 	let options = {
-		input: [
-			"src/background.mjs",
-			"src/ui.mjs",
-			"src/options.mjs",
-			"src/infoPage.mjs",
-		],
+		input: Object.fromEntries( [
+			"background",
+			"panel/ui",
+			"options/options",
+			"infoPages/infoPage",
+		].map( (srcEntry) => [srcEntry, `src/${srcEntry}.mjs`]) ),
 		plugins: [
 			svelte(),
 			resolve({browser: true}),
 			copy({ targets: [
 				{
-					src: "src/{_locales,icon,images,*.html,*.json}",
+					src: "src/{_locales,icon,images,**/*.{html,json}}",
 					dest: `build`,
 					rename: (name, ext, srcPath) => path.relative("src", srcPath),
 				},

@@ -28,9 +28,9 @@ function errorPage(tabId, errorName, ...details) {
 	for (let detail of details) {
 		searchParams.append("detail", detail);
 	}
-	chrome.tabs.update(tabId, {url: `/error.html?${searchParams}`});
+	chrome.tabs.update(tabId, {url: `/infoPages/error.html?${searchParams}`});
 }
-const PICK_IN_PROGRESS_PAGE = "/picking.html";
+const PICK_IN_PROGRESS_PAGE = "/infoPages/picking.html";
 async function pickBookmark(folderId, useSubfolders, updateLastPick = true) {
 	let {openInNewTab = true} = await chrome.storage.sync.get("openInNewTab");
 	let tab;

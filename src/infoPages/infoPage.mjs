@@ -4,10 +4,10 @@ for (let image of document.querySelectorAll(".extIcon")) {
 	image.alt = l10n("extName");
 }
 
-if (location.pathname == "/picking.html") {
+if (location.pathname == "/infoPages/picking.html") {
 	document.title = l10n("pickingBookmark");
 	document.querySelector("h1").textContent = l10n("pickingBookmark");
-} else if (location.pathname == "/error.html") {
+} else if (location.pathname == "/infoPages/error.html") {
 	document.title = `${l10n("error")} - ${l10n("extName")}`;
 	document.querySelector(".errorHeaderText").textContent = l10n("error");
 	let searchParams = new URLSearchParams(location.search);

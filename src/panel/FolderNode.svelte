@@ -3,7 +3,7 @@ import l10n from "../l10nStore.mjs";
 import storage from "../storage.mjs";
 import { getContext } from "svelte";
 import { derived } from "svelte/store";
-import { onChosen, onTogglePin } from "../ui.mjs";
+import { onChosen, onTogglePin } from "./ui.mjs";
 import FolderNodeList from "./FolderNodeList.svelte";
 
 var l10nCached = derived(l10n, ($l10n) => {

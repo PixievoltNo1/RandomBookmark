@@ -5,8 +5,8 @@ const PIN_IMG = "/images/iconmonstr-pin-1.svg";
 import l10n from "../l10nStore.mjs";
 import { ready } from "../storage.mjs";
 import FolderTree from './FolderTree.svelte';
-import Options from './Options.svelte';
-import { bookmarksReady, cleanPins } from "../ui.mjs";
+import Options from '../options/Options.svelte';
+import { bookmarksReady, cleanPins } from "./ui.mjs";
 
 let folderList, pinList;
 export function updateLists({folderList: newFolderList, pinList: newPinList}) {

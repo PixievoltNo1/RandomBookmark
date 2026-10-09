@@ -1,9 +1,9 @@
-import chooseBookmark from './bookmarkSelection.mjs';
-import l10n from "./l10nStore.mjs";
-import { stores, ready as storageReady } from './storage.mjs';
+import chooseBookmark from '../bookmarkSelection.mjs';
+import l10n from "../l10nStore.mjs";
+import { stores, ready as storageReady } from '../storage.mjs';
 import { mount } from 'svelte';
-import UiRoot from './svelte/UiRoot.svelte';
-import { getBrowserType, isVivaldi } from './sniffBrowser.mjs';
+import UiRoot from './UiRoot.svelte';
+import { getBrowserType, isVivaldi } from '../sniffBrowser.mjs';
 import { writable, get as readStore } from 'svelte/store';
 import { set as idbSet, get as idbGet, createStore as idbCreateStore } from "idb-keyval";
 
