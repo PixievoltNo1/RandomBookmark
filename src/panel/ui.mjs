@@ -5,10 +5,9 @@ import { mount } from 'svelte';
 import UiRoot from './UiRoot.svelte';
 import { getBrowserType, isVivaldi } from '../sniffBrowser.mjs';
 import { writable, get as readStore } from 'svelte/store';
-import { set as idbSet, get as idbGet, createStore as idbCreateStore } from "idb-keyval";
+import { cacheGet, cacheSet } from '../cacheAccess.mjs';
 
 var folderBookmarkNodes = new Map();
-var cacheStore = idbCreateStore("cache", "keyval");
 export var preparationStatus = writable("");
 export async function onChosen({id, andSubfolders}) {
 	if ( readStore(preparationStatus) != "done" ) {
@@ -95,7 +94,7 @@ try {
 	var bookmarksFetch = new Promise( (resolve) => {
 		chrome.bookmarks.getTree( ([tree]) => { resolve(tree); } );
 	} );
-	var cacheFetch = idbGet("folderCache", cacheStore);
+	var cacheFetch = cacheGet("folderCache");
 	await storageReady;
 	var cache = await cacheFetch;
 	if (cache) {
@@ -109,7 +108,7 @@ try {
 	uiRoot.updateLists({pinList, folderList});
 	uiRoot.updateMissingPins(missingPins);
 	preparationStatus.set("done");
-	idbSet("folderCache", folderList, cacheStore);
+	cacheSet("folderCache", folderList);
 	chrome.alarms.create("clearCache", {delayInMinutes: 15});
 } catch (o_o) {
 	console.error(o_o);

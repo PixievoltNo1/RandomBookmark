@@ -1,15 +1,16 @@
 import chooseBookmark from "./bookmarkSelection.mjs";
 import "./updateMigration.mjs";
+import { cacheClear } from "./cacheAccess.mjs";
 
 chrome.runtime.onInstalled.addListener( () => {
-	indexedDB.deleteDatabase("cache");
+	cacheClear();
 } );
 chrome.runtime.onStartup.addListener( () => {
-	indexedDB.deleteDatabase("cache");
+	cacheClear();
 } );
 chrome.alarms.onAlarm.addListener( ({name}) => {
 	if (name == "clearCache") {
-		indexedDB.deleteDatabase("cache");
+		cacheClear();
 	}
 } );
 

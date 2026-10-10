@@ -40,7 +40,7 @@
 		"page": "options/options.html"
 	},
 
-	"permissions": ["storage", "bookmarks", "alarms"],
+	"permissions": ["storage", "bookmarks", "alarms", "unlimitedStorage"],
 	"minimum_chrome_version": "121",
 	"browser_specific_settings": {
 		"gecko": {

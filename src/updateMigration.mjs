@@ -1,7 +1,7 @@
 chrome.runtime.onInstalled.addListener(async function({reason}) {
 	if (reason != "update") { return; }
 
-	// Migrate 1.x preference
+	// 1.x: Migrate preference
 	var {searchIn: oldSearchIn = false} = chrome.storage.local.get("searchIn");
 	if (oldSearchIn) {
 		var newPrefs = ({
@@ -12,4 +12,6 @@ chrome.runtime.onInstalled.addListener(async function({reason}) {
 		chrome.storage.sync.set(newPrefs);
 		chrome.storage.local.clear();
 	}
+	// 2.1-2.2: Ensure Firefox doesn't keep indexedDB cache
+	indexedDB.deleteDatabase("cache");
 });
