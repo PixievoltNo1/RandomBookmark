@@ -56,7 +56,10 @@ async function pickBookmark(folderId, useSubfolders, updateLastPick = true) {
 		await chrome.tabs.update(tab.id, {url: bookmark.url})
 			.catch( () => { throw ["openingNotAllowed", bookmark.url]; } );
 	} catch (o_o) {
-		if (!Array.isArray(o_o)) { throw o_o; }
+		if (!Array.isArray(o_o)) {
+			console.error(o_o);
+			o_o = ["unknown"];
+		}
 		errorPage(tab.id, ...o_o);
 	}
 }
