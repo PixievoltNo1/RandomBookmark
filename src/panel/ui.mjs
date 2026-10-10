@@ -9,9 +9,9 @@ import { set as idbSet, get as idbGet, createStore as idbCreateStore } from "idb
 
 var folderBookmarkNodes = new Map();
 var cacheStore = idbCreateStore("cache", "keyval");
-export var bookmarksReady = writable(false);
+export var preparationStatus = writable("");
 export async function onChosen({id, andSubfolders}) {
-	if ( !readStore(bookmarksReady) ) {
+	if ( readStore(preparationStatus) != "done" ) {
 		chrome.runtime.sendMessage({
 			name: "pickBookmark",
 			folderId: id,
@@ -65,9 +65,8 @@ export function cleanPins(missingPins) {
 	uiRoot.updateMissingPins(null);
 }
 var uiRoot = mount(UiRoot, { target: document.body });
-{
+try {
 	var browserType = getBrowserType();
-
 	var browserDisplayHelper = ({
 		async Chrome() {
 			// Workaround for CSS body { overflow: hidden; } not working correctly
@@ -92,29 +91,30 @@ var uiRoot = mount(UiRoot, { target: document.body });
 		},
 	})[browserType];
 	if (browserDisplayHelper) { browserDisplayHelper(); }
-}
-var bookmarksFetch = new Promise( (resolve) => {
-	chrome.bookmarks.getTree( ([tree]) => { resolve(tree); } );
-} );
-var cacheFetch = idbGet("folderCache", cacheStore);
-(async function() {
-	await Promise.all([storageReady]);
 
+	var bookmarksFetch = new Promise( (resolve) => {
+		chrome.bookmarks.getTree( ([tree]) => { resolve(tree); } );
+	} );
+	var cacheFetch = idbGet("folderCache", cacheStore);
+	await storageReady;
 	var cache = await cacheFetch;
 	if (cache) {
 		let {pinList} = findPins(cache); // deliberately ignoring missingPins
 		uiRoot.updateLists({folderList: cache, pinList});
+		preparationStatus.set("cacheLoaded");
 	}
-
 	var tree = await bookmarksFetch;
 	var folderList = makeFolderList(tree).list;
 	var {pinList, missingPins} = findPins(folderList);
 	uiRoot.updateLists({pinList, folderList});
 	uiRoot.updateMissingPins(missingPins);
-	bookmarksReady.set(true);
+	preparationStatus.set("done");
 	idbSet("folderCache", folderList, cacheStore);
 	chrome.alarms.create("clearCache", {delayInMinutes: 15});
-})();
+} catch (o_o) {
+	console.error(o_o);
+	preparationStatus.set("errored");
+}
 function makeFolderList(tree) {
 	var list = [], hasChildBookmarks = false, hasDescendantBookmarks = false;
 	let syncValues = new Set();

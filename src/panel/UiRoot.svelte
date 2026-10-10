@@ -6,7 +6,7 @@ import l10n from "../l10nStore.mjs";
 import { ready } from "../storage.mjs";
 import FolderTree from './FolderTree.svelte';
 import Options from '../options/Options.svelte';
-import { bookmarksReady, cleanPins } from "./ui.mjs";
+import { preparationStatus, cleanPins } from "./ui.mjs";
 
 let folderList, pinList;
 export function updateLists({folderList: newFolderList, pinList: newPinList}) {
@@ -54,13 +54,16 @@ var showOptions = false;
 	{/if}
 	<h1>
 		{$l10n("allFoldersHeader")}
-		{#if folderList && !$bookmarksReady}
+		{#if $preparationStatus == "cacheLoaded"}
 			<div class="headerExtra refreshing">{$l10n("refreshing")}</div>
 		{/if}
 	</h1>
-	{#if !folderList}
+	{#if $preparationStatus == "errored"}
+		<p>{$l10n("error_unknown")}</p>
+	{/if}
+	{#if $preparationStatus == ""}
 		<div class="loading">{$l10n("loading")}</div>
-	{:else}
+	{:else if folderList}
 		<FolderTree list="{folderList}" openTopLevel={true}/>
 	{/if}
 </div>

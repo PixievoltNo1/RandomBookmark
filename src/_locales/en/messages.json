@@ -45,5 +45,6 @@
 	"error": { "message": "Error" },
 	"error_folderNotFound": { "message": "Couldn't find that folder." },
 	"error_noBookmarks": { "message": "There were no bookmarks found in that folder." },
-	"error_openingNotAllowed": { "message": "Your browser forbids extensions from automatically opening this page:" }
+	"error_openingNotAllowed": { "message": "Your browser forbids extensions from automatically opening this page:" },
+	"error_unknown": { "message": "An unknown error occurred. Technical details may be found via your browser's extension debugging tools." }
 }
